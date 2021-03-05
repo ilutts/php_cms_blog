@@ -1,0 +1,19 @@
+{
+  "name": "cms/blog",
+  "description": "php",
+  "type": "project",
+  "authors": [
+    {
+      "name": "Ivan Luttcev",
+      "email": "ilutsev@gmail.com"
+    }
+  ],
+  "require": {
+    "illuminate/database": "^8.28"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  }
+}
