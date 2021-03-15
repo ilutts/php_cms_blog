@@ -41,7 +41,7 @@ class Route
     public function match($method, $uri): bool
     {
         if (
-            strtolower($method) === $this->method &&
+            (strtolower($method) === $this->method || $this->method === 'all') &&
             (parse_url($uri, PHP_URL_PATH) === $this->path ||
                 preg_match('/^' . str_replace(['*', '/'], ['\w+', '\/'], $this->getPath()) . '$/', $uri))
         ) {

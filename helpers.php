@@ -40,13 +40,3 @@ function includeView(string $templateName, $data = null)
     }
 
 }
-
-/**
- * Для тестирование Callback
- * @return string Проверочный текст
- */
-
-function testCallback(): string
-{
-    return 'Привет тестовая функция!';
-}

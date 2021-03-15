@@ -89,14 +89,12 @@ ul {
 }
 
 .btn {
-  border-radius: 12px;
+  padding: 5px;
+  max-width: 250px;
+  border-radius: 4px;
   font-weight: 800;
   outline: none;
   cursor: pointer;
-}
-
-.btn:hover {
-  transform: scale(1.05);
 }
 
 .btn--transparent {
@@ -104,7 +102,7 @@ ul {
   background-color: transparent;
   border: 1px solid var(--link-color-one);
   color: var(--link-color-one);
-  transition-property: background-color, color, transform;
+  transition-property: background-color, color;
   transition-duration: 0.2s;
   transition-timing-function: ease;
 }
@@ -119,7 +117,7 @@ ul {
   border: 1px solid transparent;
   background-color: var(--link-color-one);
   color: var(--link-color-two);
-  transition-property: background-color, border-color, color, transform;
+  transition-property: background-color, border-color, color;
   transition-duration: 0.2s;
   transition-timing-function: ease;
 }

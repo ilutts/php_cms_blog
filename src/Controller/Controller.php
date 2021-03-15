@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Model\Menu;
 use App\Model\Post;
+use App\Service\AuthServices;
 use App\View\View;
 
 class Controller
@@ -28,6 +29,29 @@ class Controller
         return new View('post', [
             'header' => Menu::all(), 
             'main' => $post,
+            'footer' => [], 
+        ]);
+    }
+
+    public function loginView(): View
+    {
+        if (!empty($_POST['login']) && !empty($_POST['password'])) {
+            $auth = new AuthServices();
+            $auth->login();
+        }
+
+        return new View('login', [
+            'header' => Menu::all(), 
+            'main' => [],
+            'footer' => [], 
+        ]);
+    }
+
+    public function regView(): View
+    {
+        return new View('reg', [
+            'header' => Menu::all(), 
+            'main' => [],
             'footer' => [], 
         ]);
     }

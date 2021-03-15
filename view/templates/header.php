@@ -7,7 +7,14 @@
             <h1 class="title">CMS - Блог</h1>
         </a>
         <a href="tel:+74953225448" class="header__phone">+7 495 322 54 48</a>
-        <a href="#" class="header__link link">Личный кабинет</a>
+        
+        <?php if (empty($_SESSION['isAuth'])) { ?>
+          <a href="/login" class="header__link link">Авторизация</a>
+        <?php } else { ?>
+          <a href="/cabinet" class="header__link link"><?= $_SESSION['user']['name'] ?></a>
+          <a href="/?exit" class="link">Выйти</a>
+        <?php } ?> 
+
     </div>
     <div class="header__bottom">
       <nav class="nav">

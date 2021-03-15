@@ -38,8 +38,8 @@ class SetupServices
     private static function addUser()
     {
         UserRepository::createTable();
-        UserRepository::add('test@test.ru', '123', 'TEST');
-        UserRepository::add('admin@admin.ri', '123', 'Admin');
+        UserRepository::add('test@test.ru', '$2y$10$2cOF4UeI.HIqyvDbiuCe8eNd5NPEfUswns0m5KkzbkBfLcEhOz3sG', 'TEST');
+        UserRepository::add('admin@admin.ri', '$2y$10$2cOF4UeI.HIqyvDbiuCe8eNd5NPEfUswns0m5KkzbkBfLcEhOz3sG', 'Admin');
     }
 
     private static function addGroup()

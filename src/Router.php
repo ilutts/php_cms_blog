@@ -8,7 +8,7 @@ class Router
 {
     private array $routes;
 
-    public function get(string $path, $action, string $method = 'get')
+    public function get(string $path, $action, string $method = 'all')
     {
         // Задание однотипного формата
         $path = '/' . implode('/', explode('/', trim($path, '/')));
