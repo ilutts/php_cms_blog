@@ -4,7 +4,8 @@ namespace App\Controller;
 
 use App\Model\Menu;
 use App\Model\Post;
-use App\Service\AuthServices;
+use App\Service\Authorization;
+use App\Service\Registration;
 use App\View\View;
 
 class Controller
@@ -36,7 +37,7 @@ class Controller
     public function loginView(): View
     {
         if (!empty($_POST['login']) && !empty($_POST['password'])) {
-            $auth = new AuthServices();
+            $auth = new Authorization();
             $auth->login();
         }
 
@@ -47,11 +48,18 @@ class Controller
         ]);
     }
 
-    public function regView(): View
+    public function registrationView(): View
     {
-        return new View('reg', [
+        $info = [];
+
+        if (isset($_POST['submit-reg'])) {
+            $registration = new Registration();
+            $info = $registration->new();
+        }
+
+        return new View('registration', [
             'header' => Menu::all(), 
-            'main' => [],
+            'main' => $info,
             'footer' => [], 
         ]);
     }

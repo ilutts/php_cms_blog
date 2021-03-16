@@ -32,7 +32,7 @@ $router->get('/', Controller::class . '@mainView');
 
 $router->get('/login', Controller::class . '@loginView');
 
-$router->get('/reg', Controller::class . '@regView');
+$router->get('/registration', Controller::class . '@registrationView');
 
 $router->get('about', function () {
     return new View('index', ['title' => 'Shop / Contact Page']);

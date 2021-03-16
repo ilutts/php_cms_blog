@@ -3,7 +3,7 @@
 <header class="header">
   <div class="container">
     <div class="header__top">
-        <a href="#" class="logo link">
+        <a href="/" class="logo link">
             <h1 class="title">CMS - Блог</h1>
         </a>
         <a href="tel:+74953225448" class="header__phone">+7 495 322 54 48</a>

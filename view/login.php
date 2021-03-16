@@ -12,7 +12,7 @@
                 <input type="password" class="input" name="password" required="" placeholder="Пароль" value="">
                 <button class="btn btn--solid" type="submit" name="submit">Войти в личный кабинет</button>
             </form>
-            <a href="/reg" class="link">Регистрация</a>
+            <a href="/registration" class="link">Регистрация</a>
         <?php } else { ?>
             <h2>И снова здраствуйте, <?= $_SESSION['user']['name'] ?></h2>
             <a href="/?exit" class="link">Выйти</a>
