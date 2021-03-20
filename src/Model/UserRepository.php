@@ -14,6 +14,9 @@ class UserRepository extends Repository
                 $table->string('email')->unique();
                 $table->string('password');
                 $table->string('name');
+                $table->string('about')->nullable();
+                $table->string('image')->default('/img/no-avatar.png');
+                $table->boolean('signed')->default(0);
                 $table->timestamps();
             });
         }
@@ -21,11 +24,10 @@ class UserRepository extends Repository
 
     public static function add(string $email, string $password, string $name)
     {
-        User::firstOrCreate([
-            'email' => $email,
-            'password' => $password,
-            'name' => $name,
-        ]);
+        return User::firstOrCreate(
+            ['email' => $email],
+            ['password' => $password, 'name' => $name]
+        );
     }
 
     public static function createLinkToRole()
@@ -36,5 +38,10 @@ class UserRepository extends Repository
                 $table->integer('role_id');
             });
         }
+    }
+
+    public static function update(int $id, array $data)
+    {
+        return User::where('id', '=', $id)->update($data);
     }
 }

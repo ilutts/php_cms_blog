@@ -3,8 +3,8 @@
 error_reporting(E_ALL);
 ini_set('display_errors', true);
 
-ini_set('session.gc_maxlifetime', 60 * 20);
-ini_set('session.cookie_lifetime', 60 * 20);
+ini_set('session.gc_maxlifetime', 60 * 60 * 2);
+ini_set('session.cookie_lifetime', 60 * 60 * 2);
 
 session_start();
 
@@ -21,24 +21,19 @@ if (isset($_GET['exit'])) {
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/bootstrap.php');
 
-use \App\View\View;
 use \App\Router;
 use \App\Application;
-use App\Controller\Controller;
+use App\Controller\AccountController;
+use App\Controller\PostController;
 
 $router = new Router();
 
-$router->get('/', Controller::class . '@mainView');
+$router->get('/', PostController::class . '@mainView');
+$router->get('/post/*', PostController::class . '@postView');
 
-$router->get('/login', Controller::class . '@loginView');
-
-$router->get('/registration', Controller::class . '@registrationView');
-
-$router->get('about', function () {
-    return new View('index', ['title' => 'Shop / Contact Page']);
-}, 'post');
-
-$router->get('/post/*', Controller::class . '@postView');
+$router->get('/login', AccountController::class . '@loginView');
+$router->get('/registration', AccountController::class . '@registrationView');
+$router->get('/profile', AccountController::class . '@profileView');
 
 $application = new Application($router);
 

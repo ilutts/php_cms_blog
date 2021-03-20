@@ -152,6 +152,12 @@ ul {
   box-shadow: 0 0 10px 5px var(--link-color-one);
 }
 
+.input--textarea {
+  padding-top: 13px;
+  height: 110px;
+  resize: none;
+}
+
 /* Header */
 
 .header__top {
@@ -289,6 +295,22 @@ ul {
   margin: 0;
   line-height: 32px;
   color: var(--title-color);
+}
+
+/* Profile */
+
+.profile-form {
+  display: flex;
+}
+
+.profile-form__box {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 40%;
+}
+
+.profile-form__box:not(:last-child) {
+  margin-right: 20px;
 }
 
 /* Footer */

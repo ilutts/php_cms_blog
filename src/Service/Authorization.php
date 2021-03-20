@@ -9,10 +9,10 @@ class Authorization
     private string $login;
     private string $password;
 
-    function __construct()
+    function __construct(string $login, string $password)
     {
-        $this->login = htmlspecialchars($_POST['login']);
-        $this->password = htmlspecialchars($_POST['password']);
+        $this->login = htmlspecialchars($login);
+        $this->password = htmlspecialchars($password);
     }
 
     public function login(): bool

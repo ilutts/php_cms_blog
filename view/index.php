@@ -2,11 +2,17 @@
 <main class="main">
     <div class="container">
         <h1 class="main__title">Главная</h1>
-        <div class="list__item">
-            Подписаться на обновления 
-            <input class="input" type="email" placeholder="Ваш E-mail">
-            <button class="btn btn--solid" type="submit">Подписаться</button>
-        </div>
+        <?php if (empty($_SESSION['user']['signed'])): ?>
+            <form class="list__item" action="/" method="post">
+                Подписаться на обновления 
+
+                <?php if (empty($_SESSION['isAuth'])): ?>
+                    <input class="input" type="email" placeholder="Ваш E-mail">
+                <?php endif ?>
+
+                <button class="btn btn--solid" type="submit" name="submit-signed">Подписаться</button>
+            </form>
+        <?php endif ?>
         <ul class="list">
             <?php foreach ($data as $id => $post): ?>
                 <li class="list__item">

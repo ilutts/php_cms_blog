@@ -40,3 +40,20 @@ function includeView(string $templateName, $data = null)
     }
 
 }
+
+/**
+ * Функция проверки файлов на соотвествие типу
+ * @param string $file Проверяемый файл
+ * @param array $types Типы файлов
+ * @return bool True - если соответсвует, False - Если нет
+ */
+
+function checkTypeFile(string $file, array $types): bool
+{
+    $fileInfo = finfo_open(FILEINFO_MIME_TYPE);
+    $detectedType = finfo_file($fileInfo, $file);
+
+    finfo_close($fileInfo);
+
+    return in_array($detectedType, $types);
+}

@@ -11,7 +11,7 @@
         <?php if (empty($_SESSION['isAuth'])) { ?>
           <a href="/login" class="header__link link">Авторизация</a>
         <?php } else { ?>
-          <a href="/cabinet" class="header__link link"><?= $_SESSION['user']['name'] ?></a>
+          <a href="/profile" class="header__link link"><?= $_SESSION['user']['name'] ?></a>
           <a href="/?exit" class="link">Выйти</a>
         <?php } ?> 
 
