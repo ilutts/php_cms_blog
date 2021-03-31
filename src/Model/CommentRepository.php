@@ -11,22 +11,24 @@ class CommentRepository extends Repository
         if (!Capsule::schema()->hasTable('comments')) {
             Capsule::schema()->create('comments', function ($table) {
                 $table->increments('id');
-                $table->string('title');
                 $table->longText('text');
-                $table->integer('post_id');
-                $table->integer('user_id');
+                $table->integer('post_id')->unsigned();
+                $table->foreign('post_id')->references('id')->on('posts');
+                $table->integer('user_id')->unsigned();
+                $table->foreign('user_id')->references('id')->on('users');
+                $table->boolean('approved')->default(0);
                 $table->timestamps();
             });
         }
     }
 
-    public static function add(string $title, string $text, int $postId, int $userId)
+    public static function add(string $text, int $postId, int $userId, bool $approved = false)
     {
         Comment::firstOrCreate([
-            'title' => $title,
             'text' => $text,
             'post_id' => $postId,
             'user_id' => $userId,
+            'approved' => $approved,
         ]);
     }
 }

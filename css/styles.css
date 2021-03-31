@@ -135,9 +135,9 @@ ul {
 
 .input {
   margin-bottom: 26px;
-  padding: 25px 20px;
+  padding: 10px 15px;
   background-color: var(--link-color-two);
-  border-radius: 12px;
+  border-radius: 6px;
   border: none;
   outline: none;
   transition: box-shadow 0.2s ease;
@@ -311,6 +311,21 @@ ul {
 
 .profile-form__box:not(:last-child) {
   margin-right: 20px;
+}
+
+/* Post */
+
+.comment-box {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+}
+
+.comment-box__form {
+  align-self: flex-start;
+  padding: 15px;
+  background-color: var(--main-background-color);
+  border-radius: 6px;
 }
 
 /* Footer */

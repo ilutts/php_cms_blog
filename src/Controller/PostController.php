@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Model\Menu;
 use App\Model\Post;
 use App\Model\User;
+use App\Service\CommentServices;
 use App\Service\UpdateUser;
 use App\View\View;
 
@@ -31,7 +32,16 @@ class PostController
     {
         $id = (int)$id;
 
-        $post = Post::where('id', '=', $id)->with('comments.user')->first();
+        if (!empty($_POST['comment-new'])) {
+            $comment = new CommentServices($id);
+            $comment = $comment->new();
+        }
+
+        $post = Post::where('id', $id)->with(['comments' => function ($query) {
+            $query->where('approved', 1);
+          }])->first();
+
+        $post->newСomment = $comment ?? false;
 
         return new View('post', [
             'header' => Menu::all(), 

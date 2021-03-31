@@ -43,7 +43,7 @@ class AccountController
     {
         if (!empty($_SESSION['isAuth'])) {
             $user = User::find($_SESSION['user']['id']);
-
+           
             if (isset($_POST['submit-info'])) {
                 $updateUser = new UpdateUser($user);
                 $user = $updateUser->info();

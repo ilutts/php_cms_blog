@@ -17,9 +17,15 @@ class Authorization
 
     public function login(): bool
     {
-        $user = User::where('email', '=', $this->login)->first();
+        $user = User::where('email', $this->login)->first();
         
-        if ($user && password_verify($this->password, $user->password)) {
+        if (!$user) {
+            $_SESSION['isAuth'] = false;
+            $_SESSION['errorLogin'] = 'Пользователя с таким логином не существует!';
+            return false;
+        }
+
+        if (password_verify($this->password, $user->password)) {
             $_SESSION['user'] = $user->toArray();
             $_SESSION['isAuth'] = true;
             $_SESSION['errorLogin'] = false;
@@ -27,7 +33,7 @@ class Authorization
         }
 
         $_SESSION['isAuth'] = false;
-        $_SESSION['errorLogin'] = true;
+        $_SESSION['errorLogin'] = 'Неверный пароль!';
 
         return false;
     }

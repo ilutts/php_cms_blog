@@ -10,9 +10,13 @@ class RoleUserRepository extends Repository
     {
         if (!Capsule::schema()->hasTable('role_user')) {
             Capsule::schema()->create('role_user', function ($table) {
-                $table->integer('user_id');
-                $table->integer('role_id');
+                $table->integer('user_id')->unsigned();
+                $table->foreign('user_id')->references('id')->on('users');
+                $table->integer('role_id')->unsigned();
+                $table->foreign('role_id')->references('id')->on('roles');
                 $table->timestamps();
+
+                $table->unique(['user_id', 'role_id']);
             });
         }
     }

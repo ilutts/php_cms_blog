@@ -53,9 +53,10 @@ class SetupServices
     private static function addComment()
     {
         CommentRepository::createTable();
-        CommentRepository::add('Привет', 'Как дела?', 1, 1);
-        CommentRepository::add('Привет1', 'Как дела?1', 1, 1);
-        CommentRepository::add('Привет2', 'Как дела?2', 0, 0);
+        CommentRepository::add('Как дела?', 1, 1, true);
+        CommentRepository::add('Как дела?1', 1, 1, true);
+        CommentRepository::add('Как дела?2', 2, 2, true);
+        CommentRepository::add('Как дела?2', 2, 1, true);
     }
 
     private static function addLinkRoleUser()
@@ -63,5 +64,6 @@ class SetupServices
         RoleUserRepository::createTable();
         RoleUserRepository::add(2, 1);
         RoleUserRepository::add(1, 2);
+        RoleUserRepository::add(1, 1);
     }
 }

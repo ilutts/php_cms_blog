@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Comment extends Model
 {
     protected $fillable = [
-        'title',
         'text',
         'post_id',
-        'user_id'
+        'user_id',
+        'approved'
     ];
 
     public function post()

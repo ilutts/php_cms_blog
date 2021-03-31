@@ -51,16 +51,13 @@ class UpdateUser extends ValidateServices
             $this->update['image'] = UPLOAD_USER_DIR . $this->inputImage['name'];
         }
 
-        var_dump($this->error);
-
         if ($this->error) {
             $this->user->errorUpdate = $this->error;
             return $this->user;
         }
 
-        var_dump($this->update);
-
         if ($this->update && UserRepository::update($this->user->id, $this->update)) {
+            $this->user->updateInfo = true;
             foreach ($this->update as $key => $value) {
                 $_SESSION['user'][$key] = $value;
                 $this->user[$key] = $value;
@@ -81,8 +78,8 @@ class UpdateUser extends ValidateServices
             return $this->user;
         }
 
-        if ($this->update) {
-            UserRepository::update($this->user->id, $this->update);
+        if ($this->update && UserRepository::update($this->user->id, $this->update)) {
+            $this->user->updatePassword = true;
         }
 
         return $this->user;
@@ -90,9 +87,11 @@ class UpdateUser extends ValidateServices
 
     public function signed(): User
     {
-        UserRepository::update($this->user->id, ['signed' => !$this->user->signed]);
-        $_SESSION['user']['signed'] = !$this->user->signed;
-        $this->user->signed = !$this->user->signed;
+        if (UserRepository::update($this->user->id, ['signed' => !$this->user->signed])) {
+            $_SESSION['user']['signed'] = !$this->user->signed;
+            $this->user->signed = !$this->user->signed;
+            $this->user->updateSigned = true;
+        }
 
         return $this->user;
     }

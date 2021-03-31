@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Model\RoleUserRepository;
 use App\Model\UserRepository;
 
 class RegistrationUser extends ValidateServices
@@ -23,6 +24,7 @@ class RegistrationUser extends ValidateServices
             $newUser = UserRepository::add($this->inputEmail, password_hash($this->inputPassword1, PASSWORD_DEFAULT), $this->inputName);
             
             if ($newUser->wasRecentlyCreated) {
+                RoleUserRepository::add($newUser->id, 3);
                 $auth = new Authorization($this->inputEmail, $this->inputPassword1);
                 $auth->login();
             } else {
