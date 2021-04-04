@@ -11,7 +11,7 @@ use App\View\View;
 
 class AccountController
 {   
-    public function loginView(): View
+    public function loginView()
     {
         if (!empty($_POST['login']) && !empty($_POST['password'])) {
             $auth = new Authorization($_POST['login'], $_POST['password']);
@@ -25,7 +25,7 @@ class AccountController
         ]);
     }
 
-    public function registrationView(): View
+    public function registrationView()
     {
         if (isset($_POST['submit-reg'])) {
             $registration = new RegistrationUser();
@@ -39,7 +39,7 @@ class AccountController
         ]);
     }
 
-    public function profileView(): View
+    public function profileView()
     {
         if (!empty($_SESSION['isAuth'])) {
             $user = User::find($_SESSION['user']['id']);

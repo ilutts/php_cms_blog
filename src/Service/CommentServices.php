@@ -15,7 +15,7 @@ class CommentServices
 
     public function __construct(int $postId)
     {
-        $this->userId = (int)$_SESSION['user']['id'] ?? 0;
+        $this->userId = intval($_SESSION['user']['id'] ?? 0);
         $this->postId = $postId;
         $this->text = htmlspecialchars($_POST['comment-new'] ?? '');
     }

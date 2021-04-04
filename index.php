@@ -21,10 +21,12 @@ if (isset($_GET['exit'])) {
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/bootstrap.php');
 
-use \App\Router;
-use \App\Application;
+use App\Router;
+use App\Application;
 use App\Controller\AccountController;
+use App\Controller\AdminController;
 use App\Controller\PostController;
+use App\Controller\SetupController;
 
 $router = new Router();
 
@@ -34,6 +36,10 @@ $router->get('/post/*', PostController::class . '@postView');
 $router->get('/login', AccountController::class . '@loginView');
 $router->get('/registration', AccountController::class . '@registrationView');
 $router->get('/profile', AccountController::class . '@profileView');
+
+$router->get('/admin', AdminController::class . '@mainView');
+
+$router->get('/setup', SetupController::class . '@installDB');
 
 $application = new Application($router);
 

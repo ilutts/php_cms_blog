@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Model\RoleUser;
 use App\Model\User;
 
 class Authorization
@@ -17,7 +18,7 @@ class Authorization
 
     public function login(): bool
     {
-        $user = User::where('email', $this->login)->first();
+        $user = User::where('email', $this->login)->with('roles')->first();
         
         if (!$user) {
             $_SESSION['isAuth'] = false;
@@ -26,7 +27,8 @@ class Authorization
         }
 
         if (password_verify($this->password, $user->password)) {
-            $_SESSION['user'] = $user->toArray();
+            $_SESSION['user'] = $user->attributesToArray();
+            $_SESSION['roles'] = $user->roles->keyBy('id')->toArray();
             $_SESSION['isAuth'] = true;
             $_SESSION['errorLogin'] = false;
             return true;

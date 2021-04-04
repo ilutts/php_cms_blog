@@ -2,9 +2,8 @@
 
 namespace App;
 
-use App\Service\SetupServices;
 use App\View\Renderable;
-use \Illuminate\Database\Capsule\Manager as Capsule;
+use Illuminate\Database\Capsule\Manager as Capsule;
 
 class Application
 {
@@ -66,7 +65,5 @@ class Application
 
         $capsule->setAsGlobal();
         $capsule->bootEloquent();
-
-        SetupServices::installDB();
     }
 }

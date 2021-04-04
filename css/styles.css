@@ -88,6 +88,10 @@ ul {
   filter: brightness(130%);
 }
 
+.link--admin {
+  margin-right: 10px;
+}
+
 .btn {
   padding: 5px;
   max-width: 250px;

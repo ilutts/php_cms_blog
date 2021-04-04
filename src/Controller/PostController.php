@@ -11,10 +11,10 @@ use App\View\View;
 
 class PostController
 {
-    public function mainView(): View
+    public function mainView()
     {
         if (isset($_POST['submit-signed'])) {
-            $user = User::find($_SESSION['user']['id']);
+        $user = User::findOrFail($_SESSION['user']['id']);
             $updateUser = new UpdateUser($user);
             $updateUser->signed();
         }
@@ -28,10 +28,8 @@ class PostController
         ]);
     }
 
-    public function postView(string $id): View
+    public function postView(int $id)
     {
-        $id = (int)$id;
-
         if (!empty($_POST['comment-new'])) {
             $comment = new CommentServices($id);
             $comment = $comment->new();
