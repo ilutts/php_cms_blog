@@ -5,10 +5,14 @@ namespace App\Service;
 use App\Model\User;
 use App\Model\UserRepository;
 
-class UpdateUser extends ValidateServices
+class UpdateUser
 {
     private User $user;
 
+    private string $inputName;
+    private string $inputEmail;
+    private string $inputPassword1;
+    private string $inputPassword2;
     private string $inputAbout;
     private array $inputImage;
     private string $inputPasswordOld;
@@ -30,11 +34,13 @@ class UpdateUser extends ValidateServices
     }
     public function info(): User
     {
-        if ($this->user->name !== $this->inputName && $this->validateName($this->inputName)) {
+        $validateServices = new ValidateServices();
+
+        if ($this->user->name !== $this->inputName && $validateServices->checkText($this->inputName, 'name', 3)) {
             $this->update['name'] = $this->inputName;
         }
 
-        if ($this->user->email !== $this->inputEmail && $this->validateEmail($this->inputEmail)) {
+        if ($this->user->email !== $this->inputEmail && $validateServices->checkEmail($this->inputEmail)) {
             $this->update['email'] = $this->inputEmail;
         }
 
@@ -42,7 +48,7 @@ class UpdateUser extends ValidateServices
             $this->update['about'] = $this->inputAbout;
         }
     
-        if ($this->validateImage($this->inputImage)) {
+        if ($validateServices->checkImage($this->inputImage)) {
             move_uploaded_file(
                 $this->inputImage['tmp_name'], 
                 $_SERVER['DOCUMENT_ROOT'] . UPLOAD_USER_DIR . $this->inputImage['name']
@@ -51,8 +57,8 @@ class UpdateUser extends ValidateServices
             $this->update['image'] = UPLOAD_USER_DIR . $this->inputImage['name'];
         }
 
-        if ($this->error) {
-            $this->user->errorUpdate = $this->error;
+        if ($validateServices->getError()) {
+            $this->user->errorUpdate = (object)$validateServices->getError();
             return $this->user;
         }
 
@@ -69,12 +75,14 @@ class UpdateUser extends ValidateServices
 
     public function password(): User
     {
-        if ($this->validateUpdatePassword($this->inputPasswordOld, $this->inputPassword1, $this->inputPassword2)) {
+        $validateServices = new ValidateServices();
+
+        if ($validateServices->checkUpdatePassword($this->inputPasswordOld, $this->user->password, $this->inputPassword1, $this->inputPassword2)) {
             $this->update['password'] = password_hash($this->inputPassword1, PASSWORD_DEFAULT);
         }
 
-        if ($this->error) {
-            $this->user->errorUpdate = $this->error;
+        if ($validateServices->getError()) {
+            $this->user->errorUpdate = (object)$validateServices->getError();
             return $this->user;
         }
 
@@ -94,46 +102,5 @@ class UpdateUser extends ValidateServices
         }
 
         return $this->user;
-    }
-
-    private function validateImage(array $fileImg): bool
-    {
-        if ($fileImg['error'] === 4) {
-            return false;
-        }
-
-        // Максимальный размер файла
-        $maxFileSize = 5242880;
-    
-        // Разрешенные типы файлов для загрузки
-        $checkedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
-    
-        if ($fileImg['error'] !== 0) {
-            $this->error['image'] = 'Ошибка загрузки изображения';
-            return false;
-        }
-    
-        if (filesize($fileImg['tmp_name']) > $maxFileSize) {
-            $this->error['image'] = 'Превышен допустимый размер файла';
-            return false;
-        }
-    
-        if (!checkTypeFile($fileImg['tmp_name'], $checkedTypes)) {
-            $this->error['image'] = 'Неправильный формат файла';
-            return false;
-        }
-    
-        return true;
-    }
-
-    private function validateUpdatePassword(string $oldPassword, string $newPassword1, string $newPassword2): bool
-    {
-        if (password_verify($oldPassword, $this->user->password)) {
-            $this->error['password-old'] = 'Неверно указан старый пароль';
-        }
-
-        $this->validatePassword($newPassword1, $newPassword2);
-
-        return $this->error ? false : true;
     }
 }

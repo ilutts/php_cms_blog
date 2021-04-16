@@ -11,22 +11,32 @@ class PostRepository extends Repository
         if (!Capsule::schema()->hasTable('posts')) {
             Capsule::schema()->create('posts', function ($table) {
                 $table->increments('id');
-                $table->string('name');
+                $table->string('title');
                 $table->string('short_description');
                 $table->longText('description');
-                $table->string('img')->nullable();
+                $table->integer('user_id')->unsigned();
+                $table->foreign('user_id')->references('id')->on('users');
+                $table->boolean('actived')->default(0);
+                $table->string('image')->default('/img/post/post-no-img.png');
                 $table->timestamps();
             });
         }
     }
 
-    public static function add(string $name, string $shortDescription, string $description, string $img = null)
+    public static function add(string $title, string $shortDescription, string $description, int $userId, bool $actived = false, string $image = '/img/post/post-no-img.png')
     {
-        Post::firstOrCreate([
-            'name' => $name,
+        Post::create([
+            'title' => $title,
             'short_description' => $shortDescription,
             'description' => $description,
-            'img' => $img,
+            'user_id' => $userId,
+            'actived' => $actived,
+            'image' => $image,
         ]);
+    }
+
+    public static function update(int $id, array $data)
+    {
+        return Post::where('id', '=', $id)->update($data);
     }
 }

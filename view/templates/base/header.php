@@ -6,5 +6,6 @@
     <title>CMS - Блог</title>
     <link rel="stylesheet" href="/css/normolize.css" />
     <link rel="stylesheet" href="/css/styles.css" />
+    <script src="/js/script.js" defer></script>
   </head>
 <body>

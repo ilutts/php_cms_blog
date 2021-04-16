@@ -13,9 +13,9 @@ class SetupServices
 {
     public static function installDB()
     {
+        self::addUser();
         self::addPost();
         self::addMenu();
-        self::addUser();
         self::addGroup();
         self::addComment();
         self::addLinkRoleUser();
@@ -24,8 +24,8 @@ class SetupServices
     private static function addPost()
     {
         PostRepository::createTable();
-        PostRepository::add('Test', 'Test1', 'Test2');
-        PostRepository::add('Test2', 'Test2', 'Test3');
+        PostRepository::add('Test', 'Test1', 'Test2', 1, true);
+        PostRepository::add('Test2', 'Test2', 'Test3', 2, true);
     }
 
     private static function addMenu()
@@ -38,8 +38,8 @@ class SetupServices
     private static function addUser()
     {
         UserRepository::createTable();
+        UserRepository::add('admin@admin.ru', '$2y$10$2cOF4UeI.HIqyvDbiuCe8eNd5NPEfUswns0m5KkzbkBfLcEhOz3sG', 'Admin');
         UserRepository::add('test@test.ru', '$2y$10$2cOF4UeI.HIqyvDbiuCe8eNd5NPEfUswns0m5KkzbkBfLcEhOz3sG', 'TEST');
-        UserRepository::add('admin@admin.ri', '$2y$10$2cOF4UeI.HIqyvDbiuCe8eNd5NPEfUswns0m5KkzbkBfLcEhOz3sG', 'Admin');
     }
 
     private static function addGroup()
@@ -62,8 +62,7 @@ class SetupServices
     private static function addLinkRoleUser()
     {
         RoleUserRepository::createTable();
-        RoleUserRepository::add(2, 1);
-        RoleUserRepository::add(1, 2);
         RoleUserRepository::add(1, 1);
+        RoleUserRepository::add(2, 2);
     }
 }

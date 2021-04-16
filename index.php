@@ -41,6 +41,8 @@ $router->get('/admin', AdminController::class . '@mainView');
 
 $router->get('/setup', SetupController::class . '@installDB');
 
+$router->get('/ajax/post/get', PostController::class . '@ajaxGetPost', 'post');
+
 $application = new Application($router);
 
 $application->run();

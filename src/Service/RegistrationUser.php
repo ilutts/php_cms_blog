@@ -5,9 +5,15 @@ namespace App\Service;
 use App\Model\RoleUserRepository;
 use App\Model\UserRepository;
 
-class RegistrationUser extends ValidateServices
+class RegistrationUser
 {
+    private string $inputName;
+    private string $inputEmail;
+    private string $inputPassword1;
+    private string $inputPassword2;
     private bool $rule;
+
+    private array $error = [];
 
     function __construct()
     {
@@ -18,7 +24,7 @@ class RegistrationUser extends ValidateServices
         $this->rule = isset($_POST['rule']);
     }
 
-    public function new(): array
+    public function new()
     {
         if ($this->validate()) {
             $newUser = UserRepository::add($this->inputEmail, password_hash($this->inputPassword1, PASSWORD_DEFAULT), $this->inputName);
@@ -28,33 +34,29 @@ class RegistrationUser extends ValidateServices
                 $auth = new Authorization($this->inputEmail, $this->inputPassword1);
                 $auth->login();
             } else {
-                $this->error['email']['text'] = 'Почта уже использовалась ранее!';
+                $this->error['email'] = 'Почта уже использовалась ранее!';
             }
         }
 
-        return $this->error;
+        return $this->error ? (object)$this->error : [];
     }
 
     private function validate(): bool
     {
-        $this->validateName($this->inputName);
-        $this->validateEmail($this->inputEmail);
-        $this->validatePassword($this->inputPassword1, $this->inputPassword2);
-        $this->validateRule($this->rule);
+        $validateService = new ValidateServices();
 
-        if ($this->error) {
-            $this->error['name-value'] = $this->inputName;
-            $this->error['email-value'] = $this->inputEmail;
+        $validateService->checkText($this->inputName, 'name', 3);
+        $validateService->checkEmail($this->inputEmail);
+        $validateService->checkPassword($this->inputPassword1, $this->inputPassword2);
+        $validateService->checkRule($this->rule);
+
+        if ($validateService->getError()) {
+            $this->error = $validateService->getError();
+            $this->error['nameOldValue'] = $this->inputName;
+            $this->error['emailOldValue'] = $this->inputEmail;
             return false;
         }
 
         return true;
-    }
-
-    private function validateRule(bool $rule)
-    {
-        if (!$rule) {
-            $this->error['rule'] = 'Не отмечано прочтение правил';
-        }
     }
 }

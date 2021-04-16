@@ -9,7 +9,9 @@ class User extends Model
     protected $fillable = [
         'email',
         'password',
-        'name'
+        'name',
+        'about',
+        'image'
     ];
 
     public function roles()
@@ -20,5 +22,10 @@ class User extends Model
     public function comments()
     {
         return $this->hasMany('App\Model\Comment');
+    }
+
+    public function posts()
+    {
+        return $this->hasMany('App\Model\Post');
     }
 }
