@@ -30,7 +30,7 @@
         <ul class="main__paginator paginator">
             <?php for ($i = 1; $i <= $data->countPages; $i++) : ?>
                 <li class="paginator__item">
-                    <a class="paginator__link link" href="?page=<?= $i ?>"><?= $i ?></a>
+                    <a class="paginator__link" <?= getStatusPage($i) ?>"><?= $i ?></a>
                 </li>
             <?php endfor ?>
         </ul>

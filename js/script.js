@@ -11,9 +11,69 @@ function changeImageOfInputFile(input, img) {
   });
 }
 
+function ajaxPopupAdminPost(form, formData, popupImg) {
+  form.submit_post.textContent = 'Изменить';
+  form.submit_post.value = 'change';
+
+  fetch('/ajax/post/get', {
+    method: 'POST',
+    body: formData,
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      form.querySelector('.popup__id').textContent = data.id;
+      form.id.value = data.id;
+      form.title.value = data.title;
+      form.short_description.value = data.short_description;
+      form.description.value = data.description;
+      form.post_actived.checked = data.actived;
+      popupImg.setAttribute('src', data.image);
+    })
+    .catch((error) => console.log(error));
+}
+
+function ajaxPopupAdminUser(form, formData, popupImg) {
+  form.roles.innerHTML = '';
+  
+  fetch('/ajax/user/get', {
+    method: 'POST',
+    body: formData,
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      form.querySelector('.popup__id').textContent = data.id;
+      form.id.value = data.id;
+      form.email.value = data.email;
+      form.name.value = data.name;
+      form.about.value = data.about;
+      form.user_actived.checked = data.actived;
+      popupImg.setAttribute('src', data.image);
+
+      data.allroles.forEach(role => {
+        let selected = data.roles.find(roleUser => roleUser.id == role.id) ? true : false;
+        let option = new Option(role.name, role.id, selected, selected);
+        form.roles.append(option);
+      });
+    })
+    .catch((error) => console.log(error));
+}
+
 function appBlog() {
   const adminListPosts = document.querySelector('.main-admin__list');
   const formProfile = document.querySelector('.form--profile');
+  const formCountItemAdmin = document.querySelector('.main__form--admin');
+
+  if (formCountItemAdmin) {
+    // Получаем параметры GET
+    let getParams = new URL(document.location).searchParams;
+    const countItemValue = getParams.get('quantity') ?? 20;
+
+    formCountItemAdmin.quantity.value = countItemValue === 'all' ? 'all' : +countItemValue;
+  
+    formCountItemAdmin.quantity.addEventListener('change', () => {
+      formCountItemAdmin.submit();
+    })
+  }
 
   if (formProfile) {
     const userImg = document.querySelector('.profile-form__image');
@@ -24,57 +84,50 @@ function appBlog() {
 
   if (adminListPosts) {
     const popup = document.querySelector('.popup');
-    const form = popup.querySelector('.form--admin-post');
+    const formPopup = popup.querySelector('.popup__form');
     const btnNewPost = document.querySelector('.btn-new-post');
-    const inputImg = document.querySelector('#post_image');
-    const postImg = form.querySelector('.popup__image');
+    const inputImg = document.querySelector('#popup_image');
+    const popupImg = popup.querySelector('.popup__image');
 
     popup.addEventListener('click', (event) => {
       if (event.target == popup) {
         popup.style.display = 'none';
-        form.reset();
+        formPopup.reset();
       }
     });
 
-    changeImageOfInputFile(inputImg, postImg);
+    changeImageOfInputFile(inputImg, popupImg);
 
     adminListPosts.addEventListener('click', (event) => {
       if (event.target.classList.contains('btn-post-change')) {
         popup.style.display = 'flex';
 
-        const id = +event.target.parentElement.querySelector('.list__cell--id').textContent;
+        const id = +event.target.parentElement.querySelector('.list-admin__cell--id').textContent;
         const formData = new FormData();
-
-        formData.append('post_id', id);
-
-        form.submit_post.textContent = 'Изменить';
-        form.submit_post.value = 'change';
-
-        fetch('/ajax/post/get', {
-          method: 'POST',
-          body: formData,
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            form.querySelector('.popup__id').textContent = data.id;
-            form.id.value = data.id;
-            form.title.value = data.title;
-            form.short_description.value = data.short_description;
-            form.description.value = data.description;
-            form.post_active.checked = data.actived;
-            postImg.setAttribute('src', data.image);
-          })
-          .catch((error) => console.log(error));
+        formData.append('id', id);
+        
+        if (formPopup.classList.contains('form--admin-post')) {
+          ajaxPopupAdminPost(formPopup, formData, popupImg);
+        }
+        
+        if (formPopup.classList.contains('form--admin-user')) {
+          ajaxPopupAdminUser(formPopup, formData, popupImg);
+        }
       }
     });
 
-    btnNewPost.addEventListener('click', () => {
-      popup.style.display = 'flex';
-      form.querySelector('.popup__id').textContent = 'Новая';
-      form.submit_post.textContent = 'Добавить';
-      form.submit_post.value = 'new';
-    });
+    if (btnNewPost) {
+      btnNewPost.addEventListener('click', () => {
+        popup.style.display = 'flex';
+        formPopup.querySelector('.popup__id').textContent = 'Новая';
+        formPopup.submit_post.textContent = 'Добавить';
+        formPopup.submit_post.value = 'new';
+        popupImg.setAttribute('src', '/img/post/post-no-img.png');
+      });
+    }
   }
+
+  
 }
 
 appBlog();

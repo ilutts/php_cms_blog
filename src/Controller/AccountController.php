@@ -1,16 +1,18 @@
-<?php 
+<?php
 
 namespace App\Controller;
 
 use App\Model\Menu;
+use App\Model\Role;
 use App\Model\User;
 use App\Service\Authorization;
 use App\Service\RegistrationUser;
 use App\Service\UpdateUser;
+use App\View\JsonView;
 use App\View\View;
 
 class AccountController
-{   
+{
     public function loginView()
     {
         if (!empty($_POST['login']) && !empty($_POST['password'])) {
@@ -19,9 +21,9 @@ class AccountController
         }
 
         return new View('login', [
-            'header' => Menu::all(), 
+            'header' => Menu::all(),
             'main' => [],
-            'footer' => [], 
+            'footer' => [],
         ]);
     }
 
@@ -33,9 +35,9 @@ class AccountController
         }
 
         return new View('registration', [
-            'header' => Menu::all(), 
+            'header' => Menu::all(),
             'main' => $info ?? false,
-            'footer' => [], 
+            'footer' => [],
         ]);
     }
 
@@ -43,7 +45,7 @@ class AccountController
     {
         if (!empty($_SESSION['isAuth'])) {
             $user = User::find($_SESSION['user']['id']);
-           
+
             if (isset($_POST['submit-info'])) {
                 $updateUser = new UpdateUser($user);
                 $user = $updateUser->info();
@@ -58,13 +60,23 @@ class AccountController
                 $updateUser = new UpdateUser($user);
                 $user = $updateUser->signed();
             }
-            
         }
 
         return new View('profile', [
-            'header' => Menu::all(), 
+            'header' => Menu::all(),
             'main' => $user ?? false,
-            'footer' => [], 
+            'footer' => [],
         ]);
+    }
+
+    public function ajaxGetUser()
+    {
+        $id = intval($_POST['id'] ?? 0);
+        if ($id) {
+            $user = User::where('id', $id)->with('roles')->first();
+            $user->allroles = Role::all();
+
+            return new JsonView($user);
+        }
     }
 }

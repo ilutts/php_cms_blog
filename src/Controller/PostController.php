@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Config;
 use App\Model\Menu;
 use App\Model\Post;
 use App\Model\User;
@@ -54,7 +53,7 @@ class PostController
 
     public function ajaxGetPost()
     {
-        $id = intval($_POST['post_id'] ?? 0);
+        $id = intval($_POST['id'] ?? 0);
         if ($id) {
             $post = Post::where('id', $id)->with('user')->first();
 

@@ -11,7 +11,9 @@ class User extends Model
         'password',
         'name',
         'about',
-        'image'
+        'image',
+        'signed',
+        'actived'
     ];
 
     public function roles()

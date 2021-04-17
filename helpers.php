@@ -15,10 +15,10 @@ function array_get(array $array, string $key, $default = null)
     foreach ($keys as $key) {
 
         if (empty($array[$key])) {
-            return $default; 
+            return $default;
         }
 
-        $array = $array[$key]; 
+        $array = $array[$key];
     }
 
     return $array;
@@ -34,11 +34,10 @@ function array_get(array $array, string $key, $default = null)
 function includeView(string $templateName, $data = null)
 {
     $file = $_SERVER['DOCUMENT_ROOT'] . VIEW_DIR . $templateName;
-    
-    if (file_exists($file)) {  
+
+    if (file_exists($file)) {
         include $file;
     }
-
 }
 
 /**
@@ -56,4 +55,48 @@ function checkTypeFile(string $file, array $types): bool
     finfo_close($fileInfo);
 
     return in_array($detectedType, $types);
+}
+
+/**
+ * Определяем статус кнопки поганиции для добавление ссылки
+ * @param int $page Номер страницы
+ * @return string Пустая строка если страница активна
+ */
+
+function getStatusPage(int $page): string
+{
+    if ((!empty($_GET['page']) && (int)$_GET['page'] !== $page) || (empty($_GET['page']) && $page !== 1)) {
+        return 'href="' . getQueryUrl('page', $page) . '"';
+    }
+
+    return '';
+}
+
+/**
+ * Получение адреса ссылки
+ * @param string $type Тип ссылки, к примеру 'page'
+ * @param int $id Номер элемента
+ * @return string Ссылка для перехода
+ */
+
+function getQueryUrl(string $type, int $id): string
+{
+    $urlPage = '?' . $type . '=';
+    // Получаем строку запроса
+    $urlQuery = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
+
+    if ($urlQuery) {
+
+        if (!empty($_GET[$type])) {
+            $arrayQuery = [];
+
+            parse_str($urlQuery, $arrayQuery);
+
+            $arrayQuery[$type] = $id;
+            return '?' . http_build_query($arrayQuery);
+        }
+        $urlPage = '&' . $type . '=';
+    }
+
+    return $_SERVER['REQUEST_URI'] . $urlPage . $id;
 }

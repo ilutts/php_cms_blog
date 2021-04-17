@@ -38,10 +38,12 @@ $router->get('/registration', AccountController::class . '@registrationView');
 $router->get('/profile', AccountController::class . '@profileView');
 
 $router->get('/admin', AdminController::class . '@mainView');
+$router->get('/admin/users', AdminController::class . '@usersView');
 
 $router->get('/setup', SetupController::class . '@installDB');
 
 $router->get('/ajax/post/get', PostController::class . '@ajaxGetPost', 'post');
+$router->get('/ajax/user/get', AccountController::class . '@ajaxGetUser', 'post');
 
 $application = new Application($router);
 

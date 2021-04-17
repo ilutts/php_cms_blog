@@ -15,6 +15,7 @@ class UpdateUser
     private string $inputPassword2;
     private string $inputAbout;
     private array $inputImage;
+    private bool $inputActived;
     private string $inputPasswordOld;
 
     private array $update = [];
@@ -27,11 +28,14 @@ class UpdateUser
         $this->inputEmail = htmlspecialchars($_POST['email'] ?? '');
         $this->inputAbout = htmlspecialchars($_POST['about'] ?? '');
         $this->inputImage = $_FILES['image'] ?? [];
+        $this->inputActived = boolval($_POST['user_actived'] ?? 0);
 
         $this->inputPasswordOld = htmlspecialchars($_POST['password_old'] ?? '');
-        $this->inputPassword1 = htmlspecialchars($_POST['password1'] ?? '' );
+        $this->inputPassword1 = htmlspecialchars($_POST['password1'] ?? '');
         $this->inputPassword2 = htmlspecialchars($_POST['password2'] ?? '');
     }
+
+
     public function info(): User
     {
         $validateServices = new ValidateServices();
@@ -47,10 +51,10 @@ class UpdateUser
         if ($this->user->about !== $this->inputAbout) {
             $this->update['about'] = $this->inputAbout;
         }
-    
+
         if ($validateServices->checkImage($this->inputImage)) {
             move_uploaded_file(
-                $this->inputImage['tmp_name'], 
+                $this->inputImage['tmp_name'],
                 $_SERVER['DOCUMENT_ROOT'] . UPLOAD_USER_DIR . $this->inputImage['name']
             );
 
@@ -70,7 +74,7 @@ class UpdateUser
             }
         }
 
-        return $this->user; 
+        return $this->user;
     }
 
     public function password(): User
@@ -102,5 +106,12 @@ class UpdateUser
         }
 
         return $this->user;
+    }
+
+    public function actived()
+    {
+        if ($this->user->id !== 1) {
+            UserRepository::update($this->user->id, ['actived' => $this->inputActived]);
+        }
     }
 }

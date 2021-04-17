@@ -3,7 +3,7 @@
         <h1 class="main__title">Авторизация</h1>
 
         <?php if (!empty($_SESSION['errorLogin'])) : ?>
-            <h2><?= $_SESSION['errorLogin'] ?></h2>
+            <h2 class="main__error"><?= $_SESSION['errorLogin'] ?></h2>
         <?php endif ?>
 
         <?php if (empty($_SESSION['isAuth'])) { ?>

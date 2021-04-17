@@ -29,18 +29,23 @@ class PostServices
 
     public function get(string $forPage = 'main')
     {
+        $countPosts = (int)Post::count();
+
         switch ($forPage) {
             case 'main':
-                $configsCount = 'cms.quantity_posts_main';
+                $maxPostsOnPage = (int)Config::getInstance()->get('cms.quantity_posts_main');
                 break;
 
             case 'admin':
-                $configsCount = 'cms.quantity_posts_admin';
+                $maxPostsOnPage = $_GET['quantity'] ?? 20;
+                if ($maxPostsOnPage === 'all') {
+                    $maxPostsOnPage = $countPosts;
+                } else {
+                    $maxPostsOnPage = (int)$maxPostsOnPage;
+                }
                 break;
         }
 
-        $countPosts = (int)Post::count();
-        $maxPostsOnPage = (int)Config::getInstance()->get($configsCount);
         $skipPosts = 0;
 
         if (!empty($_GET['page']) && $_GET['page'] > 1) {
@@ -67,23 +72,14 @@ class PostServices
     {
         $this->setData();
 
-        if ($this->btnPost === 'new' && $this->validateNew()) {
-            if ($this->image) {
-                move_uploaded_file(
-                    $this->image['tmp_name'],
-                    $_SERVER['DOCUMENT_ROOT'] . UPLOAD_POST_DIR . $this->image['name']
-                );
-
-                $this->image['new'] = UPLOAD_POST_DIR . $this->image['name'];
-            }
-
+        if ($this->btnPost === 'new' && $this->validate()) {
             PostRepository::add(
                 $this->title,
                 $this->shortDescription,
                 $this->description,
                 $userId,
                 $this->actived,
-                $this->image['new'] ?? ''
+                $this->image['new'] ?? '/img/post/post-no-img.png'
             );
         }
     }
@@ -92,7 +88,7 @@ class PostServices
     {
         $this->setData();
 
-        if ($this->btnPost === 'change' && $this->validateNew()) {
+        if ($this->btnPost === 'change' && $this->validate()) {
             $data = [
                 'title' => $this->title,
                 'short_description' => $this->shortDescription,
@@ -101,7 +97,7 @@ class PostServices
                 'actived' => $this->actived
             ];
 
-            if ($this->image) {
+            if (isset($this->image['new'])) {
                 move_uploaded_file(
                     $this->image['tmp_name'],
                     $_SERVER['DOCUMENT_ROOT'] . UPLOAD_POST_DIR . $this->image['name']
@@ -117,7 +113,7 @@ class PostServices
         }
     }
 
-    private function validateNew(): bool
+    private function validate(): bool
     {
         $validateService = new ValidateServices();
 
@@ -125,8 +121,13 @@ class PostServices
         $validateService->checkText($this->shortDescription, 'short_description');
         $validateService->checkText($this->description, 'description');
 
-        if ($this->image) {
-            $validateService->checkImage($this->image);
+        if ($this->image && $validateService->checkImage($this->image)) {
+            move_uploaded_file(
+                $this->image['tmp_name'],
+                $_SERVER['DOCUMENT_ROOT'] . UPLOAD_POST_DIR . $this->image['name']
+            );
+
+            $this->image['new'] = UPLOAD_POST_DIR . $this->image['name'];
         }
 
         if ($validateService->getError()) {

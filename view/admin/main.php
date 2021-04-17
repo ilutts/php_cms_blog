@@ -3,11 +3,11 @@
         <h1 class="main__title">Статьи - Админ-панель</h1>
         <div class="main-admin__header">
             <button class="btn btn--transparent btn-new-post">Новая статья</button>
-            <form class="main__form" method="GET" action="/">
+            <form class="main__form main__form--admin" method="GET">
                 <label for="form__select-quantity">Статей на странице:</label>
                 <select id="form__select-quantity" name="quantity" class="input">
                     <option value="10">10</option>
-                    <option value="20">20</option>
+                    <option value="20" selected>20</option>
                     <option value="50">50</option>
                     <option value="200">200</option>
                     <option value="all">Все</option>
@@ -16,21 +16,21 @@
         </div>
         <ul class="main-admin__list list">
             <li class="list-admin__item">
-                <div class="list-admin__cell list__cell--bold">Номер</div>
-                <div class="list-admin__cell list__cell--bold">Заголовок</div>
-                <div class="list-admin__cell list__cell--bold">Дата публикации</div>
-                <div class="list-admin__cell list__cell--bold">Дата обновления</div>
-                <div class="list-admin__cell list__cell--bold">Автор</div>
-                <div class="list-admin__cell list__cell--bold">Статус</div>
+                <div class="list-admin__cell list-admin__cell--bold">Номер</div>
+                <div class="list-admin__cell list-admin__cell--bold">Заголовок</div>
+                <div class="list-admin__cell list-admin__cell--bold">Дата публикации</div>
+                <div class="list-admin__cell list-admin__cell--bold">Дата обновления</div>
+                <div class="list-admin__cell list-admin__cell--bold">Автор</div>
+                <div class="list-admin__cell list-admin__cell--bold">Статус</div>
             </li>
             <?php foreach ($data as $post) : ?>
                 <li class="list-admin__item">
-                    <div class="list-admin__cell list__cell--id"><?= $post->id ?></div>
-                    <div class="list-admin__cell list__cell--title"><?= $post->title ?></div>
-                    <div class="list-admin__cell list__cell--created-at"><?= $post->created_at ?></div>
-                    <div class="list-admin__cell list__cell--ending-at"><?= $post->updated_at ?></div>
-                    <div class="list-admin__cell list__cell--author"><?= $post->user->name ?></div>
-                    <div class="list-admin__cell list__cell--status"><?= $post->actived ? 'Вкл' : 'Выкл' ?></div>
+                    <div class="list-admin__cell list-admin__cell--id"><?= $post->id ?></div>
+                    <div class="list-admin__cell list-admin__cell--title"><?= $post->title ?></div>
+                    <div class="list-admin__cell list-admin__cell--created-at"><?= $post->created_at ?></div>
+                    <div class="list-admin__cell list-admin__cell--ending-at"><?= $post->updated_at ?></div>
+                    <div class="list-admin__cell list-admin__cell--author"><?= $post->user->name ?></div>
+                    <div class="list-admin__cell list-admin__cell--status"><?= $post->actived ? 'Вкл' : 'Выкл' ?></div>
                     <button class="btn btn--transparent btn-post-change">Изменить</button>
                 </li>
             <?php endforeach ?>
@@ -38,7 +38,7 @@
         <ul class="main__paginator paginator">
             <?php for ($i = 1; $i <= $data->countPages; $i++) : ?>
                 <li class="paginator__item">
-                    <a class="paginator__link link" href="?page=<?= $i ?>"><?= $i ?></a>
+                    <a class="paginator__link" <?= getStatusPage($i) ?>><?= $i ?></a>
                 </li>
             <?php endfor ?>
         </ul>
@@ -59,10 +59,9 @@
         </div>
         <div class="profile-form__box">
             <label class="label" for="checkbox-rule">Изображение:</label>
-            <img class="popup__image" src="/img/post/post-no-img.png" alt="Изображение" width="100px">
-            <input class="input" type="file" name="image" id="post_image">
-            <label class="label" for="post_active">Показывать статью:</label>
-            <input type="checkbox" name="post_active" id="post_active">
+            <img class="popup__image" src="" alt="Изображение" width="100px">
+            <input class="input" type="file" name="image" id="popup_image">
+            <label class="label" for="post_actived">Показывать статью: <input type="checkbox" name="post_actived" id="post_actived"></label>
             <button class="btn btn--solid" type="submit" name="submit_post">Сохранить</button>
         </div>
     </form>

@@ -17,6 +17,7 @@ class UserRepository extends Repository
                 $table->string('about')->nullable();
                 $table->string('image')->default('/img/user/no-avatar.png');
                 $table->boolean('signed')->default(0);
+                $table->boolean('actived')->default(1);
                 $table->timestamps();
             });
         }

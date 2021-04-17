@@ -19,10 +19,16 @@ class Authorization
     public function login(): bool
     {
         $user = User::where('email', $this->login)->with('roles')->first();
-        
+
         if (!$user) {
             $_SESSION['isAuth'] = false;
             $_SESSION['errorLogin'] = 'Пользователя с таким логином не существует!';
+            return false;
+        }
+
+        if (!$user->actived) {
+            $_SESSION['isAuth'] = false;
+            $_SESSION['errorLogin'] = 'Пользователь с таким логином заблокирован!';
             return false;
         }
 

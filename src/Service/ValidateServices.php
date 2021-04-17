@@ -23,7 +23,7 @@ class ValidateServices
 
     public function checkEmail(string $email): bool
     {
-        if (stripos($email, '@') < 1 ) {
+        if (stripos($email, '@') < 1) {
             $this->error['email'] = 'Неправильно заполнена почта';
             return false;
         }
@@ -69,20 +69,20 @@ class ValidateServices
 
         // Максимальный размер файла
         $maxFileSize = 5242880;
-    
+
         // Разрешенные типы файлов для загрузки
         $checkedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
-    
+
         if ($fileImg['error'] !== 0) {
             $this->error['image'] = 'Ошибка загрузки изображения';
             return false;
         }
-    
+
         if (filesize($fileImg['tmp_name']) > $maxFileSize) {
             $this->error['image'] = 'Превышен допустимый размер файла';
             return false;
         }
-    
+
         if (!checkTypeFile($fileImg['tmp_name'], $checkedTypes)) {
             $this->error['image'] = 'Неправильный формат файла';
             return false;

@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Model\CommentRepository;
+use App\Model\AdminMenuRepository;
 use App\Model\RoleRepository;
 use App\Model\MenuRepository;
 use App\Model\PostRepository;
@@ -16,6 +17,7 @@ class SetupServices
         self::addUser();
         self::addPost();
         self::addMenu();
+        self::addMenuAdmin();
         self::addGroup();
         self::addComment();
         self::addLinkRoleUser();
@@ -33,6 +35,17 @@ class SetupServices
         MenuRepository::createTable();
         MenuRepository::add('main', 'Главная', '/');
         MenuRepository::add('blog', 'Блог', '/blog');
+    }
+
+    private static function addMenuAdmin()
+    {
+        AdminMenuRepository::createTable();
+        AdminMenuRepository::add('posts', 'Статьи', '/admin');
+        AdminMenuRepository::add('users', 'Пользователи', '/admin/users');
+        AdminMenuRepository::add('signeds', 'Подписки', '/admin/signeds');
+        AdminMenuRepository::add('comments', 'Комментарии', '/admin/comments');
+        AdminMenuRepository::add('static_page', 'Статичные страницы', '/admin/statics');
+        AdminMenuRepository::add('configs', 'Настройки CMS', '/admin/сonfigs');
     }
 
     private static function addUser()
