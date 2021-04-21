@@ -4,11 +4,14 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Menu extends Model
+class StaticPage extends Model
 {
+    protected $table = 'static_pages';
+
     protected $fillable = [
         'title',
-        'url',
-        'static_page_id'
+        'body',
+        'name',
+        'actived',
     ];
 }

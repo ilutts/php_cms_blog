@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Model\RoleUserRepository;
 use App\Model\User;
 use App\Model\UserRepository;
 
@@ -14,6 +15,7 @@ class UpdateUser
     private string $inputPassword1;
     private string $inputPassword2;
     private string $inputAbout;
+    private array $inputRoles;
     private array $inputImage;
     private bool $inputActived;
     private string $inputPasswordOld;
@@ -29,12 +31,17 @@ class UpdateUser
         $this->inputAbout = htmlspecialchars($_POST['about'] ?? '');
         $this->inputImage = $_FILES['image'] ?? [];
         $this->inputActived = boolval($_POST['user_actived'] ?? 0);
+        $this->inputRoles = $_POST['roles'] ?? [];
 
         $this->inputPasswordOld = htmlspecialchars($_POST['password_old'] ?? '');
         $this->inputPassword1 = htmlspecialchars($_POST['password1'] ?? '');
         $this->inputPassword2 = htmlspecialchars($_POST['password2'] ?? '');
     }
 
+    public function getError()
+    {
+        return $this->user->errorUpdate ?? [];
+    }
 
     public function info(): User
     {
@@ -110,8 +117,19 @@ class UpdateUser
 
     public function actived()
     {
-        if ($this->user->id !== 1) {
+        if ($this->user->id !== 1 && $this->user->actived !== $this->inputActived) {
             UserRepository::update($this->user->id, ['actived' => $this->inputActived]);
+        }
+    }
+
+    public function roles()
+    {
+        if ($this->inputRoles && $this->user->id !== 1) {
+            RoleUserRepository::deleteAll($this->user->id);
+
+            foreach ($this->inputRoles as $roleId) {
+                RoleUserRepository::add($this->user->id, (int)$roleId);
+            }
         }
     }
 }

@@ -25,7 +25,7 @@ class PostRepository extends Repository
 
     public static function add(string $title, string $shortDescription, string $description, int $userId, bool $actived = false, string $image = '/img/post/post-no-img.png')
     {
-        Post::create([
+        return Post::create([
             'title' => $title,
             'short_description' => $shortDescription,
             'description' => $description,
@@ -37,6 +37,6 @@ class PostRepository extends Repository
 
     public static function update(int $id, array $data)
     {
-        return Post::where('id', '=', $id)->update($data);
+        return Post::where('id', $id)->update($data);
     }
 }

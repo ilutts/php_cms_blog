@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Exception;
+namespace App\Controller;
 
 use App\Config;
 use App\Model\AdminMenu;
 use App\Model\Menu;
 
-class HttpException extends \Exception
+abstract class Controller
 {
     protected function getInfoForHeader()
     {

@@ -90,4 +90,14 @@ class ValidateServices
 
         return true;
     }
+
+    public function checkTextForLink(string $text, string $fieldName)
+    {
+        if (preg_match('/[^a-z0-9]/', $text)) {
+            $this->error[$fieldName] = 'Только латиница и цифры!';
+            return false;
+        }
+
+        return true;
+    }
 }

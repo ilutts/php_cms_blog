@@ -4,12 +4,11 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
-class AdminMenu extends Model
+class UnregisteredSubscriber extends Model
 {
-    protected $table = 'admin_menu';
+    protected $table = 'unregistered_subscribers';
 
     protected $fillable = [
-        'title',
-        'url',
+        'email'
     ];
 }

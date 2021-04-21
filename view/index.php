@@ -1,12 +1,18 @@
 <main class="main">
     <div class="container">
         <h1 class="main__title">Главная</h1>
+        <?php if (!empty($data->successForm)) : ?>
+            <h2 class="main__message main__message--success"><?= $data->successForm ?></h2>
+        <?php endif ?>
+        <?php if (isset($data->errorForm)) : ?>
+            <h2 class="main__message main__message--error"><?= $data->errorForm['email'] ?></h2>
+        <?php endif ?>
         <?php if (empty($_SESSION['user']['signed'])) : ?>
-            <form class="list__item" action="/" method="post">
+            <form class="form form--main" action="/" method="post">
                 Подписаться на обновления
 
                 <?php if (empty($_SESSION['isAuth'])) : ?>
-                    <input class="input" type="email" placeholder="Ваш E-mail">
+                    <input class="input input--main-signed" type="email" name="email" id="main_input_email" placeholder="Ваш E-mail" required>
                 <?php endif ?>
 
                 <button class="btn btn--solid" type="submit" name="submit-signed">Подписаться</button>

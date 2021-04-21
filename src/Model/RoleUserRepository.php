@@ -28,4 +28,9 @@ class RoleUserRepository extends Repository
             'role_id' => $roleId
         ]);
     }
+
+    public static function deleteAll(int $userId)
+    {
+        RoleUser::where('user_id', $userId)->delete();
+    }
 }

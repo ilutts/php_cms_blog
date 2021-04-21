@@ -6,7 +6,7 @@ use App\Model\User;
 
 class UsersServices
 {
-    public function get()
+    public static function get()
     {
         $countPosts = (int)User::count();
         $maxUsersOnPage = $_GET['quantity'] ?? 20;

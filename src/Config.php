@@ -14,10 +14,11 @@ final class Config
         if (null === static::$instance) {
             static::$instance = new static();
         }
+
         return static::$instance;
     }
 
-    private function __construct() 
+    private function __construct()
     {
         $path = $_SERVER['DOCUMENT_ROOT'] . CONFIGS_DIR;
         $files = scandir($path);
@@ -25,11 +26,11 @@ final class Config
         foreach ($files as $file) {
 
             $fullPath = $path . $file;
-    
+
             if (is_file($fullPath) && pathinfo($fullPath, PATHINFO_EXTENSION) === 'php') {
                 $this->configs[pathinfo($fullPath, PATHINFO_FILENAME)] = include($fullPath);
             }
-        } 
+        }
     }
 
     public function get(string $config, $default = null)
@@ -37,7 +38,22 @@ final class Config
         return array_get($this->configs, $config, $default);
     }
 
-    private function __clone() {}
-    private function __wakeup() {}
+    public function set(string $file, string $config, string $value)
+    {
+        $this->configs[$file][$config] = $value;
+    }
 
+    public function save(string $file)
+    {
+        $content = "<?php" . PHP_EOL . PHP_EOL . "return " . var_export($this->configs[$file], true) . ';' . PHP_EOL;
+
+        file_put_contents($_SERVER['DOCUMENT_ROOT'] . CONFIGS_DIR . $file . '.php', $content);
+    }
+
+    private function __clone()
+    {
+    }
+    private function __wakeup()
+    {
+    }
 }

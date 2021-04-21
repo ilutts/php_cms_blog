@@ -8,6 +8,8 @@ use App\Model\RoleRepository;
 use App\Model\MenuRepository;
 use App\Model\PostRepository;
 use App\Model\RoleUserRepository;
+use App\Model\StaticPageRepository;
+use App\Model\UnregisteredSubscriberRepository;
 use App\Model\UserRepository;
 
 class SetupServices
@@ -21,6 +23,8 @@ class SetupServices
         self::addGroup();
         self::addComment();
         self::addLinkRoleUser();
+        self::addUnregisteredSubscriber();
+        self::addStaticPages();
     }
 
     private static function addPost()
@@ -28,24 +32,24 @@ class SetupServices
         PostRepository::createTable();
         PostRepository::add('Test', 'Test1', 'Test2', 1, true);
         PostRepository::add('Test2', 'Test2', 'Test3', 2, true);
+        PostRepository::add('Статья - 1', 'Это тестовая статья и всяком разном', 'Иногда - бывает так, что там где не ждали, проиходит то - чего хотели', 1, true);
     }
 
     private static function addMenu()
     {
         MenuRepository::createTable();
-        MenuRepository::add('main', 'Главная', '/');
-        MenuRepository::add('blog', 'Блог', '/blog');
+        MenuRepository::add('Главная', '/', 0);
     }
 
     private static function addMenuAdmin()
     {
         AdminMenuRepository::createTable();
-        AdminMenuRepository::add('posts', 'Статьи', '/admin');
-        AdminMenuRepository::add('users', 'Пользователи', '/admin/users');
-        AdminMenuRepository::add('signeds', 'Подписки', '/admin/signeds');
-        AdminMenuRepository::add('comments', 'Комментарии', '/admin/comments');
-        AdminMenuRepository::add('static_page', 'Статичные страницы', '/admin/statics');
-        AdminMenuRepository::add('configs', 'Настройки CMS', '/admin/сonfigs');
+        AdminMenuRepository::add('Статьи', '/admin');
+        AdminMenuRepository::add('Пользователи', '/admin/users');
+        AdminMenuRepository::add('Подписки', '/admin/signeds');
+        AdminMenuRepository::add('Комментарии', '/admin/comments');
+        AdminMenuRepository::add('Статичные страницы', '/admin/statics');
+        AdminMenuRepository::add('Настройки CMS', '/admin/settings');
     }
 
     private static function addUser()
@@ -77,5 +81,21 @@ class SetupServices
         RoleUserRepository::createTable();
         RoleUserRepository::add(1, 1);
         RoleUserRepository::add(2, 2);
+    }
+
+    private static function addUnregisteredSubscriber()
+    {
+        UnregisteredSubscriberRepository::createTable();
+        UnregisteredSubscriberRepository::add('123@123.ru');
+        UnregisteredSubscriberRepository::add('321@312.ru');
+    }
+
+    private static function addStaticPages()
+    {
+        StaticPageRepository::createTable();
+        StaticPageRepository::add('О нас', 'Это крутая CMS!', 'about', true);
+        MenuRepository::add('О нас', '/page/about', 1);
+        StaticPageRepository::add('Контакты', 'admin@admin.ru и телефон 999 999 999', 'contacts', true);
+        MenuRepository::add('Контакты', '/page/contacts', 2);
     }
 }

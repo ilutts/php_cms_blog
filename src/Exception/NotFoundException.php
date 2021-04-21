@@ -12,14 +12,15 @@ class NotFoundException extends HttpException implements Renderable
         $file = '404.php';
 
         $data = [
-            'header' => Menu::all(),
-            'error' => $this->getMessage() . ' :-('
+            'header' => $this->getInfoForHeader(),
+            'error' => $this->getMessage() . ' :-(',
+            'footer' => $this->getInfoForFooter()
         ];
 
         includeView('templates/header.php', $data['header']);
 
         includeView($file, $data['error']);
 
-        includeView('templates/footer.php');
+        includeView('templates/footer.php', $data['footer']);
     }
 }

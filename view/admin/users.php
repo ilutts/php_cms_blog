@@ -2,6 +2,9 @@
     <div class="container">
         <h1 class="main__title">Пользователи - Админ-панель</h1>
         <div class="main-admin__header">
+            <?php if (isset($data->error)) : ?>
+                <h2 class="main__message main__message--error">Ошибка отправки формы!</h2>
+            <?php endif ?>
             <form class="main__form main__form--admin" method="GET">
                 <label for="form__select-quantity">Пользователей на странице:</label>
                 <select id="form__select-quantity" name="quantity" class="input">
@@ -13,9 +16,9 @@
                 </select>
             </form>
         </div>
-        <ul class="main-admin__list list">
-            <li class="list-admin__item">
-                <div class="list-admin__cell list-admin__cell--bold">Номер</div>
+        <ul class="main-admin__list main-admin__list--posts list">
+            <li class="list-admin__item list-admin__item--main">
+                <div class="list-admin__cell list-admin__cell--bold">ID</div>
                 <div class="list-admin__cell list-admin__cell--bold">Email</div>
                 <div class="list-admin__cell list-admin__cell--bold">Имя</div>
                 <div class="list-admin__cell list-admin__cell--bold">Дата регистрации</div>
@@ -23,7 +26,7 @@
                 <div class="list-admin__cell list-admin__cell--bold">Статус</div>
             </li>
             <?php foreach ($data as $user) : ?>
-                <li class="list-admin__item">
+                <li class="list-admin__item list-admin__item--main">
                     <div class="list-admin__cell list-admin__cell--id"><?= $user->id ?></div>
                     <div class="list-admin__cell list-admin__cell--email"><?= $user->email ?></div>
                     <div class="list-admin__cell list-admin__cell--name"><?= $user->name ?></div>
@@ -53,16 +56,16 @@
         <div class="profile-form__box">
             <h3 class="popup__title">Пользователь - <span class="popup__id"></span></h3>
             <input type="hidden" name="id">
-            <label class="label" for="popup-email">Email - Логин</label>
-            <input id="popup-title" class="input" name="email" type="text">
-            <label class="label" for="popup-name">Имя</label>
-            <input type="text" id="popup-name" class="input" name="name">
+            <label class="label" for="popup-email">Email - Логин *</label>
+            <input id="popup-title" class="input" name="email" type="text" minlength="3" required>
+            <label class="label" for="popup-name">Имя *</label>
+            <input type="text" id="popup-name" class="input" name="name" minlength="3" required>
             <label class="label" for="popup-description">О себе</label>
             <textarea id="popup-about" class="input input--textarea" name="about"></textarea>
         </div>
         <div class="profile-form__box">
             <label class="label" for="checkbox-rule">Фото:</label>
-            <img class="popup__image" src="" alt="Изображение" width="100px">
+            <img class="popup__image" src="" alt="Изображение" accept=".jpg, .jpeg, .png">
             <input class="input" type="file" name="image" id="popup_image">
             <label class="label" for="roles">Роли:</label>
             <select name="roles[]" class="input" multiple="multiple" id="roles"></select>

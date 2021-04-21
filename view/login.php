@@ -3,7 +3,7 @@
         <h1 class="main__title">Авторизация</h1>
 
         <?php if (!empty($_SESSION['errorLogin'])) : ?>
-            <h2 class="main__error"><?= $_SESSION['errorLogin'] ?></h2>
+            <h2 class="main__message main__message--error"><?= $_SESSION['errorLogin'] ?></h2>
         <?php endif ?>
 
         <?php if (empty($_SESSION['isAuth'])) { ?>
@@ -14,8 +14,7 @@
                 <a href="/registration" class="link link--login">Регистрация</a>
             </form>
         <?php } else { ?>
-            <h2>Добро пожаловать, <?= $_SESSION['user']['name'] ?>!</h2>
-            <a href="/?exit" class="link">Выйти</a>
+            <h2 class="main__message">Добро пожаловать, <b><?= $_SESSION['user']['name'] ?></b>!</h2>
         <?php } ?>
 
     </div>

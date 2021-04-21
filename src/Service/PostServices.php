@@ -16,6 +16,8 @@ class PostServices
     private bool $actived;
     private string $btnPost;
 
+    private array $error = [];
+
     private function setData()
     {
         $this->id = intval($_POST['id'] ?? 0);
@@ -23,17 +25,22 @@ class PostServices
         $this->shortDescription = htmlspecialchars($_POST['short_description'] ?? '');
         $this->description = htmlspecialchars($_POST['description'] ?? '');
         $this->image = $_FILES['image'] ?? [];
-        $this->actived = boolval($_POST['post_active'] ?? 0);
+        $this->actived = boolval($_POST['post_actived'] ?? 0);
         $this->btnPost = htmlspecialchars($_POST['submit_post'] ?? '');
     }
 
-    public function get(string $forPage = 'main')
+    public function getError()
+    {
+        return $this->error;
+    }
+
+    public static function get(string $forPage = 'main')
     {
         $countPosts = (int)Post::count();
 
         switch ($forPage) {
             case 'main':
-                $maxPostsOnPage = (int)Config::getInstance()->get('cms.quantity_posts_main');
+                $maxPostsOnPage = intval(Config::getInstance()->get('cms.quantity_posts_main') ?? 1);
                 break;
 
             case 'admin':
@@ -55,7 +62,9 @@ class PostServices
 
         switch ($forPage) {
             case 'main':
-                $posts = Post::where('actived', true)->with('comments')->orderByDesc('id')->skip($skipPosts)->take($maxPostsOnPage)->get();
+                $posts = Post::where('actived', true)->with(['comments' => function ($query) {
+                    $query->where('approved', 1);
+                }])->orderByDesc('id')->skip($skipPosts)->take($maxPostsOnPage)->get();
                 break;
 
             case 'admin':
@@ -73,7 +82,7 @@ class PostServices
         $this->setData();
 
         if ($this->btnPost === 'new' && $this->validate()) {
-            PostRepository::add(
+            $post = PostRepository::add(
                 $this->title,
                 $this->shortDescription,
                 $this->description,
@@ -81,7 +90,12 @@ class PostServices
                 $this->actived,
                 $this->image['new'] ?? '/img/post/post-no-img.png'
             );
+
+            $mailServices = new MailServices($post);
+            $mailServices->send();
         }
+
+        return $this->error;
     }
 
     public function change(int $userId)
@@ -111,6 +125,8 @@ class PostServices
                 $data,
             );
         }
+
+        return $this->error;
     }
 
     private function validate(): bool

@@ -31,4 +31,9 @@ class CommentRepository extends Repository
             'approved' => $approved,
         ]);
     }
+
+    public static function update(int $id, array $data)
+    {
+        Comment::where('id', $id)->update($data);
+    }
 }

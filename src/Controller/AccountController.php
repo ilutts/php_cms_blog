@@ -2,16 +2,19 @@
 
 namespace App\Controller;
 
-use App\Model\Menu;
 use App\Model\Role;
+use App\Model\UnregisteredSubscriber;
+use App\Model\UnregisteredSubscriberRepository;
 use App\Model\User;
+use App\Model\UserRepository;
 use App\Service\Authorization;
 use App\Service\RegistrationUser;
 use App\Service\UpdateUser;
 use App\View\JsonView;
 use App\View\View;
+use stdClass;
 
-class AccountController
+class AccountController extends Controller
 {
     public function loginView()
     {
@@ -21,9 +24,9 @@ class AccountController
         }
 
         return new View('login', [
-            'header' => Menu::all(),
+            'header' => $this->getInfoForHeader(),
             'main' => [],
-            'footer' => [],
+            'footer' => $this->getInfoForFooter(),
         ]);
     }
 
@@ -35,9 +38,9 @@ class AccountController
         }
 
         return new View('registration', [
-            'header' => Menu::all(),
+            'header' => $this->getInfoForHeader(),
             'main' => $info ?? false,
-            'footer' => [],
+            'footer' => $this->getInfoForFooter(),
         ]);
     }
 
@@ -63,9 +66,38 @@ class AccountController
         }
 
         return new View('profile', [
-            'header' => Menu::all(),
+            'header' => $this->getInfoForHeader(),
             'main' => $user ?? false,
-            'footer' => [],
+            'footer' => $this->getInfoForFooter(),
+        ]);
+    }
+
+    public function unsubscribeView(string $userType, int $userId)
+    {
+        $userType = htmlspecialchars($userType);
+
+        switch ($userType) {
+            case 'reg':
+                UserRepository::update($userId, ['signed' => 0]);
+                break;
+
+            case 'unreg':
+                UnregisteredSubscriberRepository::update($userId, ['signed' => 0]);
+                break;
+
+            default:
+                break;
+        }
+
+        $data = new stdClass;
+        $data->title = 'Отписка от рассылки';
+        $data->body = 'Вы успешно исключены из расслыки сообщений о новых статьях';
+
+
+        return new View('static', [
+            'header' => $this->getInfoForHeader(),
+            'main' => $data,
+            'footer' => $this->getInfoForFooter(),
         ]);
     }
 

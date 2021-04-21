@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Model\Comment;
 use App\Model\CommentRepository;
 use App\Model\RoleUser;
 
@@ -18,6 +19,30 @@ class CommentServices
         $this->userId = intval($_SESSION['user']['id'] ?? 0);
         $this->postId = $postId;
         $this->text = htmlspecialchars($_POST['comment-new'] ?? '');
+    }
+
+    public static function get()
+    {
+        $countPosts = (int)Comment::count();
+        $maxItemOnPage = $_GET['quantity'] ?? 20;
+
+        if ($maxItemOnPage === 'all') {
+            $maxItemOnPage = $countPosts;
+        } else {
+            $maxItemOnPage = (int)$maxItemOnPage;
+        }
+
+        $skipPosts = 0;
+
+        if (!empty($_GET['page']) && $_GET['page'] > 1) {
+            $page = (int)$_GET['page'];
+            $skipPosts = $page * $maxItemOnPage - $maxItemOnPage;
+        }
+
+        $comments = Comment::orderBy('approved', 'asc')->orderBy('id', 'desc')->skip($skipPosts)->take($maxItemOnPage)->get();
+        $comments->countPages = ceil($countPosts / $maxItemOnPage);
+
+        return $comments;
     }
 
     public function new()

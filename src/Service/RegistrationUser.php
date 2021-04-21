@@ -3,6 +3,8 @@
 namespace App\Service;
 
 use App\Model\RoleUserRepository;
+use App\Model\UnregisteredSubscriber;
+use App\Model\UnregisteredSubscriberRepository;
 use App\Model\UserRepository;
 
 class RegistrationUser
@@ -30,6 +32,11 @@ class RegistrationUser
             $newUser = UserRepository::add($this->inputEmail, password_hash($this->inputPassword1, PASSWORD_DEFAULT), $this->inputName);
             
             if ($newUser->wasRecentlyCreated) {
+                if (UnregisteredSubscriber::where('email', $this->inputEmail)->exists()) {
+                    UserRepository::update($newUser->id, ['signed' => 1]);
+                    UnregisteredSubscriberRepository::delete($this->inputEmail);
+                }
+
                 RoleUserRepository::add($newUser->id, 3);
                 $auth = new Authorization($this->inputEmail, $this->inputPassword1);
                 $auth->login();

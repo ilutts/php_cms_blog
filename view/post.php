@@ -22,12 +22,17 @@
                     <h3><?= $data->newСomment ?></h3>
                 <?php endif ?>
             </form>
-            <ul>
+            <ul class="comment-list">
                 <?php foreach ($data->comments as $id => $comment) : ?>
-                    <li>
-                        <h3><?= $id + 1 ?>. <?= $comment->title ?></h3>
-                        <p><?= $comment->text ?></p>
-                        <p>Автор: <?= $comment->user->name ?></p>
+                    <li class="comment-list__item">
+                        <div class="comment-list__box">
+                            <p class="comment-list__author">Автор: <b><?= $comment->user->name ?></b></p>
+                            <img class="comment-list__img" src="<?= $comment->user->image ?>" alt="<?= $comment->user->name ?>">
+                        </div>
+                        <div class="comment-list__box comment-list__box--text">
+                            <p class="comment-list__text"><b><?= $id + 1 ?>.</b> <?= $comment->text ?></p>
+                            <p class="comment-list__footer"><b>Добавлен:</b> <?= $comment->created_at ?></p>
+                        </div>
                     </li>
                 <?php endforeach ?>
             </ul>

@@ -43,6 +43,6 @@ class UserRepository extends Repository
 
     public static function update(int $id, array $data)
     {
-        return User::where('id', '=', $id)->update($data);
+        return User::where('id', $id)->update($data);
     }
 }

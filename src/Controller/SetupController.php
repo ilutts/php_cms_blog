@@ -2,11 +2,10 @@
 
 namespace App\Controller;
 
-use App\Model\Menu;
 use App\Service\SetupServices;
 use App\View\View;
 
-class SetupController
+class SetupController extends Controller
 {
     public function installDB()
     {
@@ -19,9 +18,9 @@ class SetupController
         }
 
         return new View('setup', [
-            'header' => Menu::all(), 
+            'header' => $this->getInfoForHeader(),
             'main' => $text,
-            'footer' => [], 
+            'footer' => $this->getInfoForFooter(),
         ]);
     }
 }

@@ -1,17 +1,17 @@
 <main class="main">
-    <div class="container">
+    <div class="container main__container">
         <h1 class="main__title">Личный кабинет</h1>
         <?php if ($data) { ?>
             <form class="profile-form" action="/profile" method="post" enctype="multipart/form-data">
                 <div class="profile-form__box">
                     <?php if (isset($data->errorUpdate->name)) : ?>
-                        <h3><?= $data->errorUpdate->name ?></h3>
+                        <h3 class="main__message main__message--error"><?= $data->errorUpdate->name ?></h3>
                     <?php endif ?>
                     <label class="label" for="profile_name">Имя</label>
                     <input id="profile_name" type="text" class="input" name="name" placeholder="Ваше имя" value="<?= $data->name ?>">
 
                     <?php if (isset($data->errorUpdate->email)) : ?>
-                        <h3><?= $data->errorUpdate->email ?></h3>
+                        <h3 class="main__message main__message--error"><?= $data->errorUpdate->email ?></h3>
                     <?php endif ?>
                     <label class="label" for="profile_email">E-mail</label>
                     <input id="profile_email" type="text" class="input" name="email" placeholder="Ваш E-mail" value="<?= $data->email ?>">
@@ -21,7 +21,7 @@
                 </div>
                 <div class="profile-form__box">
                     <?php if (isset($data->errorUpdate->image)) : ?>
-                        <h3><?= $data->errorUpdate->image ?></h3>
+                        <h3 class="main__message main__message--error"><?= $data->errorUpdate->image ?></h3>
                     <?php endif ?>
                     <label class="label" for="checkbox-rule">Ваше фото:</label>
                     <img class="profile-form__image" src="<?= $data->image ?>" alt="Аватар" width="100px">
@@ -37,13 +37,13 @@
                     <form class="form form--profile" action="/profile" method="post">
                         <h2>Изменение пароля</h2>
                         <?php if (isset($data->errorUpdate->passwordOld)) : ?>
-                            <h3><?= $data->errorUpdate->passwordOld ?></h3>
+                            <h3 class="main__message main__message--error"><?= $data->errorUpdate->passwordOld ?></h3>
                         <?php endif ?>
                         <label class="label" for="profile_password_old">Старый пароль</label>
                         <input id="profile_password_old" type="password" class="input" name="password-old" placeholder="Введите старый пароль" value="">
 
                         <?php if (isset($data->errorUpdate->passwordNew)) : ?>
-                            <h3><?= $data->errorUpdate->passwordNew ?></h3>
+                            <h3 class="main__message main__message--error"><?= $data->errorUpdate->passwordNew ?></h3>
                         <?php endif ?>
                         <label class="label" for="profile_password1">Новый пароль</label>
                         <input id="profile_password1" type="password" class="input" name="password1" placeholder="Введите новый пароль" value="">
@@ -69,7 +69,7 @@
             </div>
 
         <?php } else { ?>
-            <h2>Страница не доступна!</h2>
+            <h2 class="main__message main__message--error">Страница не доступна!</h2>
         <?php } ?>
     </div>
 </main>

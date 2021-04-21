@@ -32,9 +32,29 @@ function ajaxPopupAdminPost(form, formData, popupImg) {
     .catch((error) => console.log(error));
 }
 
+function ajaxPopupAdminStaticPage(form, formData) {
+  form.submit_post.textContent = 'Изменить';
+  form.submit_post.value = 'change';
+
+  fetch('/ajax/page/get', {
+    method: 'POST',
+    body: formData,
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      form.querySelector('.popup__id').textContent = data.id;
+      form.id.value = data.id;
+      form.name.value = data.name;
+      form.title.value = data.title;
+      form.body.value = data.body;
+      form.post_actived.checked = data.actived;
+    })
+    .catch((error) => console.log(error));
+}
+
 function ajaxPopupAdminUser(form, formData, popupImg) {
   form.roles.innerHTML = '';
-  
+
   fetch('/ajax/user/get', {
     method: 'POST',
     body: formData,
@@ -49,8 +69,8 @@ function ajaxPopupAdminUser(form, formData, popupImg) {
       form.user_actived.checked = data.actived;
       popupImg.setAttribute('src', data.image);
 
-      data.allroles.forEach(role => {
-        let selected = data.roles.find(roleUser => roleUser.id == role.id) ? true : false;
+      data.allroles.forEach((role) => {
+        let selected = data.roles.find((roleUser) => roleUser.id == role.id) ? true : false;
         let option = new Option(role.name, role.id, selected, selected);
         form.roles.append(option);
       });
@@ -59,7 +79,7 @@ function ajaxPopupAdminUser(form, formData, popupImg) {
 }
 
 function appBlog() {
-  const adminListPosts = document.querySelector('.main-admin__list');
+  const adminListPosts = document.querySelector('.main-admin__list--posts');
   const formProfile = document.querySelector('.form--profile');
   const formCountItemAdmin = document.querySelector('.main__form--admin');
 
@@ -69,10 +89,10 @@ function appBlog() {
     const countItemValue = getParams.get('quantity') ?? 20;
 
     formCountItemAdmin.quantity.value = countItemValue === 'all' ? 'all' : +countItemValue;
-  
+
     formCountItemAdmin.quantity.addEventListener('change', () => {
       formCountItemAdmin.submit();
-    })
+    });
   }
 
   if (formProfile) {
@@ -85,7 +105,7 @@ function appBlog() {
   if (adminListPosts) {
     const popup = document.querySelector('.popup');
     const formPopup = popup.querySelector('.popup__form');
-    const btnNewPost = document.querySelector('.btn-new-post');
+    const btnNew = document.querySelector('.btn-new');
     const inputImg = document.querySelector('#popup_image');
     const popupImg = popup.querySelector('.popup__image');
 
@@ -96,7 +116,9 @@ function appBlog() {
       }
     });
 
-    changeImageOfInputFile(inputImg, popupImg);
+    if (inputImg) {
+      changeImageOfInputFile(inputImg, popupImg);
+    }
 
     adminListPosts.addEventListener('click', (event) => {
       if (event.target.classList.contains('btn-post-change')) {
@@ -105,29 +127,33 @@ function appBlog() {
         const id = +event.target.parentElement.querySelector('.list-admin__cell--id').textContent;
         const formData = new FormData();
         formData.append('id', id);
-        
+
         if (formPopup.classList.contains('form--admin-post')) {
           ajaxPopupAdminPost(formPopup, formData, popupImg);
         }
-        
+
         if (formPopup.classList.contains('form--admin-user')) {
           ajaxPopupAdminUser(formPopup, formData, popupImg);
+        }
+
+        if (formPopup.classList.contains('form--admin-static')) {
+          ajaxPopupAdminStaticPage(formPopup, formData);
         }
       }
     });
 
-    if (btnNewPost) {
-      btnNewPost.addEventListener('click', () => {
+    if (btnNew) {
+      btnNew.addEventListener('click', () => {
         popup.style.display = 'flex';
         formPopup.querySelector('.popup__id').textContent = 'Новая';
         formPopup.submit_post.textContent = 'Добавить';
         formPopup.submit_post.value = 'new';
-        popupImg.setAttribute('src', '/img/post/post-no-img.png');
+        if (popupImg) {
+          popupImg.setAttribute('src', '/img/post/post-no-img.png');
+        }
       });
     }
   }
-
-  
 }
 
 appBlog();

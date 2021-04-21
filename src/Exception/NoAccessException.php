@@ -12,14 +12,15 @@ class NoAccessException extends HttpException implements Renderable
         $file = 'admin/noaccess.php';
         
         $data = [
-            'header' => Menu::all(),
-            'error' => $this->getMessage()
+            'header' => $this->getInfoForAdminHeader(),
+            'error' => $this->getMessage(),
+            'footer' => $this->getInfoForFooter()
         ];
 
         includeView('templates/header.php', $data['header']);
 
         includeView($file, $data['error']);
 
-        includeView('templates/footer.php');
+        includeView('templates/footer.php', $data['footer']);
     }
 }
