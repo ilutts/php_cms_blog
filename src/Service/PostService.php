@@ -8,26 +8,12 @@ use App\Model\PostRepository;
 
 class PostService
 {
-    private int $id;
     private string $title;
     private string $shortDescription;
     private string $description;
     private array $image;
-    private bool $actived;
-    private string $btnPost;
 
     private array $error = [];
-
-    private function setData()
-    {
-        $this->id = intval($_POST['id'] ?? 0);
-        $this->title = htmlspecialchars($_POST['title'] ?? '');
-        $this->shortDescription = htmlspecialchars($_POST['short_description'] ?? '');
-        $this->description = htmlspecialchars($_POST['description'] ?? '');
-        $this->image = $_FILES['image'] ?? [];
-        $this->actived = boolval($_POST['post_actived'] ?? 0);
-        $this->btnPost = htmlspecialchars($_POST['submit_post'] ?? '');
-    }
 
     public function getError()
     {
@@ -46,17 +32,20 @@ class PostService
         }])->orderByDesc('id')->skip($numberSkipItems)->take($maxItemsOnPage)->get();
     }
 
-    public function new(int $userId)
+    public function add(string $title, string $shortDescription, string $description, int $userId, array $image, bool $actived, string $btnPost)
     {
-        $this->setData();
+        $this->title = htmlspecialchars($title);
+        $this->shortDescription = htmlspecialchars($shortDescription);
+        $this->description = htmlspecialchars($description);
+        $this->image = $image;
 
-        if ($this->btnPost === 'new' && $this->validate()) {
+        if ($btnPost === 'new' && $this->validate()) {
             $post = PostRepository::add(
                 $this->title,
                 $this->shortDescription,
                 $this->description,
                 $userId,
-                $this->actived,
+                $actived,
                 $this->image['new'] ?? '/img/post/post-no-img.png'
             );
 
@@ -67,17 +56,20 @@ class PostService
         return $this->error;
     }
 
-    public function change(int $userId)
+    public function update(int $postId, string $title, string $shortDescription, string $description, int $userId, array $image, bool $actived, string $btnPost)
     {
-        $this->setData();
+        $this->title = htmlspecialchars($title);
+        $this->shortDescription = htmlspecialchars($shortDescription);
+        $this->description = htmlspecialchars($description);
+        $this->image = $image;
 
-        if ($this->btnPost === 'change' && $this->validate()) {
+        if ($btnPost === 'change' && $this->validate()) {
             $data = [
                 'title' => $this->title,
                 'short_description' => $this->shortDescription,
                 'description' => $this->description,
                 'user_id' => $userId,
-                'actived' => $this->actived
+                'actived' => $actived
             ];
 
             if (isset($this->image['new'])) {
@@ -90,7 +82,7 @@ class PostService
             }
 
             PostRepository::update(
-                $this->id,
+                $postId,
                 $data,
             );
         }

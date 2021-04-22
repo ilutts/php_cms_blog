@@ -19,11 +19,28 @@ class AdminPostController extends AdminController
             $postServices = new PostService();
 
             if ($_POST['submit_post'] === 'new') {
-                $postServices->new((int)$_SESSION['user']['id']);
+                $postServices->add(
+                    $_POST['title'] ?? '',
+                    $_POST['short_description'] ?? '',
+                    $_POST['description'] ?? '',
+                    $_SESSION['user']['id'],
+                    $_FILES['image'] ?? [],
+                    isset($_POST['post_actived']),
+                    $_POST['submit_post'] ?? '',
+                );
             }
 
             if ($_POST['submit_post'] === 'change') {
-                $postServices->change((int)$_SESSION['user']['id']);
+                $postServices->update(
+                    $_POST['id'] ?? 0,
+                    $_POST['title'] ?? '',
+                    $_POST['short_description'] ?? '',
+                    $_POST['description'] ?? '',
+                    $_SESSION['user']['id'],
+                    $_FILES['image'] ?? [],
+                    isset($_POST['post_actived']),
+                    $_POST['submit_post'] ?? '',
+                );
             }
         }
 
@@ -33,7 +50,7 @@ class AdminPostController extends AdminController
             $_GET['page'] ?? 1
         );
 
-        $posts = PostService::get($pagination->getNumberSkipItem(), $pagination->getMaxItemOnPage());
+        $posts = PostService::getForAdmin($pagination->getNumberSkipItem(), $pagination->getMaxItemOnPage());
 
         if (isset($postServices) && $postServices->getError()) {
             $posts->error = $postServices->getError();
