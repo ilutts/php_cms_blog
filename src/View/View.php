@@ -24,10 +24,6 @@ class View implements Renderable
         $path[count($path) - 1] = $path[count($path) - 1] . '.php';
         $file = implode('/', $path);
 
-        includeView('templates/header.php', $this->data['header']);
-
-        includeView($file, $this->data['main']);
-
-        includeView('templates/footer.php', $this->data['footer']);
+        showTemplate($file, $this->data);
     }
 }

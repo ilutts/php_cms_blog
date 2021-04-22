@@ -21,7 +21,7 @@
                 <div class="list-admin__cell list-admin__cell--bold">Пользователь</div>
                 <div class="list-admin__cell list-admin__cell--bold">Статус</div>
             </li>
-            <?php foreach ($data as $comment) : ?>
+            <?php foreach ($data['comments'] as $comment) : ?>
                 <li class="list-admin__item list-admin__item--comments">
                     <div class="list-admin__cell list-admin__cell--id"><?= $comment->id ?></div>
                     <div class="list-admin__cell list-admin__cell--post">
@@ -36,9 +36,9 @@
                     </form>
                 </li>
             <?php endforeach ?>
-        </ul>       
+        </ul>
         <ul class="main__paginator paginator">
-            <?php for ($i = 1; $i <= $data->countPages; $i++) : ?>
+            <?php for ($i = 1; $i <= $data['count_pages']; $i++) : ?>
                 <li class="paginator__item">
                     <a class="paginator__link" <?= getStatusPage($i) ?>><?= $i ?></a>
                 </li>

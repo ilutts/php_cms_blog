@@ -6,41 +6,20 @@ use App\Model\UnregisteredSubscriber;
 use App\Model\UnregisteredSubscriberRepository;
 use App\Model\User;
 
-class SubscriberServices
+class SubscriberService
 {
     private string $email;
     private string $success;
     private array $error = [];
 
-    public static function get()
+    public static function getUnregisteredUsers(int $numberSkipItems, int $maxItemsOnPage)
     {
-        $countRegisteredUsers = (int)User::count();
-        $countUnregisteredUsers = (int)UnregisteredSubscriber::count();
+        return UnregisteredSubscriber::skip($numberSkipItems)->take($maxItemsOnPage)->get();
+    }
 
-        $maxCountUsers = $countRegisteredUsers > $countUnregisteredUsers ? $countRegisteredUsers : $countUnregisteredUsers;
-
-        $maxItemOnPage = $_GET['quantity'] ?? 20;
-
-        if ($maxItemOnPage === 'all') {
-            $maxItemOnPage = $maxCountUsers;
-        } else {
-            $maxItemOnPage  = (int)$maxItemOnPage;
-        }
-
-        $skipPosts = 0;
-
-        if (!empty($_GET['page']) && $_GET['page'] > 1) {
-            $page = (int)$_GET['page'];
-            $skipPosts = $page * $maxItemOnPage - $maxItemOnPage;
-        }
-
-        $users = [
-            'registeredUsers' => User::select('id', 'email', 'name', 'created_at', 'updated_at', 'signed')->skip($skipPosts)->take($maxItemOnPage)->get(),
-            'unregisteredUsers' => UnregisteredSubscriber::skip($skipPosts)->take($maxItemOnPage)->get(),
-            'countPages' => ceil($maxCountUsers / $maxItemOnPage)
-        ];
-
-        return $users;
+    public static function getRegisteredUsers(int $numberSkipItems, int $maxItemsOnPage)
+    {
+        return User::select('id', 'email', 'name', 'created_at', 'updated_at', 'signed')->skip($numberSkipItems)->take($maxItemsOnPage)->get();
     }
 
     public static function getForMailing()
@@ -61,9 +40,9 @@ class SubscriberServices
         return $this->success;
     }
 
-    public function newUnregistered()
+    public function newUnregistered(string $email)
     {
-        $this->email = htmlspecialchars($_POST['email']);
+        $this->email = htmlspecialchars($email);
 
         if ($this->validate()) {
             $unregisteredSubscriber = UnregisteredSubscriberRepository::add($this->email);
@@ -78,7 +57,7 @@ class SubscriberServices
 
     private function validate(): bool
     {
-        $validateServices = new ValidateServices();
+        $validateServices = new ValidateService();
         $validateServices->checkEmail($this->email);
 
         if ($validateServices->getError()) {

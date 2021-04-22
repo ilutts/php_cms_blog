@@ -350,23 +350,6 @@ ul {
 
 /* Post */
 
-.comment-box {
-  display: flex;
-  flex-direction: row-reverse;
-  justify-content: space-between;
-}
-
-.comment-box__form {
-  align-self: flex-start;
-  padding: 15px;
-  background-color: var(--main-background-color);
-  border-radius: 6px;
-}
-
-.comment-list {
-  flex-grow: 1;
-}
-
 .comment-list__item {
   display: flex;
   margin-bottom: 20px;
@@ -390,6 +373,15 @@ ul {
 .comment-list__img {
   object-fit: contain;
   width: 100%;
+}
+
+.comment-box__form {
+  align-self: flex-start;
+  margin-bottom: 15px;
+  padding: 15px;
+  background-color: var(--main-background-color);
+  border: 2px solid #fff;
+  border-radius: 12px;
 }
 
 /* Admin - Main */

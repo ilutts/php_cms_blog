@@ -2,23 +2,16 @@
 
 namespace App\Service;
 
-use App\Model\RoleUser;
 use App\Model\User;
 
-class Authorization
+class AuthorizationService
 {
-    private string $login;
-    private string $password;
-
-    function __construct(string $login, string $password)
+    public static function login(string $login, string $password): bool
     {
-        $this->login = htmlspecialchars($login);
-        $this->password = htmlspecialchars($password);
-    }
+        $login = htmlspecialchars($login);
+        $password = htmlspecialchars($password);
 
-    public function login(): bool
-    {
-        $user = User::where('email', $this->login)->with('roles')->first();
+        $user = User::where('email', $login)->with('roles')->first();
 
         if (!$user) {
             $_SESSION['isAuth'] = false;
@@ -32,7 +25,7 @@ class Authorization
             return false;
         }
 
-        if (password_verify($this->password, $user->password)) {
+        if (password_verify($password, $user->password)) {
             $_SESSION['user'] = $user->attributesToArray();
             $_SESSION['roles'] = $user->roles->keyBy('id')->toArray();
             $_SESSION['isAuth'] = true;

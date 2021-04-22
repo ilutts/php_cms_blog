@@ -16,14 +16,6 @@ abstract class Controller
         ];
     }
 
-    protected function getInfoForAdminHeader()
-    {
-        return [
-            'title' => Config::getInstance()->get('cms.site_name'),
-            'menu' => AdminMenu::all()
-        ];
-    }
-
     protected function getInfoForFooter()
     {
         return [

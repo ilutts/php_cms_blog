@@ -6,7 +6,7 @@ use App\Config;
 use App\Model\Post;
 use App\Model\PostRepository;
 
-class PostServices
+class PostService
 {
     private int $id;
     private string $title;
@@ -34,47 +34,16 @@ class PostServices
         return $this->error;
     }
 
-    public static function get(string $forPage = 'main')
+    public static function getForAdmin(int $numberSkipItems, int $maxItemsOnPage)
     {
-        $countPosts = (int)Post::count();
+        return Post::select('id', 'title', 'created_at', 'updated_at', 'actived', 'user_id')->orderByDesc('id')->skip($numberSkipItems)->take($maxItemsOnPage)->get();
+    }
 
-        switch ($forPage) {
-            case 'main':
-                $maxPostsOnPage = intval(Config::getInstance()->get('cms.quantity_posts_main') ?? 1);
-                break;
-
-            case 'admin':
-                $maxPostsOnPage = $_GET['quantity'] ?? 20;
-                if ($maxPostsOnPage === 'all') {
-                    $maxPostsOnPage = $countPosts;
-                } else {
-                    $maxPostsOnPage = (int)$maxPostsOnPage;
-                }
-                break;
-        }
-
-        $skipPosts = 0;
-
-        if (!empty($_GET['page']) && $_GET['page'] > 1) {
-            $page = (int)$_GET['page'];
-            $skipPosts = $page * $maxPostsOnPage - $maxPostsOnPage;
-        }
-
-        switch ($forPage) {
-            case 'main':
-                $posts = Post::where('actived', true)->with(['comments' => function ($query) {
-                    $query->where('approved', 1);
-                }])->orderByDesc('id')->skip($skipPosts)->take($maxPostsOnPage)->get();
-                break;
-
-            case 'admin':
-                $posts = Post::select('id', 'title', 'created_at', 'updated_at', 'actived', 'user_id')->orderByDesc('id')->skip($skipPosts)->take($maxPostsOnPage)->get();
-                break;
-        }
-
-        $posts->countPages = ceil($countPosts / $maxPostsOnPage);
-
-        return $posts;
+    public static function get(int $numberSkipItems, int $maxItemsOnPage)
+    {
+        return Post::where('actived', 1)->with(['comments' => function ($query) {
+            $query->where('approved', 1);
+        }])->orderByDesc('id')->skip($numberSkipItems)->take($maxItemsOnPage)->get();
     }
 
     public function new(int $userId)
@@ -91,8 +60,8 @@ class PostServices
                 $this->image['new'] ?? '/img/post/post-no-img.png'
             );
 
-            $mailServices = new MailServices($post);
-            $mailServices->send();
+            $mailServices = new MailService();
+            $mailServices->send($post);
         }
 
         return $this->error;
@@ -131,7 +100,7 @@ class PostServices
 
     private function validate(): bool
     {
-        $validateService = new ValidateServices();
+        $validateService = new ValidateService();
 
         $validateService->checkText($this->title, 'title');
         $validateService->checkText($this->shortDescription, 'short_description');

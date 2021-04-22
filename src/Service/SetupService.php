@@ -12,7 +12,7 @@ use App\Model\StaticPageRepository;
 use App\Model\UnregisteredSubscriberRepository;
 use App\Model\UserRepository;
 
-class SetupServices
+class SetupService
 {
     public static function installDB()
     {

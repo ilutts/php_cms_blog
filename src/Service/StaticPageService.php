@@ -7,61 +7,36 @@ use App\Model\MenuRepository;
 use App\Model\StaticPage;
 use App\Model\StaticPageRepository;
 
-class StaticPageServices
+class StaticPageService
 {
     private int $id;
     private string $title;
     private string $name;
     private string $body;
     private bool $actived;
-    private string $btnPost;
+    private string $btnType;
 
     private array $error = [];
-
-    private function setData()
-    {
-        $this->id = intval($_POST['id'] ?? 0);
-        $this->title = htmlspecialchars($_POST['title'] ?? '');
-        $this->name = htmlspecialchars($_POST['name'] ?? '');
-        $this->body = htmlspecialchars($_POST['body'] ?? '');
-        $this->actived = boolval($_POST['post_actived'] ?? 0);
-        $this->btnPost = htmlspecialchars($_POST['submit_post'] ?? '');
-    }
 
     public function getError()
     {
         return $this->error;
     }
 
-    public static function get()
+    public static function get(int $numberSkipItems, int $maxItemsOnPage)
     {
-        $countPages = (int)StaticPage::count();
-        $maxItemOnPage = $_GET['quantity'] ?? 20;
-
-        if ($maxItemOnPage === 'all') {
-            $maxItemOnPage = $countPages;
-        } else {
-            $maxItemOnPage = (int)$maxItemOnPage;
-        }
-
-        $skipPosts = 0;
-
-        if (!empty($_GET['page']) && $_GET['page'] > 1) {
-            $page = (int)$_GET['page'];
-            $skipPosts = $page * $maxItemOnPage - $maxItemOnPage;
-        }
-
-        $pages = StaticPage::skip($skipPosts)->take($maxItemOnPage)->get();
-        $pages->countPages = ceil($countPages / $maxItemOnPage);
-
-        return $pages;
+        return StaticPage::skip($numberSkipItems)->take($maxItemsOnPage)->get();
     }
 
-    public function new()
+    public function add(string $title, string $name, string $body, bool $actived, string $btnType)
     {
-        $this->setData();
-        
-        if ($this->btnPost === 'new' && $this->validate()) {
+        $this->title = htmlspecialchars($title);
+        $this->name = htmlspecialchars($name);
+        $this->body = htmlspecialchars($body);
+        $this->actived = $actived;
+        $this->btnType = htmlspecialchars($btnType);
+
+        if ($this->btnType === 'new' && $this->validate()) {
 
             $page = StaticPageRepository::add(
                 $this->title,
@@ -76,9 +51,14 @@ class StaticPageServices
         }
     }
 
-    public function change()
+    public function update(int $id, string $title, string $name, string $body, bool $actived, string $btnType)
     {
-        $this->setData();
+        $this->id = $id;
+        $this->title = htmlspecialchars($title);
+        $this->name = htmlspecialchars($name);
+        $this->body = htmlspecialchars($body);
+        $this->actived = $actived;
+        $this->btnType = htmlspecialchars($btnType);
 
         if ($this->btnPost === 'change' && $this->validate()) {
             $data = [
@@ -99,7 +79,7 @@ class StaticPageServices
                 }
             } else {
                 if ($this->actived) {
-                    MenuRepository::add($this->title, '/page/' . $this->name, $this->id); 
+                    MenuRepository::add($this->title, '/page/' . $this->name, $this->id);
                 }
             }
         }
@@ -107,7 +87,7 @@ class StaticPageServices
 
     private function validate(): bool
     {
-        $validateService = new ValidateServices();
+        $validateService = new ValidateService();
 
         $validateService->checkText($this->title, 'title');
         $validateService->checkText($this->name, 'name');

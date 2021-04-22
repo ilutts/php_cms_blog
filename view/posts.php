@@ -19,7 +19,7 @@
             </form>
         <?php endif ?>
         <ul class="list">
-            <?php foreach ($data as $id => $post) : ?>
+            <?php foreach ($data['posts'] as $post) : ?>
                 <li class="list__item">
                     <div class="list__box">
                         <h2 class="list__title"><a href="/post/<?= $post->id ?>" class="link"><?= $post->title ?></a></h2>
@@ -34,7 +34,7 @@
             <?php endforeach ?>
         </ul>
         <ul class="main__paginator paginator">
-            <?php for ($i = 1; $i <= $data->countPages; $i++) : ?>
+            <?php for ($i = 1; $i <= $data['count_pages']; $i++) : ?>
                 <li class="paginator__item">
                     <a class="paginator__link" <?= getStatusPage($i) ?>"><?= $i ?></a>
                 </li>

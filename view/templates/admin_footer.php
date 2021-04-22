@@ -1,1 +1,0 @@
-<?php require($_SERVER['DOCUMENT_ROOT'] . '/view/templates/base/footer.php'); ?>

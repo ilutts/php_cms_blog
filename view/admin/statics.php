@@ -3,7 +3,7 @@
         <h1 class="main__title">Статичный страницы - Админ-панель</h1>
         <div class="main-admin__header">
             <button class="btn btn--transparent btn-new">Новая страница</button>
-            <?php if (isset($data->error)) : ?>
+            <?php if (isset($data['static_pages']->error)) : ?>
                 <h2 class="main__message main__message--error">Ошибка отправки формы!</h2>
             <?php endif ?>
             <form class="main__form main__form--admin" method="GET">
@@ -25,7 +25,7 @@
                 <div class="list-admin__cell list-admin__cell--bold">Дата обновления</div>
                 <div class="list-admin__cell list-admin__cell--bold">Главное меню</div>
             </li>
-            <?php foreach ($data as $page) : ?>
+            <?php foreach ($data['static_pages'] as $page) : ?>
                 <li class="list-admin__item list-admin__item--statics">
                     <div class="list-admin__cell list-admin__cell--id"><?= $page->id ?></div>
                     <div class="list-admin__cell list-admin__cell--title">
@@ -37,9 +37,9 @@
                     <button class="btn btn--transparent btn-post-change">Изменить</button>
                 </li>
             <?php endforeach ?>
-        </ul>       
+        </ul>
         <ul class="main__paginator paginator">
-            <?php for ($i = 1; $i <= $data->countPages; $i++) : ?>
+            <?php for ($i = 1; $i <= $data['count_pages']; $i++) : ?>
                 <li class="paginator__item">
                     <a class="paginator__link" <?= getStatusPage($i) ?>><?= $i ?></a>
                 </li>

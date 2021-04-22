@@ -36,7 +36,7 @@ function ajaxPopupAdminStaticPage(form, formData) {
   form.submit_post.textContent = 'Изменить';
   form.submit_post.value = 'change';
 
-  fetch('/ajax/page/get', {
+  fetch('/ajax/static/get', {
     method: 'POST',
     body: formData,
   })

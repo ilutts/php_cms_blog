@@ -50,10 +50,10 @@ final class Config
         file_put_contents($_SERVER['DOCUMENT_ROOT'] . CONFIGS_DIR . $file . '.php', $content);
     }
 
-    private function __clone()
+    public function __clone()
     {
     }
-    private function __wakeup()
+    public function __wakeup()
     {
     }
 }

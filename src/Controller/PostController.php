@@ -2,31 +2,39 @@
 
 namespace App\Controller;
 
+use App\Config;
+use App\Exception\NotFoundException;
 use App\Model\Post;
 use App\Model\User;
-use App\Service\CommentServices;
-use App\Service\PostServices;
-use App\Service\SubscriberServices;
-use App\Service\UpdateUser;
-use App\View\JsonView;
+use App\Service\CommentService;
+use App\Service\PaginationService;
+use App\Service\PostService;
+use App\Service\SubscriberService;
+use App\Service\UpdateUserService;
 use App\View\View;
 
 class PostController extends Controller
 {
-    public function mainView()
+    public function postsView()
     {
         if (isset($_POST['submit-signed'])) {
             if (isset($_POST['email'])) {
-                $subscriberServices = new SubscriberServices();
-                $subscriberServices->newUnregistered();
+                $subscriberServices = new SubscriberService();
+                $subscriberServices->newUnregistered($_POST['email']);
             } else {
                 $user = User::findOrFail($_SESSION['user']['id']);
-                $updateUser = new UpdateUser($user);
+                $updateUser = new UpdateUserService($user);
                 $updateUser->signed();
             }
         }
 
-        $posts = PostServices::get();
+        $pagination = new PaginationService(
+            Post::where('actived', 1)->count(),
+            Config::getInstance()->get('cms.quantity_posts_main') ?? 1,
+            $_GET['page'] ?? 1
+        );
+
+        $posts = PostService::get($pagination->getNumberSkipItem(), $pagination->getMaxItemOnPage());
 
         if (isset($subscriberServices)) {
             if ($subscriberServices->getError()) {
@@ -38,23 +46,34 @@ class PostController extends Controller
             }
         }
 
-        return new View('index', [
+        return new View('posts', [
             'header' => $this->getInfoForHeader(),
-            'main' => $posts,
+            'main' => [
+                'posts' => $posts,
+                'count_pages' => $pagination->getCountPages(),
+            ],
             'footer' => $this->getInfoForFooter(),
         ]);
     }
 
-    public function postView(int $id)
+    public function postView(int $postId)
     {
         if (!empty($_POST['comment-new'])) {
-            $comment = new CommentServices($id);
-            $comment = $comment->new();
+            $comment = new CommentService();
+            $comment = $comment->add(
+                $_POST['comment-new'] ?? '',
+                $postId,
+                $_SESSION['user']['id'] ?? 0,
+            );
         }
 
-        $post = Post::where('id', $id)->with(['comments' => function ($query) {
+        $post = Post::where('id', $postId)->with(['comments' => function ($query) {
             $query->where('approved', 1);
         }])->first();
+
+        if (!$post) {
+            throw new NotFoundException('Статья не найдена!');
+        }
 
         $post->newСomment = $comment ?? false;
 
@@ -63,15 +82,5 @@ class PostController extends Controller
             'main' => $post,
             'footer' => $this->getInfoForFooter(),
         ]);
-    }
-
-    public function ajaxGetPost()
-    {
-        $id = intval($_POST['id'] ?? 0);
-        if ($id) {
-            $post = Post::where('id', $id)->with('user')->first();
-
-            return new JsonView($post);
-        }
     }
 }

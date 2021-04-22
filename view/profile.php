@@ -28,7 +28,7 @@
                     <input class="input" type="file" name="image" id="profile_image">
                     <button class="btn btn--solid" type="submit" name="submit-info">Сохранить</button>
                     <?php if (isset($data->updateInfo)) : ?>
-                        <h3>Данные пользователя обновленны!</h3>
+                        <h3 class="main__message main__message--success">Данные пользователя обновленны!</h3>
                     <?php endif ?>
                 </div>
             </form>
@@ -36,11 +36,15 @@
                 <div class="profile-form__box">
                     <form class="form form--profile" action="/profile" method="post">
                         <h2>Изменение пароля</h2>
+                        <?php if (isset($data->updatePassword)) : ?>
+                            <h3 class="main__message main__message--success">Пароль изменён!</h3>
+                        <?php endif ?>
+
                         <?php if (isset($data->errorUpdate->passwordOld)) : ?>
                             <h3 class="main__message main__message--error"><?= $data->errorUpdate->passwordOld ?></h3>
                         <?php endif ?>
                         <label class="label" for="profile_password_old">Старый пароль</label>
-                        <input id="profile_password_old" type="password" class="input" name="password-old" placeholder="Введите старый пароль" value="">
+                        <input id="profile_password_old" type="password" class="input" name="password_old" placeholder="Введите старый пароль" value="">
 
                         <?php if (isset($data->errorUpdate->passwordNew)) : ?>
                             <h3 class="main__message main__message--error"><?= $data->errorUpdate->passwordNew ?></h3>
@@ -50,9 +54,6 @@
                         <label class="label" for="profile_password2">Повторите новый пароль</label>
                         <input id="profile_password2" type="password" class="input" name="password2" placeholder="Введите подтверждение пароля" value="">
                         <button class="btn btn--solid" type="submit" name="submit-password">Изменить пароль</button>
-                        <?php if (isset($data->updatePassword)) : ?>
-                            <h3>Пароль изменён!</h3>
-                        <?php endif ?>
                     </form>
                 </div>
                 <div class="profile-form__box">

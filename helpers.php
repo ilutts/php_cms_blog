@@ -27,7 +27,7 @@ function array_get(array $array, string $key, $default = null)
 /**
  * Подключение частей шаблона сайта с возможность передачи в них доп. параметров
  * @param string $templateName Название файла шаблона
- * @param $data Дополнительные параметры для шаблона
+ * @param $data Данные для вывода в шаблоне
  * @return Часть заданого шаблона
  */
 
@@ -38,6 +38,22 @@ function includeView(string $templateName, $data = null)
     if (file_exists($file)) {
         include $file;
     }
+}
+
+/**
+ * Вывод шаблона страницы сайта с данными
+ * @param string $fileMain адресс основной части страницы
+ * @param array $data Массив данных для вывода в шаблоне
+ * @return Страницу сайта
+ */
+
+function showTemplate(string $fileMain, array $data)
+{
+    includeView('templates/header.php', $data['header']);
+
+    includeView($fileMain, $data['main']);
+
+    includeView('templates/footer.php', $data['footer']);
 }
 
 /**

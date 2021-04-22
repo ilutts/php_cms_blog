@@ -4,7 +4,7 @@ namespace App\Service;
 
 use App\Config;
 
-class ConfigsServices
+class ConfigsService
 {
     public static function get()
     {
@@ -17,11 +17,9 @@ class ConfigsServices
         return $configs;
     }
 
-    public static function set()
+    public static function set(string $siteName, int $quantityPostMain, bool $mailingList)
     {
-        $siteName = htmlspecialchars($_POST['site_name'] ?? 'CMS-blog');
-        $quantityPostMain = intval($_POST['quantity_posts_main'] ?? 5);
-        $mailingList = isset($_POST['mailing_list']) ? 1 : 0;
+        $siteName = htmlspecialchars($siteName);
 
         if ($quantityPostMain > 0 && $quantityPostMain < 100) {
             Config::getInstance()->set('cms', 'quantity_posts_main', $quantityPostMain);
@@ -31,7 +29,7 @@ class ConfigsServices
             Config::getInstance()->set('cms', 'site_name', $siteName);
         }
 
-        Config::getInstance()->set('cms', 'mailing_list', $mailingList);
+        Config::getInstance()->set('cms', 'mailing_list', (int)$mailingList);
 
         Config::getInstance()->save('cms');
     }

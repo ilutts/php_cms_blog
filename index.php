@@ -24,14 +24,18 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/bootstrap.php');
 use App\Router;
 use App\Application;
 use App\Controller\AccountController;
-use App\Controller\AdminController;
+use App\Controller\Admin\AdminCommentController;
+use App\Controller\Admin\AdminPostController;
+use App\Controller\Admin\AdminSettingController;
+use App\Controller\Admin\AdminStaticPageController;
+use App\Controller\Admin\AdminUserController;
 use App\Controller\PostController;
 use App\Controller\SetupController;
 use App\Controller\StaticPageController;
 
 $router = new Router();
 
-$router->get('/', PostController::class . '@mainView');
+$router->get('/', PostController::class . '@postsView');
 $router->get('/post/*', PostController::class . '@postView');
 
 $router->get('/page/*', StaticPageController::class . '@pageView');
@@ -41,18 +45,18 @@ $router->get('/registration', AccountController::class . '@registrationView');
 $router->get('/profile', AccountController::class . '@profileView');
 $router->get('/unsubscribe/*/*', AccountController::class . '@unsubscribeView');
 
-$router->get('/admin', AdminController::class . '@mainView');
-$router->get('/admin/users', AdminController::class . '@usersView');
-$router->get('/admin/signeds', AdminController::class . '@signedsView');
-$router->get('/admin/comments', AdminController::class . '@commentsView');
-$router->get('/admin/statics', AdminController::class . '@staticsView');
-$router->get('/admin/settings', AdminController::class . '@settingsView');
+$router->get('/admin', AdminPostController::class . '@postsView');
+$router->get('/admin/users', AdminUserController::class . '@usersView');
+$router->get('/admin/signeds', AdminUserController::class . '@signedsView');
+$router->get('/admin/comments', AdminCommentController::class . '@commentsView');
+$router->get('/admin/statics', AdminStaticPageController::class . '@staticPagesView');
+$router->get('/admin/settings', AdminSettingController::class . '@settingsView');
 
 $router->get('/setup', SetupController::class . '@installDB');
 
-$router->get('/ajax/post/get', PostController::class . '@ajaxGetPost', 'post');
-$router->get('/ajax/user/get', AccountController::class . '@ajaxGetUser', 'post');
-$router->get('/ajax/page/get', StaticPageController::class . '@ajaxGetPage', 'post');
+$router->get('/ajax/post/get', AdminPostController::class . '@ajaxGetPost', 'post');
+$router->get('/ajax/user/get', AdminUserController::class . '@ajaxGetUser', 'post');
+$router->get('/ajax/static/get', AdminStaticPageController::class . '@ajaxGetStaticPage', 'post');
 
 $application = new Application($router);
 

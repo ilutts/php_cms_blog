@@ -14,14 +14,6 @@
         </div>
         <p class="list__text">Комментариев: <?= count($data->comments) ?></p>
         <div class="comment-box">
-            <form class="comment-box__form form" method="post">
-                <label class="comment-box__label label" for="new-comment">Оставить комментарий</label>
-                <textarea name="comment-new" id="comment-new" class="input input--textarea"></textarea>
-                <button class="btn btn--transparent" type="submit">Отправить</button>
-                <?php if (!empty($data->newСomment)) : ?>
-                    <h3><?= $data->newСomment ?></h3>
-                <?php endif ?>
-            </form>
             <ul class="comment-list">
                 <?php foreach ($data->comments as $id => $comment) : ?>
                     <li class="comment-list__item">
@@ -36,6 +28,14 @@
                     </li>
                 <?php endforeach ?>
             </ul>
+            <form class="comment-box__form form" method="post">
+                <label class="comment-box__label label" for="new-comment">Оставить комментарий</label>
+                <textarea name="comment-new" id="comment-new" class="input input--textarea"></textarea>
+                <button class="btn btn--transparent" type="submit">Отправить</button>
+                <?php if (!empty($data->newСomment)) : ?>
+                    <h3><?= $data->newСomment ?></h3>
+                <?php endif ?>
+            </form>
         </div>
     </div>
 </main>

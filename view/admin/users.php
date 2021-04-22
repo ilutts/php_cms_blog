@@ -2,7 +2,7 @@
     <div class="container">
         <h1 class="main__title">Пользователи - Админ-панель</h1>
         <div class="main-admin__header">
-            <?php if (isset($data->error)) : ?>
+            <?php if (isset($data['users']->error)) : ?>
                 <h2 class="main__message main__message--error">Ошибка отправки формы!</h2>
             <?php endif ?>
             <form class="main__form main__form--admin" method="GET">
@@ -25,7 +25,7 @@
                 <div class="list-admin__cell list-admin__cell--bold">Роли</div>
                 <div class="list-admin__cell list-admin__cell--bold">Статус</div>
             </li>
-            <?php foreach ($data as $user) : ?>
+            <?php foreach ($data['users'] as $user) : ?>
                 <li class="list-admin__item list-admin__item--main">
                     <div class="list-admin__cell list-admin__cell--id"><?= $user->id ?></div>
                     <div class="list-admin__cell list-admin__cell--email"><?= $user->email ?></div>
@@ -42,7 +42,7 @@
             <?php endforeach ?>
         </ul>
         <ul class="main__paginator paginator">
-            <?php for ($i = 1; $i <= $data->countPages; $i++) : ?>
+            <?php for ($i = 1; $i <= $data['count_pages']; $i++) : ?>
                 <li class="paginator__item">
                     <a class="paginator__link" <?= getStatusPage($i) ?>><?= $i ?></a>
                 </li>

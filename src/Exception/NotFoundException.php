@@ -2,8 +2,7 @@
 
 namespace App\Exception;
 
-use App\Model\Menu;
-use \App\View\Renderable;
+use App\View\Renderable;
 
 class NotFoundException extends HttpException implements Renderable
 {
@@ -13,14 +12,10 @@ class NotFoundException extends HttpException implements Renderable
 
         $data = [
             'header' => $this->getInfoForHeader(),
-            'error' => $this->getMessage() . ' :-(',
+            'main' => $this->getMessage() . ' :-(',
             'footer' => $this->getInfoForFooter()
         ];
 
-        includeView('templates/header.php', $data['header']);
-
-        includeView($file, $data['error']);
-
-        includeView('templates/footer.php', $data['footer']);
+        showTemplate($file, $data);
     }
 }

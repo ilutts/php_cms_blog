@@ -1,5 +1,5 @@
 <main class="main">
     <div class="container">
-        <h2><?= $data ?></h2>
-    </div> 
+        <h2 class="main__message"><b><?= $data ?></b></h2>
+    </div>
 </main>

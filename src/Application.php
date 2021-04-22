@@ -2,8 +2,10 @@
 
 namespace App;
 
+use App\Exception\DataBaseException;
 use App\View\Renderable;
 use Illuminate\Database\Capsule\Manager as Capsule;
+use Illuminate\Database\QueryException;
 
 class Application
 {
@@ -15,10 +17,15 @@ class Application
         $this->router = $router;
     }
 
-    private function renderException(\Exception $e) 
+    private function renderException(\Exception $e)
     {
         if ($e instanceof Renderable) {
-           return $e->render();
+            return $e->render();
+        }
+
+        if ($e instanceof QueryException) {
+            echo 'Для корректной работы установите БД - <a href="/setup">Установить</a>';
+            return false;
         }
 
         $codeException =  $e->getCode();
@@ -34,16 +41,16 @@ class Application
     {
         $method = $_SERVER['REQUEST_METHOD'];
         $uri = $_SERVER['REQUEST_URI'];
-        
+
         try {
             $dispatch = $this->router->dispatch($method, $uri);
-            
+
             if ($dispatch instanceof Renderable) {
                 $dispatch->render();
             } else {
                 echo $dispatch;
             }
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $this->renderException($e);
         }
     }

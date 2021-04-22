@@ -2,15 +2,12 @@
 
 namespace App\Controller;
 
-use App\Model\Role;
-use App\Model\UnregisteredSubscriber;
 use App\Model\UnregisteredSubscriberRepository;
 use App\Model\User;
 use App\Model\UserRepository;
-use App\Service\Authorization;
-use App\Service\RegistrationUser;
-use App\Service\UpdateUser;
-use App\View\JsonView;
+use App\Service\AuthorizationService;
+use App\Service\RegistrationUserService;
+use App\Service\UpdateUserService;
 use App\View\View;
 use stdClass;
 
@@ -19,8 +16,7 @@ class AccountController extends Controller
     public function loginView()
     {
         if (!empty($_POST['login']) && !empty($_POST['password'])) {
-            $auth = new Authorization($_POST['login'], $_POST['password']);
-            $auth->login();
+            AuthorizationService::login($_POST['login'], $_POST['password']);
         }
 
         return new View('login', [
@@ -33,8 +29,14 @@ class AccountController extends Controller
     public function registrationView()
     {
         if (isset($_POST['submit-reg'])) {
-            $registration = new RegistrationUser();
-            $info = $registration->new();
+            $registration = new RegistrationUserService();
+            $info = $registration->add(
+                $_POST['name'],
+                $_POST['email'],
+                $_POST['password1'],
+                $_POST['password2'],
+                isset($_POST['rule'])
+            );
         }
 
         return new View('registration', [
@@ -50,17 +52,26 @@ class AccountController extends Controller
             $user = User::find($_SESSION['user']['id']);
 
             if (isset($_POST['submit-info'])) {
-                $updateUser = new UpdateUser($user);
-                $user = $updateUser->info();
+                $updateUser = new UpdateUserService($user);
+                $user = $updateUser->info(
+                    $_POST['name'] ?? '',
+                    $_POST['email'] ?? '',
+                    $_POST['about'] ?? '',
+                    $_FILES['image'] ?? [],
+                );
             }
 
             if (isset($_POST['submit-password'])) {
-                $updateUser = new UpdateUser($user);
-                $user = $updateUser->password();
+                $updateUser = new UpdateUserService($user);
+                $user = $updateUser->password(
+                    $_POST['password_old'] ?? '',
+                    $_POST['password1'] ?? '',
+                    $_POST['password2'] ?? '',
+                );
             }
 
             if (isset($_POST['submit-signed'])) {
-                $updateUser = new UpdateUser($user);
+                $updateUser = new UpdateUserService($user);
                 $user = $updateUser->signed();
             }
         }
@@ -99,16 +110,5 @@ class AccountController extends Controller
             'main' => $data,
             'footer' => $this->getInfoForFooter(),
         ]);
-    }
-
-    public function ajaxGetUser()
-    {
-        $id = intval($_POST['id'] ?? 0);
-        if ($id) {
-            $user = User::where('id', $id)->with('roles')->first();
-            $user->allroles = Role::all();
-
-            return new JsonView($user);
-        }
     }
 }

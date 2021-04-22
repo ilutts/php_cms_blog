@@ -22,7 +22,7 @@
                 <div class="list-admin__cell list-admin__cell--bold">Дата обновления</div>
                 <div class="list-admin__cell list-admin__cell--bold">Статус подписки</div>
             </li>
-            <?php foreach ($data['registeredUsers'] as $user) : ?>
+            <?php foreach ($data['registered_users'] as $user) : ?>
                 <li class="list-admin__item list-admin__item--signed">
                     <div class="list-admin__cell list-admin__cell--id"><?= $user->id ?></div>
                     <div class="list-admin__cell list-admin__cell--email"><?= $user->email ?></div>
@@ -46,7 +46,7 @@
                 <div class="list-admin__cell list-admin__cell--bold">Дата обновления</div>
                 <div class="list-admin__cell list-admin__cell--bold">Статус подписки</div>
             </li>
-            <?php foreach ($data['unregisteredUsers'] as $user) : ?>
+            <?php foreach ($data['unregistered_users'] as $user) : ?>
                 <li class="list-admin__item list-admin__item--signed">
                     <div class="list-admin__cell list-admin__cell--id"><?= $user->id ?></div>
                     <div class="list-admin__cell list-admin__cell--email"><?= $user->email ?></div>
@@ -59,10 +59,10 @@
                     </form>
                 </li>
             <?php endforeach ?>
-        </ul>        
+        </ul>
 
         <ul class="main__paginator paginator">
-            <?php for ($i = 1; $i <= $data['countPages']; $i++) : ?>
+            <?php for ($i = 1; $i <= $data['count_pages']; $i++) : ?>
                 <li class="paginator__item">
                     <a class="paginator__link" <?= getStatusPage($i) ?>><?= $i ?></a>
                 </li>

@@ -5,27 +5,23 @@ namespace App\Service;
 use App\Config;
 use App\Model\Post;
 
-class MailServices
+class MailService
 {
     private string $title;
     private string $shortDescription;
     private string $link;
 
-    public function __construct(Post $post)
+    public function send(Post $post)
     {
         $this->title = $post->title;
         $this->shortDescription = $post->short_description;
         $this->link = ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/post/' . $post->id;
-    }
-
-    public function send()
-    {
 
         if (!Config::getInstance()->get('cms.mailing_list')) {
             return false;
         }
 
-        $subscriber = SubscriberServices::getForMailing();
+        $subscriber = SubscriberService::getForMailing();
 
         foreach ($subscriber['unregistered'] as $user) {
             $this->sendMailForUser($user, 'unreg');
