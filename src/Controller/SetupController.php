@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Service\SetupServices;
+use App\Service\SetupService;
 use App\View\View;
 
 class SetupController extends Controller
@@ -12,7 +12,7 @@ class SetupController extends Controller
         $text = 'Успешная начальная настройка БД!';
 
         try {
-            SetupServices::installDB();
+            SetupService::installDB();
         } catch (\Exception $e) {
             $text = 'Ошибка начальной настройки БД! - ' . $e->getMessage();
         }
