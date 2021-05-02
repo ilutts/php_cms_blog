@@ -8,7 +8,6 @@ use App\Model\User;
 
 class SubscriberService
 {
-    private string $email;
     private string $success;
     private array $error = [];
 
@@ -42,10 +41,10 @@ class SubscriberService
 
     public function newUnregistered(string $email)
     {
-        $this->email = htmlspecialchars($email);
+        $email = strip_tags($email);
 
-        if ($this->validate()) {
-            $unregisteredSubscriber = UnregisteredSubscriberRepository::add($this->email);
+        if ($this->validate($email)) {
+            $unregisteredSubscriber = UnregisteredSubscriberRepository::add($email);
 
             if ($unregisteredSubscriber->wasRecentlyCreated) {
                 $this->success = 'Спасибо за подписку!';
@@ -55,10 +54,10 @@ class SubscriberService
         }
     }
 
-    private function validate(): bool
+    private function validate(string $email): bool
     {
         $validateServices = new ValidateService();
-        $validateServices->checkEmail($this->email);
+        $validateServices->checkEmail($email);
 
         if ($validateServices->getError()) {
             $this->error = $validateServices->getError();

@@ -4,9 +4,11 @@
         <div class="list__item">
             <div class="list__box">
                 <h2 class="list__title"><?= $data->title ?></h2>
-                <p class="list__text"><?= $data->short_description ?></p>
+                <p class="list__text list__text--short-decription"><?= $data->short_description ?></p>
                 <p class="list__text"><?= $data->description ?></p>
-                <p class="list__text">Дата публикации: <?= $data->created_at ?></p>
+                <div class="list__box-footer">
+                    <p class="list__text">Дата публикации: <?= $data->created_at ?></p>
+                </div>
             </div>
             <div class="list__box">
                 <img class="list__image" src="<?= $data->image ?>" alt="<?= $data->title ?>">

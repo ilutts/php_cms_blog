@@ -25,9 +25,14 @@ class UnregisteredSubscriberRepository extends Repository
         ]);
     }
 
-    public static function delete(string $email)
+    public static function deleteByEmail(string $email)
     {
         UnregisteredSubscriber::where('email', $email)->delete();
+    }
+
+    public static function deleteById(int $id)
+    {
+        UnregisteredSubscriber::destroy($id);
     }
 
     public static function update(int $id, array $data)

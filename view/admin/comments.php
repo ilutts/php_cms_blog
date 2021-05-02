@@ -33,6 +33,7 @@
                         <input type="hidden" name="id" value="<?= $comment->id ?>">
                         <input type="hidden" name="approved" value="<?= $comment->approved ?>">
                         <button type="submit" name="comment_approved" class="btn <?= $comment->approved ? 'btn--solid' : 'btn--transparent' ?>"><?= $comment->approved ? 'Одобрен' : 'Не одобрен' ?></button>
+                        <button type="submit" name="delete_comment" class="btn btn--transparent btn-post-delete">Удалить</button>
                     </form>
                 </li>
             <?php endforeach ?>

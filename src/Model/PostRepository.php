@@ -15,7 +15,7 @@ class PostRepository extends Repository
                 $table->string('short_description');
                 $table->longText('description');
                 $table->integer('user_id')->unsigned();
-                $table->foreign('user_id')->references('id')->on('users');
+                $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
                 $table->boolean('actived')->default(0);
                 $table->string('image')->default('/img/post/post-no-img.png');
                 $table->timestamps();
@@ -38,5 +38,10 @@ class PostRepository extends Repository
     public static function update(int $id, array $data)
     {
         return Post::where('id', $id)->update($data);
+    }
+
+    public static function delete(int $id)
+    {
+        return Post::destroy($id);
     }
 }

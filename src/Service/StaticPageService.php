@@ -28,71 +28,66 @@ class StaticPageService
         return StaticPage::skip($numberSkipItems)->take($maxItemsOnPage)->get();
     }
 
-    public function add(string $title, string $name, string $body, bool $actived, string $btnType)
+    public function add(string $title, string $name, string $body, bool $actived = true)
     {
-        $this->title = htmlspecialchars($title);
-        $this->name = htmlspecialchars($name);
-        $this->body = htmlspecialchars($body);
-        $this->actived = $actived;
-        $this->btnType = htmlspecialchars($btnType);
+        $title = strip_tags($title);
+        $name = strip_tags($name);
+        $body = strip_tags($body);
 
-        if ($this->btnType === 'new' && $this->validate()) {
+        if ($this->validate($title, $name, $body)) {
 
             $page = StaticPageRepository::add(
-                $this->title,
-                $this->name,
-                $this->body,
-                $this->actived
+                $title,
+                $body,
+                $name,
+                $actived
             );
 
-            if ($this->actived) {
-                MenuRepository::add($this->title, '/page/' . $this->name, $page->id);
+            if ($actived) {
+                MenuRepository::add($title, '/page/' . $name, $page->id);
             }
         }
     }
 
-    public function update(int $id, string $title, string $name, string $body, bool $actived, string $btnType)
+    public function update(int $id, string $title, string $name, string $body, bool $actived)
     {
-        $this->id = $id;
-        $this->title = htmlspecialchars($title);
-        $this->name = htmlspecialchars($name);
-        $this->body = htmlspecialchars($body);
-        $this->actived = $actived;
-        $this->btnType = htmlspecialchars($btnType);
+        $title = strip_tags($title);
+        $name = strip_tags($name);
+        $body = strip_tags($body);
 
-        if ($this->btnPost === 'change' && $this->validate()) {
+        if ($this->validate($title, $name, $body)) {
             $data = [
-                'title' => $this->title,
-                'name' => $this->name,
-                'body' => $this->body,
-                'actived' => $this->actived
+                'title' => $title,
+                'name' => $name,
+                'body' => $body,
+                'actived' => $actived
             ];
 
             StaticPageRepository::update(
-                $this->id,
+                $id,
                 $data,
             );
 
-            if (Menu::where('static_page_id', $this->id)->exists()) {
-                if (!$this->actived) {
-                    MenuRepository::delete($this->id);
+            if (Menu::where('static_page_id', $id)->exists()) {
+                if (!$actived) {
+                    MenuRepository::delete($id);
                 }
             } else {
-                if ($this->actived) {
-                    MenuRepository::add($this->title, '/page/' . $this->name, $this->id);
+                if ($actived) {
+                    MenuRepository::add($title, '/page/' . $name, $id);
                 }
             }
         }
     }
 
-    private function validate(): bool
+    private function validate(string $title, string $name, string $body): bool
     {
         $validateService = new ValidateService();
 
-        $validateService->checkText($this->title, 'title');
-        $validateService->checkText($this->name, 'name');
-        $validateService->checkTextForLink($this->name, 'name');
-        $validateService->checkText($this->body, 'body');
+        $validateService->checkText($title, 'title');
+        $validateService->checkText($name, 'name');
+        $validateService->checkTextForLink($name, 'name');
+        $validateService->checkText($body, 'body');
 
         if ($validateService->getError()) {
             $this->error = $validateService->getError();

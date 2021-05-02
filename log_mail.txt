@@ -14,3 +14,371 @@ fgfgfg
 -------
 <a href="http://localhost/unsubscribe/unreg/2">Отписаться от рассылки</a>
 
+2021-04-23 01:19:04 Отправка письма - 123@123.ru
+На сайте добавлена новая запись: Test2
+Новая статья: Test2,
+432423
+<a href="http://localhost/post/5">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/unreg/1">Отписаться от рассылки</a>
+
+2021-04-23 01:19:04 Отправка письма - 321@312.ru
+На сайте добавлена новая запись: Test2
+Новая статья: Test2,
+432423
+<a href="http://localhost/post/5">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/unreg/2">Отписаться от рассылки</a>
+
+2021-04-23 01:19:04 Отправка письма - admin@admin.ru
+На сайте добавлена новая запись: Test2
+Новая статья: Test2,
+432423
+<a href="http://localhost/post/5">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/reg/1">Отписаться от рассылки</a>
+
+2021-04-23 01:19:04 Отправка письма - test@test.ru
+На сайте добавлена новая запись: Test2
+Новая статья: Test2,
+432423
+<a href="http://localhost/post/5">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/reg/2">Отписаться от рассылки</a>
+
+2021-04-23 01:19:13 Отправка письма - 123@123.ru
+На сайте добавлена новая запись: dfgdfgdfg
+Новая статья: dfgdfgdfg,
+dfgdfgdfg
+<a href="http://localhost/post/6">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/unreg/1">Отписаться от рассылки</a>
+
+2021-04-23 01:19:13 Отправка письма - 321@312.ru
+На сайте добавлена новая запись: dfgdfgdfg
+Новая статья: dfgdfgdfg,
+dfgdfgdfg
+<a href="http://localhost/post/6">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/unreg/2">Отписаться от рассылки</a>
+
+2021-04-23 01:19:13 Отправка письма - admin@admin.ru
+На сайте добавлена новая запись: dfgdfgdfg
+Новая статья: dfgdfgdfg,
+dfgdfgdfg
+<a href="http://localhost/post/6">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/reg/1">Отписаться от рассылки</a>
+
+2021-04-23 01:19:13 Отправка письма - test@test.ru
+На сайте добавлена новая запись: dfgdfgdfg
+Новая статья: dfgdfgdfg,
+dfgdfgdfg
+<a href="http://localhost/post/6">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/reg/2">Отписаться от рассылки</a>
+
+2021-04-23 01:19:21 Отправка письма - 123@123.ru
+На сайте добавлена новая запись: cbcvbcvb
+Новая статья: cbcvbcvb,
+cvbcvbcvb
+<a href="http://localhost/post/7">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/unreg/1">Отписаться от рассылки</a>
+
+2021-04-23 01:19:21 Отправка письма - 321@312.ru
+На сайте добавлена новая запись: cbcvbcvb
+Новая статья: cbcvbcvb,
+cvbcvbcvb
+<a href="http://localhost/post/7">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/unreg/2">Отписаться от рассылки</a>
+
+2021-04-23 01:19:21 Отправка письма - admin@admin.ru
+На сайте добавлена новая запись: cbcvbcvb
+Новая статья: cbcvbcvb,
+cvbcvbcvb
+<a href="http://localhost/post/7">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/reg/1">Отписаться от рассылки</a>
+
+2021-04-23 01:19:21 Отправка письма - test@test.ru
+На сайте добавлена новая запись: cbcvbcvb
+Новая статья: cbcvbcvb,
+cvbcvbcvb
+<a href="http://localhost/post/7">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/reg/2">Отписаться от рассылки</a>
+
+2021-04-23 01:20:42 Отправка письма - 123@123.ru
+На сайте добавлена новая запись: fdsfsdf
+Новая статья: fdsfsdf,
+dfhgfh
+<a href="http://localhost/post/8">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/unreg/1">Отписаться от рассылки</a>
+
+2021-04-23 01:20:42 Отправка письма - 321@312.ru
+На сайте добавлена новая запись: fdsfsdf
+Новая статья: fdsfsdf,
+dfhgfh
+<a href="http://localhost/post/8">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/unreg/2">Отписаться от рассылки</a>
+
+2021-04-23 01:20:42 Отправка письма - admin@admin.ru
+На сайте добавлена новая запись: fdsfsdf
+Новая статья: fdsfsdf,
+dfhgfh
+<a href="http://localhost/post/8">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/reg/1">Отписаться от рассылки</a>
+
+2021-04-23 01:20:42 Отправка письма - test@test.ru
+На сайте добавлена новая запись: fdsfsdf
+Новая статья: fdsfsdf,
+dfhgfh
+<a href="http://localhost/post/8">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/reg/2">Отписаться от рассылки</a>
+
+2021-04-23 01:20:55 Отправка письма - 123@123.ru
+На сайте добавлена новая запись: sdadasd
+Новая статья: sdadasd,
+asdasda
+<a href="http://localhost/post/9">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/unreg/1">Отписаться от рассылки</a>
+
+2021-04-23 01:20:55 Отправка письма - 321@312.ru
+На сайте добавлена новая запись: sdadasd
+Новая статья: sdadasd,
+asdasda
+<a href="http://localhost/post/9">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/unreg/2">Отписаться от рассылки</a>
+
+2021-04-23 01:20:55 Отправка письма - admin@admin.ru
+На сайте добавлена новая запись: sdadasd
+Новая статья: sdadasd,
+asdasda
+<a href="http://localhost/post/9">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/reg/1">Отписаться от рассылки</a>
+
+2021-04-23 01:20:55 Отправка письма - test@test.ru
+На сайте добавлена новая запись: sdadasd
+Новая статья: sdadasd,
+asdasda
+<a href="http://localhost/post/9">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/reg/2">Отписаться от рассылки</a>
+
+2021-04-23 01:21:00 Отправка письма - 123@123.ru
+На сайте добавлена новая запись: asdasd
+Новая статья: asdasd,
+asdasd
+<a href="http://localhost/post/10">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/unreg/1">Отписаться от рассылки</a>
+
+2021-04-23 01:21:00 Отправка письма - 321@312.ru
+На сайте добавлена новая запись: asdasd
+Новая статья: asdasd,
+asdasd
+<a href="http://localhost/post/10">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/unreg/2">Отписаться от рассылки</a>
+
+2021-04-23 01:21:00 Отправка письма - admin@admin.ru
+На сайте добавлена новая запись: asdasd
+Новая статья: asdasd,
+asdasd
+<a href="http://localhost/post/10">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/reg/1">Отписаться от рассылки</a>
+
+2021-04-23 01:21:00 Отправка письма - test@test.ru
+На сайте добавлена новая запись: asdasd
+Новая статья: asdasd,
+asdasd
+<a href="http://localhost/post/10">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/reg/2">Отписаться от рассылки</a>
+
+2021-04-23 01:23:02 Отправка письма - 123@123.ru
+На сайте добавлена новая запись: asdasd
+Новая статья: asdasd,
+asdasd
+<a href="http://localhost/post/11">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/unreg/1">Отписаться от рассылки</a>
+
+2021-04-23 01:23:02 Отправка письма - 321@312.ru
+На сайте добавлена новая запись: asdasd
+Новая статья: asdasd,
+asdasd
+<a href="http://localhost/post/11">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/unreg/2">Отписаться от рассылки</a>
+
+2021-04-23 01:23:02 Отправка письма - admin@admin.ru
+На сайте добавлена новая запись: asdasd
+Новая статья: asdasd,
+asdasd
+<a href="http://localhost/post/11">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/reg/1">Отписаться от рассылки</a>
+
+2021-04-23 01:23:02 Отправка письма - test@test.ru
+На сайте добавлена новая запись: asdasd
+Новая статья: asdasd,
+asdasd
+<a href="http://localhost/post/11">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/reg/2">Отписаться от рассылки</a>
+
+2021-05-02 12:29:28 Отправка письма - 123@123.ru
+На сайте добавлена новая запись: Проба пера
+Новая статья: Проба пера,
+Проба пера новая
+<a href="http://localhost/post/4">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/unreg/1">Отписаться от рассылки</a>
+
+2021-05-02 12:29:28 Отправка письма - 321@312.ru
+На сайте добавлена новая запись: Проба пера
+Новая статья: Проба пера,
+Проба пера новая
+<a href="http://localhost/post/4">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/unreg/2">Отписаться от рассылки</a>
+
+2021-05-02 13:14:00 Отправка письма - 123@123.ru
+На сайте добавлена новая запись: Test3
+Новая статья: Test3,
+Test3
+<a href="http://localhost/post/5">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/unreg/1">Отписаться от рассылки</a>
+
+2021-05-02 13:14:00 Отправка письма - 321@312.ru
+На сайте добавлена новая запись: Test3
+Новая статья: Test3,
+Test3
+<a href="http://localhost/post/5">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/unreg/2">Отписаться от рассылки</a>
+
+2021-05-02 13:16:15 Отправка письма - 123@123.ru
+На сайте добавлена новая запись: авав
+Новая статья: авав,
+вавав
+<a href="http://localhost/post/6">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/unreg/1">Отписаться от рассылки</a>
+
+2021-05-02 13:16:15 Отправка письма - 321@312.ru
+На сайте добавлена новая запись: авав
+Новая статья: авав,
+вавав
+<a href="http://localhost/post/6">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/unreg/2">Отписаться от рассылки</a>
+
+2021-05-02 13:39:15 Отправка письма - 123@123.ru
+На сайте добавлена новая запись: парапрапр
+Новая статья: парапрапр,
+апрапра
+<a href="http://localhost/post/7">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/unreg/1">Отписаться от рассылки</a>
+
+2021-05-02 13:39:15 Отправка письма - 321@312.ru
+На сайте добавлена новая запись: парапрапр
+Новая статья: парапрапр,
+апрапра
+<a href="http://localhost/post/7">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/unreg/2">Отписаться от рассылки</a>
+
+2021-05-02 13:49:37 Отправка письма - 123@123.ru
+На сайте добавлена новая запись: gfdgfdgdfg
+Новая статья: gfdgfdgdfg,
+dfgfdgfdg
+<a href="http://localhost/post/8">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/unreg/1">Отписаться от рассылки</a>
+
+2021-05-02 13:49:37 Отправка письма - 321@312.ru
+На сайте добавлена новая запись: gfdgfdgdfg
+Новая статья: gfdgfdgdfg,
+dfgfdgfdg
+<a href="http://localhost/post/8">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/unreg/2">Отписаться от рассылки</a>
+
+2021-05-02 13:56:34 Отправка письма - 123@123.ru
+На сайте добавлена новая запись: hgjghjhg
+Новая статья: hgjghjhg,
+jhgjghj
+<a href="http://localhost/post/9">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/unreg/1">Отписаться от рассылки</a>
+
+2021-05-02 13:56:34 Отправка письма - 321@312.ru
+На сайте добавлена новая запись: hgjghjhg
+Новая статья: hgjghjhg,
+jhgjghj
+<a href="http://localhost/post/9">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/unreg/2">Отписаться от рассылки</a>
+
+2021-05-02 13:58:19 Отправка письма - 123@123.ru
+На сайте добавлена новая запись: m,n,nm
+Новая статья: m,n,nm,
+mn,nm,
+<a href="http://localhost/post/10">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/unreg/1">Отписаться от рассылки</a>
+
+2021-05-02 13:58:19 Отправка письма - 321@312.ru
+На сайте добавлена новая запись: m,n,nm
+Новая статья: m,n,nm,
+mn,nm,
+<a href="http://localhost/post/10">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/unreg/2">Отписаться от рассылки</a>
+
+2021-05-02 13:59:24 Отправка письма - 123@123.ru
+На сайте добавлена новая запись: ghfhfghfg
+Новая статья: ghfhfghfg,
+fghfghfg
+<a href="http://localhost/post/11">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/unreg/1">Отписаться от рассылки</a>
+
+2021-05-02 13:59:24 Отправка письма - 321@312.ru
+На сайте добавлена новая запись: ghfhfghfg
+Новая статья: ghfhfghfg,
+fghfghfg
+<a href="http://localhost/post/11">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/unreg/2">Отписаться от рассылки</a>
+
+2021-05-02 14:05:41 Отправка письма - 123@123.ru
+На сайте добавлена новая запись: gdfgdfgdfg
+Новая статья: gdfgdfgdfg,
+fdgdfgdfg
+<a href="http://localhost/post/12">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/unreg/1">Отписаться от рассылки</a>
+
+2021-05-02 14:05:41 Отправка письма - 321@312.ru
+На сайте добавлена новая запись: gdfgdfgdfg
+Новая статья: gdfgdfgdfg,
+fdgdfgdfg
+<a href="http://localhost/post/12">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/unreg/2">Отписаться от рассылки</a>
+

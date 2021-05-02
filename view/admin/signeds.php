@@ -4,7 +4,7 @@
         <div class="main-admin__header">
             <form class="main__form main__form--admin" method="GET">
                 <label for="form__select-quantity">Пользователей на странице:</label>
-                <select id="form__select-quantity" name="quantity" class="input">
+                <select id="form__select-quantity" name="quantity" class="input input--main-admin">
                     <option value="10">10</option>
                     <option value="20" selected>20</option>
                     <option value="50">50</option>
@@ -56,6 +56,7 @@
                         <input type="hidden" name="id" value="<?= $user->id ?>">
                         <input type="hidden" name="signed" value="<?= $user->signed ?>">
                         <button type="submit" name="unreg_user" class="btn <?= $user->signed ? 'btn--solid' : 'btn--transparent' ?>"><?= $user->signed ? 'Вкл' : 'Выкл' ?></button>
+                        <button type="submit" name="delete_unreg_signed" class="btn btn--transparent btn-post-delete">Удалить</button>
                     </form>
                 </li>
             <?php endforeach ?>

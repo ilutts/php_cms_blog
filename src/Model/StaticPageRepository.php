@@ -34,4 +34,9 @@ class StaticPageRepository extends Repository
     {
         return StaticPage::where('id', $id)->update($data);
     }
+
+    public static function delete(int $id)
+    {
+        return StaticPage::destroy($id);
+    }
 }

@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Config;
 use App\Model\Post;
+use App\Model\PostRepository;
 use App\Service\PaginationService;
 use App\Service\PostService;
 use App\View\JsonView;
@@ -13,7 +14,11 @@ class AdminPostController extends AdminController
 {
     public function postsView()
     {
-        $this->checkAccess([1, 2]);
+        $this->checkAccess([ADMIN_GROUP, CONTENT_MANAGER_GROUP]);
+
+        if (isset($_POST['delete_post']) && Post::findOrFail((int)$_POST['id'])) {
+            PostRepository::delete((int)$_POST['id']);
+        }
 
         if (isset($_POST['submit_post'])) {
             $postServices = new PostService();
@@ -26,7 +31,6 @@ class AdminPostController extends AdminController
                     $_SESSION['user']['id'],
                     $_FILES['image'] ?? [],
                     isset($_POST['post_actived']),
-                    $_POST['submit_post'] ?? '',
                 );
             }
 
@@ -39,7 +43,6 @@ class AdminPostController extends AdminController
                     $_SESSION['user']['id'],
                     $_FILES['image'] ?? [],
                     isset($_POST['post_actived']),
-                    $_POST['submit_post'] ?? '',
                 );
             }
         }

@@ -20,6 +20,10 @@ class AdminUserController extends AdminController
     {
         $this->checkAccess();
 
+        if (isset($_POST['delete_user']) && User::findOrFail((int)$_POST['id']) && (int)$_POST['id'] !== ADMIN_ID) {
+            UserRepository::delete((int)$_POST['id']);
+        }
+
         if (isset($_POST['submit_user'])) {
             $user = User::findOrFail((int)$_POST['id']);
             $updateUser = new UpdateUserService($user);
@@ -70,8 +74,16 @@ class AdminUserController extends AdminController
     {
         $this->checkAccess();
 
+        if (isset($_POST['delete_unreg_signed']) && UnregisteredSubscriber::findOrFail((int)$_POST['id'])) {
+            UnregisteredSubscriberRepository::deleteById((int)$_POST['id']);
+        }
+
         if (isset($_POST['reg_user'])) {
             UserRepository::update((int)$_POST['id'], ['signed' => !(int)$_POST['signed']]);
+
+            if ((int)$_SESSION['user']['id'] === (int)$_POST['id']) {
+                $_SESSION['user']['signed'] = !$_SESSION['user']['signed'];
+            }
         }
 
         if (isset($_POST['unreg_user'])) {

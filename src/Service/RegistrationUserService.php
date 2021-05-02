@@ -9,33 +9,26 @@ use App\Model\UserRepository;
 
 class RegistrationUserService
 {
-    private string $name;
-    private string $email;
-    private string $password1;
-    private string $password2;
-    private bool $rule;
-
     private array $error = [];
 
     public function add(string $name, string $email, string $password1, string $password2, bool $rule)
     {
-        $this->name = htmlspecialchars($name);
-        $this->email = htmlspecialchars($email);
-        $this->password1 = htmlspecialchars($password1);
-        $this->password2 = htmlspecialchars($password2);
-        $this->rule = $rule;
+        $name = strip_tags($name);
+        $email = strip_tags($email);
+        $password1 = strip_tags($password1);
+        $password2 = strip_tags($password2);
 
-        if ($this->validate()) {
-            $newUser = UserRepository::add($this->email, password_hash($this->password1, PASSWORD_DEFAULT), $this->name);
+        if ($this->validate($name, $email, $password1, $password2, $rule)) {
+            $newUser = UserRepository::add($email, password_hash($password1, PASSWORD_DEFAULT), $name);
 
             if ($newUser->wasRecentlyCreated) {
-                if (UnregisteredSubscriber::where('email', $this->email)->exists()) {
+                if (UnregisteredSubscriber::where('email', $email)->exists()) {
                     UserRepository::update($newUser->id, ['signed' => 1]);
-                    UnregisteredSubscriberRepository::delete($this->email);
+                    UnregisteredSubscriberRepository::deleteByEmail($email);
                 }
 
-                RoleUserRepository::add($newUser->id, 3);
-                AuthorizationService::login($this->email, $this->password1);
+                RoleUserRepository::add($newUser->id, REGISTERED_USER_GROUP);
+                AuthorizationService::login($email, $password1);
             } else {
                 $this->error['email'] = 'Почта уже использовалась ранее!';
             }
@@ -44,19 +37,19 @@ class RegistrationUserService
         return $this->error ? (object)$this->error : [];
     }
 
-    private function validate(): bool
+    private function validate(string $name, string $email, string $password1, string $password2, bool $rule): bool
     {
         $validateService = new ValidateService();
 
-        $validateService->checkText($this->name, 'name', 3);
-        $validateService->checkEmail($this->email);
-        $validateService->checkPassword($this->password1, $this->password2);
-        $validateService->checkRule($this->rule);
+        $validateService->checkText($name, 'name', 3);
+        $validateService->checkEmail($email);
+        $validateService->checkPassword($password1, $password2);
+        $validateService->checkRule($rule);
 
         if ($validateService->getError()) {
             $this->error = $validateService->getError();
-            $this->error['nameOldValue'] = $this->name;
-            $this->error['emailOldValue'] = $this->email;
+            $this->error['nameOldValue'] = $name;
+            $this->error['emailOldValue'] = $email;
             return false;
         }
 

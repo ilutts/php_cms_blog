@@ -2,7 +2,9 @@
 
 namespace App\Controller\Admin;
 
+use App\Model\MenuRepository;
 use App\Model\StaticPage;
+use App\Model\StaticPageRepository;
 use App\Service\PaginationService;
 use App\Service\StaticPageService;
 use App\View\JsonView;
@@ -12,7 +14,12 @@ class AdminStaticPageController extends AdminController
 {
     public function staticPagesView()
     {
-        $this->checkAccess([1, 2]);
+        $this->checkAccess([ADMIN_GROUP, CONTENT_MANAGER_GROUP]);
+
+        if (isset($_POST['delete_page']) && StaticPage::findOrFail((int)$_POST['id'])) {
+            StaticPageRepository::delete((int)$_POST['id']);
+            MenuRepository::delete((int)$_POST['id']);
+        }
 
         if (isset($_POST['submit_post'])) {
             $staticPageServices = new StaticPageService();
@@ -22,8 +29,6 @@ class AdminStaticPageController extends AdminController
                     $_POST['title'] ?? '',
                     $_POST['name'] ?? '',
                     $_POST['body'] ?? '',
-                    boolval($_POST['post_actived'] ?? 0),
-                    $_POST['submit_post'] ?? '',
                 );
             }
 
@@ -34,7 +39,6 @@ class AdminStaticPageController extends AdminController
                     $_POST['name'] ?? '',
                     $_POST['body'] ?? '',
                     boolval($_POST['post_actived'] ?? 0),
-                    $_POST['submit_post'] ?? '',
                 );
             }
         }

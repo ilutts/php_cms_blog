@@ -45,4 +45,9 @@ class UserRepository extends Repository
     {
         return User::where('id', $id)->update($data);
     }
+
+    public static function delete(int $id)
+    {
+        return User::destroy($id);
+    }
 }

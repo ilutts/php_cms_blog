@@ -35,6 +35,7 @@ function ajaxPopupAdminPost(form, formData, popupImg) {
 function ajaxPopupAdminStaticPage(form, formData) {
   form.submit_post.textContent = 'Изменить';
   form.submit_post.value = 'change';
+  form.querySelector('.label--admin-static').style.display = 'block';
 
   fetch('/ajax/static/get', {
     method: 'POST',
@@ -108,6 +109,12 @@ function appBlog() {
     const btnNew = document.querySelector('.btn-new');
     const inputImg = document.querySelector('#popup_image');
     const popupImg = popup.querySelector('.popup__image');
+    const popupBtnClose = popup.querySelector('.popup__close');
+
+    popupBtnClose.addEventListener('click', () => {
+      popup.style.display = 'none';
+      formPopup.reset();
+    });
 
     popup.addEventListener('click', (event) => {
       if (event.target == popup) {
@@ -124,7 +131,7 @@ function appBlog() {
       if (event.target.classList.contains('btn-post-change')) {
         popup.style.display = 'flex';
 
-        const id = +event.target.parentElement.querySelector('.list-admin__cell--id').textContent;
+        const id = +event.target.parentElement.parentElement.querySelector('.list-admin__cell--id').textContent;
         const formData = new FormData();
         formData.append('id', id);
 
@@ -148,8 +155,13 @@ function appBlog() {
         formPopup.querySelector('.popup__id').textContent = 'Новая';
         formPopup.submit_post.textContent = 'Добавить';
         formPopup.submit_post.value = 'new';
+
         if (popupImg) {
           popupImg.setAttribute('src', '/img/post/post-no-img.png');
+        }
+
+        if (formPopup.classList.contains('form--admin-static')) {
+          formPopup.querySelector('.label--admin-static').style.display = 'none';
         }
       });
     }

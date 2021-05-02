@@ -23,9 +23,11 @@
                 <li class="list__item">
                     <div class="list__box">
                         <h2 class="list__title"><a href="/post/<?= $post->id ?>" class="link"><?= $post->title ?></a></h2>
-                        <p class="list__text"><?= $post->short_description ?></p>
-                        <p class="list__text">Дата публикации: <?= $post->created_at ?></p>
-                        <p class="list__text">Комментариев: <?= count($post->comments) ?></p>
+                        <p class="list__text list__text--short-decription"><?= $post->short_description ?></p>
+                        <div class="list__box-footer">
+                            <p class="list__text">Дата публикации: <?= $post->created_at ?></p>
+                            <p class="list__text">Комментариев: <?= count($post->comments) ?></p>
+                        </div>
                     </div>
                     <div class="list__box">
                         <img class="list__image" src="<?= $post->image ?>" alt="<?= $post->title ?>">

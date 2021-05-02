@@ -8,8 +8,6 @@ use App\Model\RoleUser;
 
 class CommentService
 {
-    private bool $approved = false;
-
     private string $error = '';
 
     public static function getForAdmin(int $numberSkipItems, int $maxItemsOnPage)
@@ -23,17 +21,17 @@ class CommentService
             return 'Вы не авторизованы';
         }
 
-        $text = htmlspecialchars($text);
-
+        $text = strip_tags($text);
+        $approved = false;
         $textSuccess = 'Комментарий будет добавлен после проверки';
 
-        if (RoleUser::where('user_id', $userId)->whereIn('role_id', [1, 2])->exists()) {
-            $this->approved = true;
+        if (RoleUser::where('user_id', $userId)->whereIn('role_id', [ADMIN_GROUP, CONTENT_MANAGER_GROUP])->exists()) {
+            $approved = true;
             $textSuccess = 'Комментарий добавлен';
         }
 
         if ($this->validate($text)) {
-            CommentRepository::add($text, $postId, $userId, $this->approved);
+            CommentRepository::add($text, $postId, $userId, $approved);
             return $textSuccess;
         }
 

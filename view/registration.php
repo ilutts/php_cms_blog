@@ -37,7 +37,7 @@
                 </div>
             </form>
         <?php } else { ?>
-            <h2>Спасибо за регистрацию, <?= $_SESSION['user']['name'] ?></h2>
+            <h2 class="main__message">Спасибо за регистрацию, <b><?= $_SESSION['user']['name'] ?></b></h2>
         <?php } ?>
     </div>
 </main>

@@ -8,7 +8,7 @@
             <?php endif ?>
             <form class="main__form main__form--admin" method="GET">
                 <label for="form__select-quantity">Статей на странице:</label>
-                <select id="form__select-quantity" name="quantity" class="input">
+                <select id="form__select-quantity" name="quantity" class="input input--main-admin">
                     <option value="10">10</option>
                     <option value="20" selected>20</option>
                     <option value="50">50</option>
@@ -34,7 +34,13 @@
                     <div class="list-admin__cell list-admin__cell--ending-at"><?= $post->updated_at ?></div>
                     <div class="list-admin__cell list-admin__cell--author"><?= $post->user->name ?></div>
                     <div class="list-admin__cell list-admin__cell--status"><?= $post->actived ? 'Вкл' : 'Выкл' ?></div>
-                    <button class="btn btn--transparent btn-post-change">Изменить</button>
+                    <div class="list-admin__cell">
+                        <button class="btn btn--transparent btn-post-change">Изменить</button>
+                        <form method="POST">
+                            <input type="hidden" name="id" value="<?= $post->id ?>">
+                            <button type="submit" class="btn btn--transparent btn-post-delete" name="delete_post">Удалить</button>
+                        </form>
+                    </div>
                 </li>
             <?php endforeach ?>
         </ul>
@@ -67,5 +73,6 @@
             <label class="label" for="post_actived">Показывать статью: <input type="checkbox" name="post_actived" id="post_actived"></label>
             <button class="btn btn--solid" type="submit" name="submit_post">Сохранить</button>
         </div>
+        <button type="button" class="popup__close" aria-label="Закрыть"></button>
     </form>
 </div>

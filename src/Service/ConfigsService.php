@@ -19,7 +19,7 @@ class ConfigsService
 
     public static function set(string $siteName, int $quantityPostMain, bool $mailingList)
     {
-        $siteName = htmlspecialchars($siteName);
+        $siteName = strip_tags($siteName);
 
         if ($quantityPostMain > 0 && $quantityPostMain < 100) {
             Config::getInstance()->set('cms', 'quantity_posts_main', $quantityPostMain);

@@ -2,17 +2,11 @@
 
 namespace App\Service;
 
-use App\Config;
 use App\Model\Post;
 use App\Model\PostRepository;
 
 class PostService
 {
-    private string $title;
-    private string $shortDescription;
-    private string $description;
-    private array $image;
-
     private array $error = [];
 
     public function getError()
@@ -32,21 +26,29 @@ class PostService
         }])->orderByDesc('id')->skip($numberSkipItems)->take($maxItemsOnPage)->get();
     }
 
-    public function add(string $title, string $shortDescription, string $description, int $userId, array $image, bool $actived, string $btnPost)
+    public function add(string $title, string $shortDescription, string $description, int $userId, array $image, bool $actived)
     {
-        $this->title = htmlspecialchars($title);
-        $this->shortDescription = htmlspecialchars($shortDescription);
-        $this->description = htmlspecialchars($description);
-        $this->image = $image;
+        $title = strip_tags($title);
+        $shortDescription = strip_tags($shortDescription);
+        $description = strip_tags($description);
 
-        if ($btnPost === 'new' && $this->validate()) {
+        if ($this->validate($title, $shortDescription, $description, $image ?? [])) {
+            if (!empty($image['name'])) {
+                move_uploaded_file(
+                    $image['tmp_name'],
+                    $_SERVER['DOCUMENT_ROOT'] . UPLOAD_POST_DIR . $image['name']
+                );
+    
+                $imageSrc = UPLOAD_POST_DIR . rawurlencode($image['name']);
+            }
+
             $post = PostRepository::add(
-                $this->title,
-                $this->shortDescription,
-                $this->description,
+                $title,
+                $shortDescription,
+                $description,
                 $userId,
                 $actived,
-                $this->image['new'] ?? '/img/post/post-no-img.png'
+                $imageSrc ?? '/img/post/post-no-img.png'
             );
 
             $mailServices = new MailService();
@@ -56,29 +58,28 @@ class PostService
         return $this->error;
     }
 
-    public function update(int $postId, string $title, string $shortDescription, string $description, int $userId, array $image, bool $actived, string $btnPost)
+    public function update(int $postId, string $title, string $shortDescription, string $description, int $userId, array $image, bool $actived)
     {
-        $this->title = htmlspecialchars($title);
-        $this->shortDescription = htmlspecialchars($shortDescription);
-        $this->description = htmlspecialchars($description);
-        $this->image = $image;
+        $title = strip_tags($title);
+        $shortDescription = strip_tags($shortDescription);
+        $description = strip_tags($description);
 
-        if ($btnPost === 'change' && $this->validate()) {
+        if ($this->validate($title, $shortDescription, $description, $image)) {
             $data = [
-                'title' => $this->title,
-                'short_description' => $this->shortDescription,
-                'description' => $this->description,
+                'title' => $title,
+                'short_description' => $shortDescription,
+                'description' => $description,
                 'user_id' => $userId,
                 'actived' => $actived
             ];
 
-            if (isset($this->image['new'])) {
+            if (!empty($image['name'])) {
                 move_uploaded_file(
-                    $this->image['tmp_name'],
-                    $_SERVER['DOCUMENT_ROOT'] . UPLOAD_POST_DIR . $this->image['name']
+                    $image['tmp_name'],
+                    $_SERVER['DOCUMENT_ROOT'] . UPLOAD_POST_DIR . $image['name']
                 );
 
-                $data['image'] = UPLOAD_POST_DIR . $this->image['name'];
+                $data['image'] = UPLOAD_POST_DIR . rawurlencode($image['name']);
             }
 
             PostRepository::update(
@@ -90,21 +91,16 @@ class PostService
         return $this->error;
     }
 
-    private function validate(): bool
+    private function validate(string $title, string $shortDescription, string $description, array $image): bool
     {
         $validateService = new ValidateService();
 
-        $validateService->checkText($this->title, 'title');
-        $validateService->checkText($this->shortDescription, 'short_description');
-        $validateService->checkText($this->description, 'description');
+        $validateService->checkText($title, 'title');
+        $validateService->checkText($shortDescription, 'short_description');
+        $validateService->checkText($description, 'description');
 
-        if ($this->image && $validateService->checkImage($this->image)) {
-            move_uploaded_file(
-                $this->image['tmp_name'],
-                $_SERVER['DOCUMENT_ROOT'] . UPLOAD_POST_DIR . $this->image['name']
-            );
-
-            $this->image['new'] = UPLOAD_POST_DIR . $this->image['name'];
+        if ($image) {
+            $validateService->checkImage($image);
         }
 
         if ($validateService->getError()) {

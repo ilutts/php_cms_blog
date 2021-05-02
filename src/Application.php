@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\Exception\DataBaseException;
 use App\View\Renderable;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Database\QueryException;
@@ -24,7 +23,8 @@ class Application
         }
 
         if ($e instanceof QueryException) {
-            echo 'Для корректной работы установите БД - <a href="/setup">Установить</a>';
+            echo 'Ошибка запроса в БД <br>';
+            echo 'Для корректной работы попробуйте установить БД - <a href="/setup">Установить</a>';
             return false;
         }
 

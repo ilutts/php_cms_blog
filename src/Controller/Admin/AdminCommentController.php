@@ -12,7 +12,11 @@ class AdminCommentController extends AdminController
 {
     public function commentsView()
     {
-        $this->checkAccess([1, 2]);
+        $this->checkAccess([ADMIN_GROUP, CONTENT_MANAGER_GROUP]);
+
+        if (isset($_POST['delete_comment']) && Comment::findOrFail((int)$_POST['id'])) {
+            CommentRepository::delete((int)$_POST['id']);
+        }
 
         if (isset($_POST['comment_approved'])) {
             CommentRepository::update((int)$_POST['id'], ['approved' => !(int)$_POST['approved']]);

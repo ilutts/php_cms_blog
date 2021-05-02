@@ -10,7 +10,7 @@ use App\Model\RoleUser;
 
 abstract class AdminController extends Controller
 {
-    protected function checkAccess(array $allowedUsersByRoleId = [1])
+    protected function checkAccess(array $allowedUsersByRoleId = [ADMIN_GROUP])
     {
         if (empty($_SESSION['isAuth'])) {
             throw new NoAccessException('Вы не авторизованы!', 500);

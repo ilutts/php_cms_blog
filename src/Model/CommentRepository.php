@@ -13,9 +13,9 @@ class CommentRepository extends Repository
                 $table->increments('id');
                 $table->longText('text');
                 $table->integer('post_id')->unsigned();
-                $table->foreign('post_id')->references('id')->on('posts');
+                $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
                 $table->integer('user_id')->unsigned();
-                $table->foreign('user_id')->references('id')->on('users');
+                $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
                 $table->boolean('approved')->default(0);
                 $table->timestamps();
             });
@@ -35,5 +35,10 @@ class CommentRepository extends Repository
     public static function update(int $id, array $data)
     {
         Comment::where('id', $id)->update($data);
+    }
+
+    public static function delete(int $id)
+    {
+        return Comment::destroy($id);
     }
 }

@@ -79,8 +79,8 @@ class SetupService
     private static function addLinkRoleUser()
     {
         RoleUserRepository::createTable();
-        RoleUserRepository::add(1, 1);
-        RoleUserRepository::add(2, 2);
+        RoleUserRepository::add(1, ADMIN_GROUP);
+        RoleUserRepository::add(2, CONTENT_MANAGER_GROUP);
     }
 
     private static function addUnregisteredSubscriber()

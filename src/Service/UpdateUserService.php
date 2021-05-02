@@ -24,9 +24,9 @@ class UpdateUserService
 
     public function info(string $name, string $email, string $about, array $image): User
     {
-        $name = htmlspecialchars($name);
-        $email = htmlspecialchars($email);
-        $about = htmlspecialchars($about);
+        $name = strip_tags($name);
+        $email = strip_tags($email);
+        $about = strip_tags($about);
 
         $validateServices = new ValidateService();
 
@@ -42,13 +42,13 @@ class UpdateUserService
             $this->update['about'] = $about;
         }
 
-        if ($validateServices->checkImage($image)) {
+        if (!empty($image['name']) && $validateServices->checkImage($image)) {
             move_uploaded_file(
                 $image['tmp_name'],
                 $_SERVER['DOCUMENT_ROOT'] . UPLOAD_USER_DIR . $image['name']
             );
 
-            $this->update['image'] = UPLOAD_USER_DIR . $image['name'];
+            $this->update['image'] = UPLOAD_USER_DIR . rawurlencode($image['name']);
         }
 
         if ($validateServices->getError()) {
@@ -69,9 +69,9 @@ class UpdateUserService
 
     public function password(string $passwordOld, string $passwordNew1, string $passwordNew2): User
     {
-        $passwordOld = htmlspecialchars($passwordOld);
-        $passwordNew1 = htmlspecialchars($passwordNew1);
-        $passwordNew2 = htmlspecialchars($passwordNew2);
+        $passwordOld = strip_tags($passwordOld);
+        $passwordNew1 = strip_tags($passwordNew1);
+        $passwordNew2 = strip_tags($passwordNew2);
 
         $validateServices = new ValidateService();
 
@@ -111,7 +111,7 @@ class UpdateUserService
 
     public function roles(array $rolesId)
     {
-        if ($rolesId && $this->user->id !== 1) {
+        if ($rolesId && $this->user->id !== ADMIN_ID) {
             RoleUserRepository::deleteAll($this->user->id);
 
             foreach ($rolesId as $roleId) {

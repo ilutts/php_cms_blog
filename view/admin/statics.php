@@ -8,7 +8,7 @@
             <?php endif ?>
             <form class="main__form main__form--admin" method="GET">
                 <label for="form__select-quantity">Элементов на странице:</label>
-                <select id="form__select-quantity" name="quantity" class="input">
+                <select id="form__select-quantity" name="quantity" class="input input--main-admin">
                     <option value="10">10</option>
                     <option value="20" selected>20</option>
                     <option value="50">50</option>
@@ -34,7 +34,13 @@
                     <div class="list-admin__cell list-admin__cell--created-at"><?= $page->created_at ?></div>
                     <div class="list-admin__cell list-admin__cell--ending-at"><?= $page->updated_at ?></div>
                     <div class="list-admin__cell list-admin__cell--status"><?= $page->actived ? 'Да' : 'Нет' ?></div>
-                    <button class="btn btn--transparent btn-post-change">Изменить</button>
+                    <div class="list-admin__cell">
+                        <button class="btn btn--transparent btn-post-change">Изменить</button>
+                        <form method="POST">
+                            <input type="hidden" name="id" value="<?= $page->id ?>">
+                            <button type="submit" class="btn btn--transparent btn-post-delete" name="delete_page">Удалить</button>
+                        </form>
+                    </div>
                 </li>
             <?php endforeach ?>
         </ul>
@@ -59,8 +65,9 @@
             <input id="popup-title" class="input" name="title" type="text" required minlength="3">
             <label class="label" for="popup-body">Основное</label>
             <textarea id="popup-body" class="input input--textarea" name="body"></textarea>
-            <label class="label" for="post_actived">Показывать в меню: <input type="checkbox" name="post_actived" id="post_actived"></label>
+            <label class="label label--admin-static" for="post_actived">Показывать в меню: <input type="checkbox" name="post_actived" id="post_actived"></label>
             <button class="btn btn--solid" type="submit" name="submit_post">Сохранить</button>
         </div>
+        <button type="button" class="popup__close" aria-label="Закрыть"></button>
     </form>
 </div>

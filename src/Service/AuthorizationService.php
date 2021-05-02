@@ -8,8 +8,8 @@ class AuthorizationService
 {
     public static function login(string $login, string $password): bool
     {
-        $login = htmlspecialchars($login);
-        $password = htmlspecialchars($password);
+        $login = strip_tags($login);
+        $password = strip_tags($password);
 
         $user = User::where('email', $login)->with('roles')->first();
 
