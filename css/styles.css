@@ -311,6 +311,7 @@ ul {
 }
 
 .main__message--error {
+  flex-grow: 1;
   color: orangered;
 }
 

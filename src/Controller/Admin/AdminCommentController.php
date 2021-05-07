@@ -10,17 +10,9 @@ use App\View\View;
 
 class AdminCommentController extends AdminController
 {
-    public function commentsView()
+    public function comments()
     {
         $this->checkAccess([ADMIN_GROUP, CONTENT_MANAGER_GROUP]);
-
-        if (isset($_POST['delete_comment']) && Comment::findOrFail((int)$_POST['id'])) {
-            CommentRepository::delete((int)$_POST['id']);
-        }
-
-        if (isset($_POST['comment_approved'])) {
-            CommentRepository::update((int)$_POST['id'], ['approved' => !(int)$_POST['approved']]);
-        }
 
         $pagination = new PaginationService(
             Comment::count(),
@@ -38,5 +30,23 @@ class AdminCommentController extends AdminController
             ],
             'footer' => $this->getInfoForFooter(),
         ]);
+    }
+
+    public function approvedComment()
+    {
+        if (isset($_POST['comment_approved'])) {
+            CommentRepository::update((int)$_POST['comment_approved'], ['approved' => !(int)$_POST['approved']]);
+        }
+
+        header('Location: /admin/comments');
+    }
+
+    public function deleteComment()
+    {
+        if (isset($_POST['delete_comment']) && Comment::findOrFail((int)$_POST['delete_comment'])) {
+            CommentRepository::delete((int)$_POST['delete_comment']);
+        }
+
+        header('Location: /admin/comments');
     }
 }

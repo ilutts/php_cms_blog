@@ -8,7 +8,7 @@ use App\View\View;
 
 class StaticPageController extends Controller
 {
-    public function pageView(string $namePage)
+    public function staticPage(string $namePage)
     {
         $staticPage = StaticPage::where('name', $namePage)->first();
 

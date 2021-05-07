@@ -28,10 +28,11 @@
                     <div class="list-admin__cell list-admin__cell--email"><?= $user->email ?></div>
                     <div class="list-admin__cell list-admin__cell--created-at"><?= $user->created_at ?></div>
                     <div class="list-admin__cell list-admin__cell--updated-at"><?= $user->updated_at ?></div>
-                    <form class="list-admin__form" method="POST">
-                        <input type="hidden" name="id" value="<?= $user->id ?>">
+                    <form class="list-admin__form" method="POST" action="/admin/signeds/update-reguser">
                         <input type="hidden" name="signed" value="<?= $user->signed ?>">
-                        <button type="submit" name="reg_user" class="btn <?= $user->signed ? 'btn--solid' : 'btn--transparent' ?>"><?= $user->signed ? 'Вкл' : 'Выкл' ?></button>
+                        <button type="submit" name="reg_user" class="btn <?= $user->signed ? 'btn--solid' : 'btn--transparent' ?>" value="<?= $user->id ?>">
+                            <?= $user->signed ? 'Вкл' : 'Выкл' ?>
+                        </button>
                     </form>
                 </li>
             <?php endforeach ?>
@@ -52,12 +53,17 @@
                     <div class="list-admin__cell list-admin__cell--email"><?= $user->email ?></div>
                     <div class="list-admin__cell list-admin__cell--created-at"><?= $user->created_at ?></div>
                     <div class="list-admin__cell list-admin__cell--updated-at"><?= $user->updated_at ?></div>
-                    <form class="list-admin__form" method="POST">
-                        <input type="hidden" name="id" value="<?= $user->id ?>">
-                        <input type="hidden" name="signed" value="<?= $user->signed ?>">
-                        <button type="submit" name="unreg_user" class="btn <?= $user->signed ? 'btn--solid' : 'btn--transparent' ?>"><?= $user->signed ? 'Вкл' : 'Выкл' ?></button>
-                        <button type="submit" name="delete_unreg_signed" class="btn btn--transparent btn-post-delete">Удалить</button>
-                    </form>
+                    <div class="list-admin__cell">
+                        <form class="list-admin__form" method="POST" action="/admin/signeds/update-unreguser">
+                            <input type="hidden" name="signed" value="<?= $user->signed ?>">
+                            <button type="submit" name="unreg_user" class="btn <?= $user->signed ? 'btn--solid' : 'btn--transparent' ?>" value="<?= $user->id ?>">
+                                <?= $user->signed ? 'Вкл' : 'Выкл' ?>
+                            </button>
+                        </form>
+                        <form class="list-admin__form" method="POST" action="/admin/signeds/delete-unreguser">
+                            <button type="submit" name="delete_unreg_signed" class="btn btn--transparent btn-post-delete" value="<?= $user->id ?>">Удалить</button>
+                        </form>
+                    </div>
                 </li>
             <?php endforeach ?>
         </ul>

@@ -7,7 +7,7 @@
         <?php endif ?>
 
         <?php if (empty($_SESSION['isAuth'])) { ?>
-            <form class="form form--login" action="/login" method="post">
+            <form class="form form--login" action="/login/auth" method="post">
                 <input type="email" class="input input--login" name="login" required="" placeholder="Логин - email" value="">
                 <input type="password" class="input input--login" name="password" required="" placeholder="Пароль" value="">
                 <button class="btn btn--solid btn--login" type="submit" name="submit">Войти</button>

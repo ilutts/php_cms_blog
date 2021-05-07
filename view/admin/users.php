@@ -2,7 +2,7 @@
     <div class="container">
         <h1 class="main__title">Пользователи - Админ-панель</h1>
         <div class="main-admin__header">
-            <?php if (isset($data['users']->error)) : ?>
+            <?php if (!empty($data['users']->error)) : ?>
                 <h2 class="main__message main__message--error">Ошибка отправки формы!</h2>
             <?php endif ?>
             <form class="main__form main__form--admin" method="GET">
@@ -39,9 +39,8 @@
                     <div class="list-admin__cell list__cell--status"><?= $user->actived ? 'Вкл' : 'Выкл' ?></div>
                     <div class="list-admin__cell">
                         <button class="btn btn--transparent btn-post-change">Изменить</button>
-                        <form method="POST">
-                            <input type="hidden" name="id" value="<?= $user->id ?>">
-                            <button type="submit" class="btn btn--transparent btn-post-delete" name="delete_user">Удалить</button>
+                        <form method="POST" action="/admin/users/delete">
+                            <button type="submit" class="btn btn--transparent btn-post-delete" name="delete_user" value="<?= $user->id ?>">Удалить</button>
                         </form>
                     </div>
                 </li>
@@ -58,7 +57,7 @@
 </main>
 
 <div class="popup">
-    <form class="popup__form form--admin-user" method="POST" action="/admin/users" enctype="multipart/form-data">
+    <form class="popup__form form--admin-user" method="POST" action="/admin/users/update" enctype="multipart/form-data">
         <div class="profile-form__box">
             <h3 class="popup__title">Пользователь - <span class="popup__id"></span></h3>
             <input type="hidden" name="id">

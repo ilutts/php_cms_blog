@@ -3,7 +3,7 @@
         <h1 class="main__title">Статичный страницы - Админ-панель</h1>
         <div class="main-admin__header">
             <button class="btn btn--transparent btn-new">Новая страница</button>
-            <?php if (isset($data['static_pages']->error)) : ?>
+            <?php if (!empty($data['static_pages']->error)) : ?>
                 <h2 class="main__message main__message--error">Ошибка отправки формы!</h2>
             <?php endif ?>
             <form class="main__form main__form--admin" method="GET">
@@ -36,9 +36,8 @@
                     <div class="list-admin__cell list-admin__cell--status"><?= $page->actived ? 'Да' : 'Нет' ?></div>
                     <div class="list-admin__cell">
                         <button class="btn btn--transparent btn-post-change">Изменить</button>
-                        <form method="POST">
-                            <input type="hidden" name="id" value="<?= $page->id ?>">
-                            <button type="submit" class="btn btn--transparent btn-post-delete" name="delete_page">Удалить</button>
+                        <form method="POST" action="/admin/statics/delete">
+                            <button type="submit" class="btn btn--transparent btn-post-delete" name="delete_page" value="<?= $page->id ?>">Удалить</button>
                         </form>
                     </div>
                 </li>

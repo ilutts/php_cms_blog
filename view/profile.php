@@ -63,7 +63,7 @@
                         <p><?= $data->signed ? 'Вы уже подписаны' : 'Хотите подписаться?' ?></p>
                         <button class="btn btn--solid" type="submit" name="submit-signed"><?= $data->signed ? 'Отписаться' : 'Подписаться' ?></button>
                         <?php if (isset($data->updateSigned)) : ?>
-                            <h3>Вы успешно <?= $data->signed ? 'подписались на рассылку' : 'отписались от рассылки' ?></h3>
+                            <h3 class="main__message main__message--success">Вы успешно <?= $data->signed ? 'подписались на рассылку' : 'отписались от рассылки' ?></h3>
                         <?php endif ?>
                     </form>
                 </div>

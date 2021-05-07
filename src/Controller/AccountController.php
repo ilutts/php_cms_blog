@@ -13,12 +13,8 @@ use stdClass;
 
 class AccountController extends Controller
 {
-    public function loginView()
+    public function login()
     {
-        if (!empty($_POST['login']) && !empty($_POST['password'])) {
-            AuthorizationService::login($_POST['login'], $_POST['password']);
-        }
-
         return new View('login', [
             'header' => $this->getInfoForHeader(),
             'main' => [],
@@ -26,7 +22,16 @@ class AccountController extends Controller
         ]);
     }
 
-    public function registrationView()
+    public function authorization()
+    {
+        if (!empty($_POST['login']) && !empty($_POST['password'])) {
+            AuthorizationService::login($_POST['login'], $_POST['password']);
+        }
+
+        header('Location: /login');
+    }
+
+    public function registration()
     {
         if (isset($_POST['submit-reg'])) {
             $registration = new RegistrationUserService();
@@ -46,7 +51,7 @@ class AccountController extends Controller
         ]);
     }
 
-    public function profileView()
+    public function profile()
     {
         if (!empty($_SESSION['isAuth'])) {
             $user = User::find($_SESSION['user']['id']);
@@ -83,7 +88,7 @@ class AccountController extends Controller
         ]);
     }
 
-    public function unsubscribeView(string $userType, int $userId)
+    public function unsubscribe(string $userType, int $userId)
     {
         $userType = htmlspecialchars($userType);
 

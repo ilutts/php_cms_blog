@@ -3,7 +3,7 @@
         <h1 class="main__title">Статьи - Админ-панель</h1>
         <div class="main-admin__header">
             <button class="btn btn--transparent btn-new">Новая статья</button>
-            <?php if (isset($data['posts']->error)) : ?>
+            <?php if (!empty($data['posts']->error)) : ?>
                 <h2 class="main__message main__message--error">Ошибка отправки формы!</h2>
             <?php endif ?>
             <form class="main__form main__form--admin" method="GET">
@@ -36,9 +36,8 @@
                     <div class="list-admin__cell list-admin__cell--status"><?= $post->actived ? 'Вкл' : 'Выкл' ?></div>
                     <div class="list-admin__cell">
                         <button class="btn btn--transparent btn-post-change">Изменить</button>
-                        <form method="POST">
-                            <input type="hidden" name="id" value="<?= $post->id ?>">
-                            <button type="submit" class="btn btn--transparent btn-post-delete" name="delete_post">Удалить</button>
+                        <form method="POST" action="/admin/post/delete">
+                            <button type="submit" class="btn btn--transparent btn-post-delete" name="delete_post" value="<?= $post->id ?>">Удалить</button>
                         </form>
                     </div>
                 </li>
@@ -55,12 +54,12 @@
 </main>
 
 <div class="popup">
-    <form class="popup__form form--admin-post" method="POST" action="/admin" enctype="multipart/form-data">
+    <form class="popup__form form--admin-post" method="POST" enctype="multipart/form-data">
         <div class="profile-form__box">
             <h3 class="popup__title">Статья - <span class="popup__id"></span></h3>
             <input type="hidden" name="id">
             <label class="label" for="popup-title">Заголовок *</label>
-            <input id="popup-title" class="input" name="title" type="text" required minlength="3">
+            <input id="popup-title" class="input" name="title" type="text" required minlength="1">
             <label class="label" for="popup-description">Короткое описание *</label>
             <input type="text" id="popup-short-description" class="input" name="short_description" required minlength="3">
             <label class="label" for="popup-description">Описание *</label>

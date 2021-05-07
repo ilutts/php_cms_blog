@@ -12,36 +12,9 @@ use App\View\View;
 
 class AdminStaticPageController extends AdminController
 {
-    public function staticPagesView()
+    public function staticPages()
     {
         $this->checkAccess([ADMIN_GROUP, CONTENT_MANAGER_GROUP]);
-
-        if (isset($_POST['delete_page']) && StaticPage::findOrFail((int)$_POST['id'])) {
-            StaticPageRepository::delete((int)$_POST['id']);
-            MenuRepository::delete((int)$_POST['id']);
-        }
-
-        if (isset($_POST['submit_post'])) {
-            $staticPageServices = new StaticPageService();
-
-            if ($_POST['submit_post'] === 'new') {
-                $staticPageServices->add(
-                    $_POST['title'] ?? '',
-                    $_POST['name'] ?? '',
-                    $_POST['body'] ?? '',
-                );
-            }
-
-            if ($_POST['submit_post'] === 'change') {
-                $staticPageServices->update(
-                    $_POST['id'] ?? 0,
-                    $_POST['title'] ?? '',
-                    $_POST['name'] ?? '',
-                    $_POST['body'] ?? '',
-                    boolval($_POST['post_actived'] ?? 0),
-                );
-            }
-        }
 
         $pagination = new PaginationService(
             StaticPage::count(),
@@ -51,8 +24,9 @@ class AdminStaticPageController extends AdminController
 
         $staticPages = StaticPageService::get($pagination->getNumberSkipItem(), $pagination->getMaxItemOnPage());
 
-        if (isset($staticPageServices) && $staticPageServices->getError()) {
-            $staticPages->error = $staticPageServices->getError();
+        if (!empty($_SESSION['error']['statics'])) {
+            $staticPages->error = $_SESSION['error']['statics'];
+            unset($_SESSION['error']['statics']);
         }
 
         return new View('admin/statics', [
@@ -74,5 +48,55 @@ class AdminStaticPageController extends AdminController
 
             return new JsonView($page);
         }
+    }
+
+    public function addStaticPage()
+    {
+        if (isset($_POST['submit_post']) && $_POST['submit_post'] === 'new') {
+            $staticPageServices = new StaticPageService();
+
+            $staticPageServices->add(
+                $_POST['title'] ?? '',
+                $_POST['name'] ?? '',
+                $_POST['body'] ?? '',
+            );
+
+            if ($staticPageServices->getError()) {
+                $_SESSION['error']['statics']['add'] = $staticPageServices->getError();
+            }
+        }
+
+        header('Location: /admin/statics');
+    }
+
+    public function updateStaticPage()
+    {
+        if (isset($_POST['submit_post']) && $_POST['submit_post'] === 'change') {
+            $staticPageServices = new StaticPageService();
+
+            $staticPageServices->update(
+                $_POST['id'] ?? 0,
+                $_POST['title'] ?? '',
+                $_POST['name'] ?? '',
+                $_POST['body'] ?? '',
+                boolval($_POST['post_actived'] ?? 0),
+            );
+
+            if ($staticPageServices->getError()) {
+                $_SESSION['error']['statics']['update'] = $staticPageServices->getError();
+            }
+        }
+
+        header('Location: /admin/statics');
+    }
+
+    public function deleteStaticPage()
+    {
+        if (isset($_POST['delete_page']) && StaticPage::findOrFail((int)$_POST['delete_page'])) {
+            StaticPageRepository::delete((int)$_POST['delete_page']);
+            MenuRepository::delete((int)$_POST['delete_page']);
+        }
+
+        header('Location: /admin/statics');
     }
 }

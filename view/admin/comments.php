@@ -29,12 +29,17 @@
                     </div>
                     <div class="list-admin__cell list-admin__cell--text"><?= $comment->text ?></div>
                     <div class="list-admin__cell list-admin__cell--user"><?= $comment->user->name ?></div>
-                    <form class="list-admin__form" method="POST">
-                        <input type="hidden" name="id" value="<?= $comment->id ?>">
-                        <input type="hidden" name="approved" value="<?= $comment->approved ?>">
-                        <button type="submit" name="comment_approved" class="btn <?= $comment->approved ? 'btn--solid' : 'btn--transparent' ?>"><?= $comment->approved ? 'Одобрен' : 'Не одобрен' ?></button>
-                        <button type="submit" name="delete_comment" class="btn btn--transparent btn-post-delete">Удалить</button>
-                    </form>
+                    <div class="list-admin__cell">
+                        <form class="list-admin__form" method="POST" action="/admin/comment/approved">
+                            <input type="hidden" name="approved" value="<?= $comment->approved ?>">
+                            <button type="submit" name="comment_approved" class="btn <?= $comment->approved ? 'btn--solid' : 'btn--transparent' ?>" value="<?= $comment->id ?>">
+                                <?= $comment->approved ? 'Одобрен' : 'Не одобрен' ?>
+                            </button>
+                        </form>
+                        <form class="list-admin__form" method="POST" action="/admin/comment/delete">
+                            <button type="submit" name="delete_comment" class="btn btn--transparent btn-post-delete" value="<?= $comment->id ?>">Удалить</button>
+                        </form>
+                    </div>
                 </li>
             <?php endforeach ?>
         </ul>

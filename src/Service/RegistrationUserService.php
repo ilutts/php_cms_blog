@@ -11,6 +11,11 @@ class RegistrationUserService
 {
     private array $error = [];
 
+    public function getError()
+    {
+        return $this->error;
+    }
+
     public function add(string $name, string $email, string $password1, string $password2, bool $rule)
     {
         $name = strip_tags($name);

@@ -15,7 +15,7 @@ use App\View\View;
 
 class PostController extends Controller
 {
-    public function postsView()
+    public function posts()
     {
         if (isset($_POST['submit-signed'])) {
             if (isset($_POST['email'])) {
@@ -56,7 +56,7 @@ class PostController extends Controller
         ]);
     }
 
-    public function postView(int $postId)
+    public function post(int $postId)
     {
         if (!empty($_POST['comment-new'])) {
             $comment = new CommentService();

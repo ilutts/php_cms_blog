@@ -14,6 +14,7 @@ function changeImageOfInputFile(input, img) {
 function ajaxPopupAdminPost(form, formData, popupImg) {
   form.submit_post.textContent = 'Изменить';
   form.submit_post.value = 'change';
+  form.setAttribute('action', '/admin/post/update');
 
   fetch('/ajax/post/get', {
     method: 'POST',
@@ -36,6 +37,7 @@ function ajaxPopupAdminStaticPage(form, formData) {
   form.submit_post.textContent = 'Изменить';
   form.submit_post.value = 'change';
   form.querySelector('.label--admin-static').style.display = 'block';
+  form.setAttribute('action', '/admin/statics/update');
 
   fetch('/ajax/static/get', {
     method: 'POST',
@@ -155,6 +157,10 @@ function appBlog() {
         formPopup.querySelector('.popup__id').textContent = 'Новая';
         formPopup.submit_post.textContent = 'Добавить';
         formPopup.submit_post.value = 'new';
+        
+        if (formPopup.classList.contains('form--admin-post')) {
+          formPopup.setAttribute('action', '/admin/post/add');
+        }
 
         if (popupImg) {
           popupImg.setAttribute('src', '/img/post/post-no-img.png');
@@ -162,6 +168,7 @@ function appBlog() {
 
         if (formPopup.classList.contains('form--admin-static')) {
           formPopup.querySelector('.label--admin-static').style.display = 'none';
+          formPopup.setAttribute('action', '/admin/statics/add');
         }
       });
     }
