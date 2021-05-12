@@ -510,3 +510,59 @@ fghfghfgh
 -------
 <a href="http://localhost/unsubscribe/unreg/2">Отписаться от рассылки</a>
 
+2021-05-12 20:48:29 Отправка письма - 321@312.ru
+На сайте добавлена новая запись: Test2
+Новая статья: Test2,
+dfsf
+<a href="http://localhost/post/21">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/unreg/2">Отписаться от рассылки</a>
+
+2021-05-12 20:48:29 Отправка письма - as@as.ru
+На сайте добавлена новая запись: Test2
+Новая статья: Test2,
+dfsf
+<a href="http://localhost/post/21">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/unreg/4">Отписаться от рассылки</a>
+
+2021-05-12 20:48:29 Отправка письма - 996600@mail.ru
+На сайте добавлена новая запись: Test2
+Новая статья: Test2,
+dfsf
+<a href="http://localhost/post/21">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/unreg/5">Отписаться от рассылки</a>
+
+2021-05-12 20:48:29 Отправка письма - admin@admin.ru
+На сайте добавлена новая запись: Test2
+Новая статья: Test2,
+dfsf
+<a href="http://localhost/post/21">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/reg/1">Отписаться от рассылки</a>
+
+2021-05-12 20:48:29 Отправка письма - 555@555.ru
+На сайте добавлена новая запись: Test2
+Новая статья: Test2,
+dfsf
+<a href="http://localhost/post/21">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/reg/7">Отписаться от рассылки</a>
+
+2021-05-12 20:50:35 Отправка письма - 321@312.ru
+На сайте добавлена новая запись: 213213
+Новая статья: 213213,
+rewrewer
+<a href="http://localhost/post/22">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/unreg/2">Отписаться от рассылки</a>
+
+2021-05-12 20:50:35 Отправка письма - 555@555.ru
+На сайте добавлена новая запись: 213213
+Новая статья: 213213,
+rewrewer
+<a href="http://localhost/post/22">Читать</a>
+-------
+<a href="http://localhost/unsubscribe/reg/7">Отписаться от рассылки</a>
+

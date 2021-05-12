@@ -17,12 +17,12 @@ class UpdateUserService
         $this->user = $user;
     }
 
-    public function getError()
+    public function getError(): array
     {
         return $this->user->errorUpdate ?? [];
     }
 
-    public function info(string $name, string $email, string $about, array $image): User
+    public function info(string $name, string $email, string $about, array $image)
     {
         $name = strip_tags($name);
         $email = strip_tags($email);
@@ -52,22 +52,18 @@ class UpdateUserService
         }
 
         if ($validateServices->getError()) {
-            $this->user->errorUpdate = (object)$validateServices->getError();
-            return $this->user;
+            $this->user->errorUpdate = $validateServices->getError();
+            return false;
         }
 
         if ($this->update && UserRepository::update($this->user->id, $this->update)) {
-            $this->user->updateInfo = true;
             foreach ($this->update as $key => $value) {
                 $_SESSION['user'][$key] = $value;
-                $this->user[$key] = $value;
             }
         }
-
-        return $this->user;
     }
 
-    public function password(string $passwordOld, string $passwordNew1, string $passwordNew2): User
+    public function password(string $passwordOld, string $passwordNew1, string $passwordNew2)
     {
         $passwordOld = strip_tags($passwordOld);
         $passwordNew1 = strip_tags($passwordNew1);
@@ -80,26 +76,20 @@ class UpdateUserService
         }
 
         if ($validateServices->getError()) {
-            $this->user->errorUpdate = (object)$validateServices->getError();
-            return $this->user;
+            $this->user->errorUpdate = $validateServices->getError();
+            return false;
         }
 
-        if ($this->update && UserRepository::update($this->user->id, $this->update)) {
-            $this->user->updatePassword = true;
+        if ($this->update) {
+            UserRepository::update($this->user->id, $this->update);
         }
-
-        return $this->user;
     }
 
-    public function signed(): User
+    public function signed()
     {
         if (UserRepository::update($this->user->id, ['signed' => !$this->user->signed])) {
             $_SESSION['user']['signed'] = !$this->user->signed;
-            $this->user->signed = !$this->user->signed;
-            $this->user->updateSigned = true;
         }
-
-        return $this->user;
     }
 
     public function actived(bool $actived)

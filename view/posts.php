@@ -1,14 +1,14 @@
 <main class="main">
     <div class="container">
         <h1 class="main__title">Главная</h1>
-        <?php if (!empty($data->successForm)) : ?>
-            <h2 class="main__message main__message--success"><?= $data->successForm ?></h2>
+        <?php if (!empty($data['posts']->successForm)) : ?>
+            <h2 class="main__message main__message--success"><?= $data['posts']->successForm ?></h2>
         <?php endif ?>
-        <?php if (isset($data->errorForm)) : ?>
-            <h2 class="main__message main__message--error"><?= $data->errorForm['email'] ?></h2>
+        <?php if (isset($data['posts']->errorForm)) : ?>
+            <h2 class="main__message main__message--error"><?= $data['posts']->errorForm['email'] ?></h2>
         <?php endif ?>
         <?php if (empty($_SESSION['user']['signed'])) : ?>
-            <form class="form form--main" action="/" method="post">
+            <form class="form form--main" action="/subscribe" method="post">
                 Подписаться на обновления
 
                 <?php if (empty($_SESSION['isAuth'])) : ?>

@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Config;
-use App\Model\AdminMenu;
 use App\Model\Menu;
 
 abstract class Controller

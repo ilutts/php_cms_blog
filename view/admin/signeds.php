@@ -13,7 +13,7 @@
                 </select>
             </form>
         </div>
-        <h2>Зарегестрированные пользователи:</h2>
+        <h2>Зарегистрированные пользователи:</h2>
         <ul class="main-admin__list list">
             <li class="list-admin__item list-admin__item--signed">
                 <div class="list-admin__cell list-admin__cell--bold">ID</div>
@@ -38,7 +38,7 @@
             <?php endforeach ?>
         </ul>
 
-        <h2>Незарегестрированные пользователи:</h2>
+        <h2>Незарегистрированные пользователи:</h2>
         <ul class="main-admin__list list">
             <li class="list-admin__item list-admin__item--signed">
                 <div class="list-admin__cell list-admin__cell--bold">ID</div>

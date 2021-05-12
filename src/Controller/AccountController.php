@@ -7,6 +7,7 @@ use App\Model\User;
 use App\Model\UserRepository;
 use App\Service\AuthorizationService;
 use App\Service\RegistrationUserService;
+use App\Service\SubscriberService;
 use App\Service\UpdateUserService;
 use App\View\View;
 use stdClass;
@@ -22,6 +23,17 @@ class AccountController extends Controller
         ]);
     }
 
+    public function logout()
+    {
+        unset($_SESSION['isAuth']);
+    
+        setcookie(session_name(), session_id(), time() - 60 * 60 * 24, '/');
+    
+        session_destroy();
+    
+        header('Location: /');
+    }
+
     public function authorization()
     {
         if (!empty($_POST['login']) && !empty($_POST['password'])) {
@@ -33,22 +45,36 @@ class AccountController extends Controller
 
     public function registration()
     {
+        if (!empty($_SESSION['error']['registration'])) {
+            $error = $_SESSION['error']['registration'];
+            unset($_SESSION['error']['registration']);
+        }
+
+        return new View('registration', [
+            'header' => $this->getInfoForHeader(),
+            'main' => $error ?? [],
+            'footer' => $this->getInfoForFooter(),
+        ]);
+    }
+
+    public function addNewUser()
+    {
         if (isset($_POST['submit-reg'])) {
             $registration = new RegistrationUserService();
-            $info = $registration->add(
+            $registration->add(
                 $_POST['name'],
                 $_POST['email'],
                 $_POST['password1'],
                 $_POST['password2'],
                 isset($_POST['rule'])
             );
+
+            if ($registration->getError()) {
+                $_SESSION['error']['registration'] = $registration->getError();
+            }
         }
 
-        return new View('registration', [
-            'header' => $this->getInfoForHeader(),
-            'main' => $info ?? false,
-            'footer' => $this->getInfoForFooter(),
-        ]);
+        header('Location: /registration');
     }
 
     public function profile()
@@ -56,41 +82,109 @@ class AccountController extends Controller
         if (!empty($_SESSION['isAuth'])) {
             $user = User::find($_SESSION['user']['id']);
 
-            if (isset($_POST['submit-info'])) {
-                $updateUser = new UpdateUserService($user);
-                $user = $updateUser->info(
-                    $_POST['name'] ?? '',
-                    $_POST['email'] ?? '',
-                    $_POST['about'] ?? '',
-                    $_FILES['image'] ?? [],
-                );
+            if (!empty($_SESSION['error']['user'])) {
+                $user->error = $_SESSION['error']['user'];
+                unset($_SESSION['error']['user']);
             }
 
-            if (isset($_POST['submit-password'])) {
-                $updateUser = new UpdateUserService($user);
-                $user = $updateUser->password(
-                    $_POST['password_old'] ?? '',
-                    $_POST['password1'] ?? '',
-                    $_POST['password2'] ?? '',
-                );
-            }
-
-            if (isset($_POST['submit-signed'])) {
-                $updateUser = new UpdateUserService($user);
-                $user = $updateUser->signed();
+            if (!empty($_SESSION['success']['user'])) {
+                $user->success = $_SESSION['success']['user'];
+                unset($_SESSION['success']['user']);
             }
         }
 
         return new View('profile', [
             'header' => $this->getInfoForHeader(),
-            'main' => $user ?? false,
+            'main' => $user ?? [],
             'footer' => $this->getInfoForFooter(),
         ]);
     }
 
+    public function updatePassword()
+    {
+        if (!empty($_SESSION['isAuth']) && isset($_POST['submit-password'])) {
+            $user = User::find($_SESSION['user']['id']);
+
+            $updateUser = new UpdateUserService($user);
+            $updateUser->password(
+                $_POST['password_old'] ?? '',
+                $_POST['password1'] ?? '',
+                $_POST['password2'] ?? '',
+            );
+
+            if ($updateUser->getError()) {
+                $_SESSION['error']['user'] = $updateUser->getError();
+            } else {
+                $_SESSION['success']['user']['update_pass'] = true;
+            }
+        }
+
+        header('Location: /profile');
+    }
+
+    public function updateInfo()
+    {
+        if (!empty($_SESSION['isAuth']) && isset($_POST['submit-info'])) {
+            $user = User::find($_SESSION['user']['id']);
+
+            $updateUser = new UpdateUserService($user);
+            $updateUser->info(
+                $_POST['name'] ?? '',
+                $_POST['email'] ?? '',
+                $_POST['about'] ?? '',
+                $_FILES['image'] ?? [],
+            );
+
+            if ($updateUser->getError()) {
+                $_SESSION['error']['user'] = $updateUser->getError();
+            } else {
+                $_SESSION['success']['user']['update_info'] = true;
+            }
+        }
+
+        header('Location: /profile');
+    }
+
+    public function updateSigned()
+    {
+        if (!empty($_SESSION['isAuth']) && isset($_POST['submit-signed'])) {
+            $user = User::find($_SESSION['user']['id']);
+
+            $updateUser = new UpdateUserService($user);
+            $updateUser->signed();
+
+            $_SESSION['success']['user']['update_signed'] = true;
+        }
+
+        header('Location: /profile');
+    }
+
+    public function subscribe()
+    {
+        if (isset($_POST['submit-signed'])) {
+            if (isset($_POST['email'])) {
+                $subscriberServices = new SubscriberService();
+                $subscriberServices->newUnregistered($_POST['email']);
+                
+                if ($subscriberServices->getError()) {
+                    $_SESSION['error']['subscriber'] = $subscriberServices->getError();
+                } else {
+                    $_SESSION['success']['subscriber'] = $subscriberServices->getSuccess();
+                }
+
+            } else {
+                $user = User::findOrFail($_SESSION['user']['id']);
+                $updateUser = new UpdateUserService($user);
+                $updateUser->signed();
+            }
+        }
+
+        header('Location: /');
+    }
+
     public function unsubscribe(string $userType, int $userId)
     {
-        $userType = htmlspecialchars($userType);
+        $userType = strip_tags($userType);
 
         switch ($userType) {
             case 'reg':
@@ -108,7 +202,6 @@ class AccountController extends Controller
         $data = new stdClass;
         $data->title = 'Отписка от рассылки';
         $data->body = 'Вы успешно исключены из расслыки сообщений о новых статьях';
-
 
         return new View('static', [
             'header' => $this->getInfoForHeader(),

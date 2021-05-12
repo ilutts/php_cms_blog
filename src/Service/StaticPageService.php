@@ -9,13 +9,6 @@ use App\Model\StaticPageRepository;
 
 class StaticPageService
 {
-    private int $id;
-    private string $title;
-    private string $name;
-    private string $body;
-    private bool $actived;
-    private string $btnType;
-
     private array $error = [];
 
     public function getError()

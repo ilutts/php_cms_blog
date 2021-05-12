@@ -8,17 +8,6 @@ ini_set('session.cookie_lifetime', 60 * 60 * 2);
 
 session_start();
 
-if (isset($_GET['exit'])) {
-    unset($_SESSION['isAuth']);
-
-    setcookie(session_name(), session_id(), time() - 60 * 60 * 24, '/');
-
-    session_destroy();
-
-    header('Location: /');
-    die();
-}
-
 require_once($_SERVER['DOCUMENT_ROOT'] . '/bootstrap.php');
 
 use App\Router;
@@ -35,16 +24,26 @@ use App\Controller\StaticPageController;
 
 $router = new Router();
 
-$router->get('/', PostController::class . '@posts');
-$router->get('/post/*', PostController::class . '@post');
+$router->get('/', PostController::class . '@posts', 'get');
+$router->get('/post/*', PostController::class . '@post', 'get');
+$router->get('/comment/new', PostController::class . '@newComment', 'post');
 
-$router->get('/page/*', StaticPageController::class . '@staticPage');
+$router->get('/page/*', StaticPageController::class . '@staticPage', 'get');
 
 $router->get('/login', AccountController::class . '@login', 'get');
+$router->get('/logout', AccountController::class . '@logout', 'get');
 $router->get('/login/auth', AccountController::class . '@authorization', 'post');
-$router->get('/registration', AccountController::class . '@registration');
-$router->get('/profile', AccountController::class . '@profile');
-$router->get('/unsubscribe/*/*', AccountController::class . '@unsubscribe');
+
+$router->get('/registration', AccountController::class . '@registration', 'get');
+$router->get('/registration/new', AccountController::class . '@addNewUser', 'post');
+
+$router->get('/profile', AccountController::class . '@profile', 'get');
+$router->get('/profile/update/info', AccountController::class . '@updateInfo', 'post');
+$router->get('/profile/update/password', AccountController::class . '@updatePassword', 'post');
+$router->get('/profile/update/signed', AccountController::class . '@updateSigned', 'post');
+
+$router->get('/subscribe', AccountController::class . '@subscribe', 'post');
+$router->get('/unsubscribe/*/*', AccountController::class . '@unsubscribe', 'get');
 
 $router->get('/admin', AdminPostController::class . '@posts', 'get');
 $router->get('/ajax/post/get', AdminPostController::class . '@ajaxGetPost', 'post');

@@ -30,9 +30,10 @@
                     </li>
                 <?php endforeach ?>
             </ul>
-            <form class="comment-box__form form" method="post">
+            <form class="comment-box__form form" action="/comment/new" method="post">
                 <label class="comment-box__label label" for="new-comment">Оставить комментарий</label>
                 <textarea name="comment-new" id="comment-new" class="input input--textarea"></textarea>
+                <input type="hidden" name="post_id" value="<?= $data->id ?>">
                 <button class="btn btn--transparent" type="submit">Отправить</button>
                 <?php if (!empty($data->newСomment)) : ?>
                     <h3><?= $data->newСomment ?></h3>

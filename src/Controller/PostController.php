@@ -5,29 +5,15 @@ namespace App\Controller;
 use App\Config;
 use App\Exception\NotFoundException;
 use App\Model\Post;
-use App\Model\User;
 use App\Service\CommentService;
 use App\Service\PaginationService;
 use App\Service\PostService;
-use App\Service\SubscriberService;
-use App\Service\UpdateUserService;
 use App\View\View;
 
 class PostController extends Controller
 {
     public function posts()
     {
-        if (isset($_POST['submit-signed'])) {
-            if (isset($_POST['email'])) {
-                $subscriberServices = new SubscriberService();
-                $subscriberServices->newUnregistered($_POST['email']);
-            } else {
-                $user = User::findOrFail($_SESSION['user']['id']);
-                $updateUser = new UpdateUserService($user);
-                $updateUser->signed();
-            }
-        }
-
         $pagination = new PaginationService(
             Post::where('actived', 1)->count(),
             Config::getInstance()->get('cms.quantity_posts_main') ?? 1,
@@ -36,14 +22,14 @@ class PostController extends Controller
 
         $posts = PostService::get($pagination->getNumberSkipItem(), $pagination->getMaxItemOnPage());
 
-        if (isset($subscriberServices)) {
-            if ($subscriberServices->getError()) {
-                $posts->errorForm = $subscriberServices->getError();
-            }
+        if (isset($_SESSION['error']['subscriber'])) {
+            $posts->errorForm = $_SESSION['error']['subscriber'];
+            unset($_SESSION['error']['subscriber']);
+        }
 
-            if ($subscriberServices->getSuccess()) {
-                $posts->successForm = $subscriberServices->getSuccess();
-            }
+        if (isset($_SESSION['success']['subscriber'])) {
+            $posts->successForm = $_SESSION['success']['subscriber'];
+            unset($_SESSION['error']['subscriber']);
         }
 
         return new View('posts', [
@@ -58,15 +44,6 @@ class PostController extends Controller
 
     public function post(int $postId)
     {
-        if (!empty($_POST['comment-new'])) {
-            $comment = new CommentService();
-            $comment = $comment->add(
-                $_POST['comment-new'] ?? '',
-                $postId,
-                $_SESSION['user']['id'] ?? 0,
-            );
-        }
-
         $post = Post::where('id', $postId)->with(['comments' => function ($query) {
             $query->where('approved', 1);
         }])->first();
@@ -75,12 +52,33 @@ class PostController extends Controller
             throw new NotFoundException('Статья не найдена!');
         }
 
-        $post->newСomment = $comment ?? false;
+        if (isset($_SESSION['comment']['new'])) {
+            $post->newСomment = $_SESSION['comment']['new'];
+            unset($_SESSION['comment']['new']);
+        }
 
         return new View('post', [
             'header' => $this->getInfoForHeader(),
             'main' => $post,
             'footer' => $this->getInfoForFooter(),
         ]);
+    }
+
+    public function newComment()
+    {
+        if (!empty($_POST['comment-new'])) {
+            $postId = intval($_POST['post_id'] ?? 0);
+
+            $comment = new CommentService();
+            $comment = $comment->add(
+                $_POST['comment-new'] ?? '',
+                $postId,
+                $_SESSION['user']['id'] ?? 0,
+            );
+
+            $_SESSION['comment']['new'] = $comment;
+
+            header("Location: /post/{$postId}");
+        }
     }
 }

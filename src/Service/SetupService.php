@@ -97,5 +97,7 @@ class SetupService
         MenuRepository::add('О нас', '/page/about', 1);
         StaticPageRepository::add('Контакты', 'admin@admin.ru и телефон 999 999 999', 'contacts', true);
         MenuRepository::add('Контакты', '/page/contacts', 2);
+        StaticPageRepository::add('Правила сайта', 'Никаких правил', 'rules', true);
+        MenuRepository::add('Правила сайта', '/page/rules', 3);
     }
 }

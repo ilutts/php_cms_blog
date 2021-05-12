@@ -71,6 +71,11 @@ ul {
   margin-right: 10px;
 }
 
+.link--rules {
+  margin-left: 5px;
+  margin-bottom: 5px;
+}
+
 .btn {
   padding: 5px;
   max-width: 250px;
@@ -311,11 +316,13 @@ ul {
 }
 
 .main__message--error {
+  margin: 0;
   flex-grow: 1;
   color: orangered;
 }
 
 .main__message--success {
+  margin: 0;
   color: rgb(12, 155, 43);
 }
 

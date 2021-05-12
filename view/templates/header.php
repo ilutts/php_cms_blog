@@ -23,7 +23,7 @@
                     <?php if (isset($_SESSION['roles']['1']) || isset($_SESSION['roles']['2'])) : ?>
                         <a href="/admin" class="link link--admin">Админ-панель</a>
                     <?php endif ?>
-                    <a href="/?exit" class="link">Выйти</a>
+                    <a href="/logout" class="link">Выйти</a>
                 <?php } ?>
 
             </div>

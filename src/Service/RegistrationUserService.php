@@ -11,7 +11,7 @@ class RegistrationUserService
 {
     private array $error = [];
 
-    public function getError()
+    public function getError(): array
     {
         return $this->error;
     }
@@ -38,8 +38,6 @@ class RegistrationUserService
                 $this->error['email'] = 'Почта уже использовалась ранее!';
             }
         }
-
-        return $this->error ? (object)$this->error : [];
     }
 
     private function validate(string $name, string $email, string $password1, string $password2, bool $rule): bool
